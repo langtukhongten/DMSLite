@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dip"
+        android:background="@drawable/background_edit_search"
+        android:orientation="vertical"
+        android:padding="5dip">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@color/colorInfoTransaction"
+            android:gravity="center"
+            android:paddingLeft="5dip"
+            android:text="@string/confirm_info_transaction" />
+
+        <TextView
+            android:id="@+id/txStatus"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="2dip"
+            android:layout_weight="1"
+            android:background="@color/colorBlueTransaction"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="5dip"
+            android:text="@string/status_transaction" />
+
+        <EditText
+            android:id="@+id/edContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dip"
+            android:layout_weight="3"
+            android:background="@drawable/background_edit_search"
+            android:gravity="center"
+            android:hint="@string/input_transaction_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="2dip"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/background_edit_search"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/btConfirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/background_button_confirm_transaction"
+                android:text="@string/confirm" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

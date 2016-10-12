@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/mapOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:fitsSystemWindows="true">
+        <include
+            android:id="@+id/content"
+            layout="@layout/content_map_order" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                android:id="@+id/MapOrderLoadingView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:lv_color="@android:color/black"
+                app:lv_loading="false"
+                app:lv_title="@string/loading">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/fab_drawable" />
+            </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+            <EditText
+                android:id="@+id/edit_note_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_toLeftOf="@+id/MapOrderLoadingView"
+                android:hint="@string/input_note" />
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
+

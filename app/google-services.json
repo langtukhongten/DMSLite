@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "289048620878",
+    "firebase_url": "https://dmslite-d3155.firebaseio.com",
+    "project_id": "dmslite-d3155",
+    "storage_bucket": "dmslite-d3155.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289048620878:android:e4cf402d08a2d6f3",
+        "android_client_info": {
+          "package_name": "com.vietdms.mobile.dmslauncher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289048620878-nru9t0rg3q822jsc68592bdafocfvpvl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vietdms.mobile.dmslauncher",
+            "certificate_hash": "3CD3BF12162F7E3716B0966FE0DB99E9C72E811C"
+          }
+        },
+        {
+          "client_id": "289048620878-ll9phoguq0o48ddjsnbualk1cipjsiv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgj9rFbkJakEDmOpAoDzpmJOQ41dcpaZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289048620878-ll9phoguq0o48ddjsnbualk1cipjsiv7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

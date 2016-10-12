@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.vietdms.mobile.dmslauncher.Forms.ManagerActivity"
+    tools:showIn="@layout/activity_manager">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/ManagerLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/loading">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:id="@+id/lnTopmap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/background_white">
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/spStaff"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_toolbar_top"
+                            android:layout_gravity="top"
+                            android:layout_toLeftOf="@+id/spStyleView"
+                            android:layout_weight="2"
+                            android:background="@color/colorBlueDark"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:textSize="@dimen/textFontSize3"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/colorBlueDark"
+                            app:ms_baseColor="@color/colorBlueDark"
+                            app:ms_enableErrorLabel="false"
+                            app:ms_enableFloatingLabel="false"
+                            app:ms_errorColor="@color/colorRed"
+                            app:ms_floatingLabelColor="@android:color/black"
+                            app:ms_floatingLabelText="floating label"
+                            app:ms_highlightColor="@color/colorBlueDark"
+                            app:ms_hint="@string/staff_list"
+                            app:ms_hintColor="@color/colorBlueDark"
+                            app:ms_multiline="false"
+                            app:ms_thickness="0dp"  />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/lnTopmap"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:id="@+id/layoutDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/minHeightButtonMap"
+                                android:layout_weight="2">
+
+                                <Button
+                                    android:id="@+id/btnFromDate"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/minHeightButtonMap"
+                                    android:layout_weight="1"
+                                    android:alpha="0.5"
+                                    android:background="@android:color/darker_gray"
+                                    android:text="@string/fromDate" />
+
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent" />
+
+                                <Button
+                                    android:id="@+id/btnToDate"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/minHeightButtonMap"
+                                    android:layout_weight="1"
+                                    android:alpha="0.5"
+                                    android:background="@android:color/darker_gray"
+                                    android:text="@string/toDate" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/minHeightButtonMap"
+                                android:layout_weight="3">
+
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent" />
+
+                                <Button
+                                    android:id="@+id/btnSeeAgain"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/minHeightButtonMap"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/see_again_btn"
+                                    android:text="@string/see_again"
+                                    android:textColor="@android:color/white" />
+
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent" />
+
+                                <Button
+                                    android:id="@+id/btnSeeAll"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/minHeightButtonMap"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/see_all_btn"
+                                    android:text="@string/btn_see_all"
+                                    android:textColor="@android:color/white" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/btn_zoom_in_map"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:background="?attr/colorPrimary"
+                                android:text="@string/zoom_in"
+                                android:textColor="@android:color/white" />
+
+                            <Button
+                                android:id="@+id/btn_zoom_out_map"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:background="?attr/colorPrimary"
+                                android:text="@string/zoom_out"
+                                android:textColor="@android:color/white" />
+
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/white" />
+
+                            <LinearLayout
+                                android:id="@+id/linear_realtime"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="?attr/colorPrimary"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <Switch
+                                    android:id="@+id/swRealtime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:enabled="false"
+                                    android:switchPadding="5dp"
+                                    android:text="@string/realtime"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/textFontSize4"
+                                    tools:ignore="NewApi" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtRangeDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/layoutDate"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="@string/rangeDate"
+                            android:textColor="@color/colorBlueDark"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/linearListTracking"
+                                android:layout_width="match_parent"
+                                android:layout_height="250dp"
+                                android:layout_alignParentBottom="true"
+                                android:background="@android:color/transparent"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:orientation="horizontal"
+                                        android:layout_height="wrap_content">
+                                        <TextView
+                                            android:id="@+id/txtTrackingMeter"
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:textColor="@color/bpRed"
+                                            android:textSize="@dimen/textFontSize2"
+                                            android:textStyle="bold" />
+                                        <TextView
+                                            android:id="@+id/txtHideTracking"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@android:color/transparent"
+                                            android:drawableLeft="@drawable/triagle_btn"
+                                            android:drawablePadding="5dp"
+                                            android:gravity="center_horizontal|center_vertical"
+                                            android:text="@string/hide_tracking" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/colorBlueDark"
+                                    android:orientation="horizontal"
+                                    android:weightSum="16">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:text="TT"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        android:background="@android:color/transparent"
+                                        android:text="T.Gian Đến"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="6.5"
+                                        android:background="@android:color/transparent"
+                                        android:text="TÊN ĐƯỜNG"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2.5"
+                                        android:background="@android:color/transparent"
+                                        android:text="T.Gian Dừng"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:text="Pin"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:text="GPS"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:text="Mạng"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:text="Air"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <ListView
+                                    android:id="@+id/listTrackingDetail"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/txtShowTracking"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:background="@android:color/transparent"
+                                android:drawableLeft="@drawable/triagle_up_btn"
+                                android:drawablePadding="5dp"
+                                android:gravity="center_vertical|center_horizontal"
+                                android:text="@string/see_tracking"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </RelativeLayout>
+
+</layout>

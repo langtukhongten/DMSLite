@@ -1,0 +1,18 @@
+<resources>
+    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="margin_button_size">2dp</dimen>
+    <dimen name="iconsize">42dp</dimen>
+    <dimen name="textFontSize4">10sp</dimen>
+    <dimen name="textFontSize3">10sp</dimen>
+    <dimen name="textFontSize2">10sp</dimen>
+    <dimen name="textFontSize">9sp</dimen>
+    <dimen name="minHeightStatusBarHome">30dp</dimen>>
+    <dimen name="minHeight">50dp</dimen>
+    <dimen name="minHeightButtonMap">50dp</dimen>
+    <dimen name="minHeightButton">80dp</dimen>
+    <dimen name="minHeighOrder">85dp</dimen>
+    <dimen name="minHeightSurvey">60dp</dimen>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                tools:context=".Forms.LibraryActivity"
+                tools:showIn="@layout/activity_library"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent"
+
+                >
+                <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                    android:id="@+id/loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:lv_color="@android:color/white"
+                    app:lv_loading="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent">
+                <com.vietdms.mobile.dmslauncher.CustomClass.MenuGridView
+                    android:id="@+id/gridSurvey"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:horizontalSpacing="16dp"
+                    android:numColumns="4"
+                    android:scrollbars="none"
+                    android:verticalSpacing="16dp" />
+                </LinearLayout>
+                </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+            </RelativeLayout>
+
+
+</layout>

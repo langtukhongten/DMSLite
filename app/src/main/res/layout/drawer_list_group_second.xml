@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="50dp">
+
+    <TextView
+        android:id="@+id/nameCustomer"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:text="Khách hàng"
+        android:textSize="@dimen/textFontSize"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <TextView
+        android:paddingLeft="5dp"
+        android:id="@+id/addressCustomer"
+        android:text="7 Gò Cẩm Đệm, Phường 10, Quận Tân Bình, TP HCM"
+        android:textColor="@android:color/black"
+        android:textStyle="italic"
+        android:textSize="@dimen/textFontSize"
+        android:lines="2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

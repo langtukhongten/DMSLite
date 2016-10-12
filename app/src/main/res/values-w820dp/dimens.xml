@@ -1,0 +1,5 @@
+<resources>
+    <!-- 10inch tablet. -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="minHeightSurvey">80dp</dimen>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <!-- 6inch. -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="margin_button_size">16dp</dimen>
+    <dimen name="iconsize">60dp</dimen>
+    <dimen name="minHeightSurvey">100dp</dimen>
+</resources>

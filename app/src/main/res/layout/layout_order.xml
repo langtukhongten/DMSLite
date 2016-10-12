@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/linear_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/OrderLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/margin_top"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/sending">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/linear_top_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/custom_dark_border_line"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/order_customer_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="@string/customer_name"
+                                android:textSize="@dimen/textFontSize4"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/order_customer_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:paddingLeft="2sp"
+                                android:paddingTop="5sp"
+                                android:text="@string/customer_address"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_list_product_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/rela_add_product_order"
+                        android:layout_below="@+id/linear_top_order"
+                        android:background="@drawable/custom_bolder_order"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title_detail_order"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/custom_dark_border_line"
+                            android:text="@string/order_sale_title"
+                            android:textSize="@dimen/textFontSize4"
+                            android:textStyle="bold" />
+
+                        <ListView
+
+                            android:id="@+id/order_list_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="0dp"></ListView>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rela_add_product_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/rela_bot_order">
+
+                        <Button
+                            android:id="@+id/order_customer_add_product"
+                            style="@style/Widget.AppCompat.Button.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/custom_button_order"
+                            android:text="@string/add_product"
+                            android:textSize="@dimen/textFontSize4" />
+
+                        <LinearLayout
+                            android:id="@+id/linear_trans_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/order_customer_add_product"
+                            android:layout_toLeftOf="@+id/order_customer_add_product"
+                            android:layout_toStartOf="@+id/order_customer_add_product"
+                            android:gravity="top"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/title_trans_day"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="5dp"
+                                android:text="@string/trans_day"
+                                android:textSize="@dimen/textFontSize4"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/order_customer_trans_day"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_order"
+                                android:inputType="date"
+                                android:minWidth="100sp"
+                                android:text="10/12/1994"
+                                android:textSize="@dimen/textFontSize4"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rela_bot_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/custom_bolder_order">
+
+                        <LinearLayout
+                            android:id="@+id/linear_sale"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/img_pre_sale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:background="@null"
+                                android:src="@drawable/pre_sale_btn" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="2dp"
+                                        android:text="@string/plus_amount_sale"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/order_customer_amount_sale"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:minWidth="150sp"
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/title_order_discount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="2dp"
+                                        android:text="@string/discount"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/order_customer_discount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:minWidth="150sp"
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/title_order_amount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="2dp"
+                                        android:text="@string/amount"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/order_customer_amount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:minWidth="150sp"
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize4"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/linear_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/linear_sale"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/order_customer_note"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/order_customer_save_send"
+                                android:layout_alignParentTop="true"
+                                android:layout_toLeftOf="@+id/order_customer_save_send"
+                                android:layout_toStartOf="@+id/order_customer_save_send"
+                                android:background="@drawable/custom_bolder_order"
+                                android:hint="Nhập ghi chú"
+                                android:textSize="@dimen/textFontSize4" />
+
+                            <Button
+                                android:id="@+id/order_customer_save_send"
+                                style="@style/Widget.AppCompat.Button.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/custom_button_order"
+                                android:text="@string/save_send"
+                                android:textSize="@dimen/textFontSize4" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </LinearLayout>
+</layout>

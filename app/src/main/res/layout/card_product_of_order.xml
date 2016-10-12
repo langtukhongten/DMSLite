@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvpdod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:padding="5dp"
+        card_view:cardUseCompatPadding="true"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/custom_product_photo"
+                    android:layout_width="@dimen/minHeight"
+                    android:layout_height="@dimen/minHeight"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    app:civ_border_color="@android:color/darker_gray"
+                    app:civ_border_width="1dp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/custom_product_name"
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/textFontSize4"
+                        android:padding="5dp"
+                        android:textStyle="bold"
+                        android:text="Sản phẩm rất hay"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/custom_product_no"
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/textFontSize3"
+                        android:text="SP01"
+                        android:padding="5dp"
+                        android:textColor="@color/colorTitleProduct"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linear_product_inventory"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:minWidth="50dp"
+                    android:layout_gravity="center"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Tồn: "
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/textFontSize"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txt_product_of_order_inventory"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/textFontSize"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="@dimen/textFontSize3"
+                                android:text="@string/product_price"
+                                android:padding="5dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/custom_product_price"
+                                android:text="100/3"
+                                android:padding="5dp"
+                                android:textSize="@dimen/textFontSize3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="@dimen/textFontSize3"
+                                android:text="@string/product_unit"
+                                android:padding="5dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/custom_product_unit"
+                                android:text="CTN/Tin"
+                                android:padding="5dp"
+                                android:textSize="@dimen/textFontSize3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:paddingRight="10sp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="@dimen/textFontSize3"
+                                android:text="@string/product_quantity"
+                                android:padding="5dp"
+                                android:gravity="right"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/custom_product_quantity"
+                                android:text="0"
+                                android:padding="5dp"
+                                android:textColor="@color/bpRed"
+                                android:textSize="@dimen/textFontSize3"
+                                android:gravity="right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

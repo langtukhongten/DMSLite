@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorInfoTransaction"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="5dip"
+        android:text="@string/info_sales"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="@color/colorBlueTransaction"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtSaleTwoMonthAverageOverOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="Doanh số trung bình 2 tháng/Số đơn: 10tr/4"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtThisMonthOverOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="Doanh số tháng này/Số đơn: 9tr/3"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtSKU"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="Số SKU: 10"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorYellowDark"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="5dip"
+        android:text="@string/sales_flow_month"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorBlueTransaction"
+        android:layout_weight="4"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtFirstMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Tháng 3"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txtValueFirstMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textColor="@android:color/black"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="30.000.000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtSecondMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Tháng 4"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txtValueSecondMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:text="40.000.000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtThreeMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Tháng 5"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txtValueThreeMonth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:text="50.000.000" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

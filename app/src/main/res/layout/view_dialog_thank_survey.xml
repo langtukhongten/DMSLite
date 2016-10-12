@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:text="@string/thanks"
+        android:layout_below="@+id/linear_bottom"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:id="@+id/linear_bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/minHeightButton"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/review"
+            android:layout_width="0dp"
+            android:text="@string/review"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/send"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/send"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</RelativeLayout>

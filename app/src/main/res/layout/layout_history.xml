@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/rela_time_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_timeline_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                        android:id="@+id/HistoryLoadingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/margin_top"
+                        app:lv_color="@color/text_blue_blur"
+                        app:lv_loading="false"
+                        app:lv_title="@string/load_transaction">
+
+                        <com.vietdms.mobile.dmslauncher.SwipeRefreshLayoutBottom
+                            android:id="@+id/swipe_timeline_bottom"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerTimeline"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clipToPadding="false"
+                                android:paddingTop="@dimen/size_toolbar_order" />
+
+
+                        </com.vietdms.mobile.dmslauncher.SwipeRefreshLayoutBottom>
+                    </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbarTimeLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_toolbar_order"
+                        android:background="?attr/colorPrimary"
+                        app:contentInsetStart="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <SearchView
+                                android:id="@+id/svTimeLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="55dp"
+                                android:background="@drawable/background_edit_search"
+                                android:hint="@string/search_product"
+                                android:textColor="@color/bpTransparent_black" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/size_toolbar_top"
+                                android:gravity="bottom">
+
+                                <fr.ganfra.materialspinner.MaterialSpinner
+                                    android:id="@+id/spSelectStaff"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/size_toolbar_top"
+                                    android:layout_gravity="top"
+                                    android:layout_toLeftOf="@+id/spStyleView"
+                                    android:layout_weight="2"
+                                    android:background="@color/colorBlueDark"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:textSize="@dimen/textFontSize3"
+                                    app:ms_alignLabels="false"
+                                    app:ms_arrowColor="@color/colorBlueDark"
+                                    app:ms_baseColor="@color/colorBlueDark"
+                                    app:ms_enableErrorLabel="false"
+                                    app:ms_enableFloatingLabel="false"
+                                    app:ms_errorColor="@color/colorRed"
+                                    app:ms_floatingLabelColor="@android:color/black"
+                                    app:ms_floatingLabelText="floating label"
+                                    app:ms_highlightColor="@color/colorBlueDark"
+                                    app:ms_hint="@string/staff_list"
+                                    app:ms_hintColor="@color/colorBlueDark"
+                                    app:ms_multiline="false"
+                                    app:ms_thickness="0dp" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/darker_gray" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/darker_gray" />
+
+                                <Spinner
+                                    android:id="@+id/spStyleView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="65dp"
+                                    android:layout_gravity="top"
+                                    android:layout_weight="1"
+                                    android:textSize="@dimen/textFontSize3"></Spinner>
+
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.Toolbar>
+
+                </FrameLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>
+

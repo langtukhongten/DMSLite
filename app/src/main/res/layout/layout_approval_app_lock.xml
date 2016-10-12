@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear_appproval_app_lock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgblack60"
+        android:orientation="vertical">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/ApprovalAppLockLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/margin_top"
+            app:lv_color="@android:color/white"
+            app:lv_loading="false"
+            app:lv_title="@string/load_order">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/swipe_approval"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerApproval"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clipToPadding="false"
+                                android:paddingTop="@dimen/size_toolbar_order" />
+
+                            <android.support.v7.widget.Toolbar
+                                android:id="@+id/toolbarApproval"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/size_toolbar_order"
+                                android:background="?attr/colorPrimary"
+                                app:contentInsetStart="0dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/size_toolbar_top"
+                                        android:orientation="horizontal">
+
+                                        <SearchView
+                                            android:id="@+id/svApproval"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/background_edit_search"
+                                            android:hint="@string/search_product"
+                                            android:textColor="@color/bpTransparent_black" />
+
+                                        <fr.ganfra.materialspinner.MaterialSpinner
+                                            android:id="@+id/spStaff_Approval"
+                                            android:layout_width="0dp"
+                                            android:layout_height="65dp"
+                                            android:layout_toLeftOf="@+id/spStyleView"
+                                            android:layout_weight="1"
+                                            android:background="@color/colorBlueDark"
+                                            android:gravity="center_horizontal|center_vertical"
+                                            android:textSize="@dimen/textFontSize3"
+                                            app:ms_alignLabels="false"
+                                            app:ms_arrowColor="@color/percentageUnfilledColor"
+                                            app:ms_baseColor="@android:color/white"
+                                            app:ms_enableErrorLabel="false"
+                                            app:ms_enableFloatingLabel="false"
+                                            app:ms_errorColor="@color/colorRed"
+                                            app:ms_floatingLabelColor="@android:color/black"
+                                            app:ms_floatingLabelText="floating label"
+                                            app:ms_highlightColor="@color/colorBlueDark"
+                                            app:ms_hint="@string/staff_list"
+                                            app:ms_hintColor="@color/colorBlueDark"
+                                            app:ms_multiline="false"
+                                            app:ms_thickness="0dp" />
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="@android:color/darker_gray" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/size_toolbar_top">
+
+
+                                        <Button
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="?attr/colorPrimary"
+                                            android:text="@string/toDate"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/textFontSize4"
+                                            android:visibility="invisible" />
+
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="wrap_content"
+                                            android:background="@android:color/darker_gray" />
+
+                                        <Spinner
+                                            android:id="@+id/spApprovalStatus"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+
+                                            android:layout_alignParentRight="true"
+                                            android:layout_weight="1"
+                                            android:background="?attr/colorPrimary"
+                                            android:spinnerMode="dropdown"
+                                            android:text="@string/toDate"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/textFontSize4" />
+
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="wrap_content"
+                                            android:background="@android:color/darker_gray" />
+
+                                        <Button
+                                            android:id="@+id/approval_load"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:background="?attr/colorPrimary"
+                                            android:text="@string/load"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/textFontSize4" />
+
+                                        <ImageButton
+                                            android:id="@+id/btn_action_menu"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@null"
+                                            android:src="@android:drawable/ic_menu_add"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                            </android.support.v7.widget.Toolbar>
+
+                        </FrameLayout>
+
+                    </android.support.v4.widget.SwipeRefreshLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,186 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/rela_layout_checkin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.vietdms.mobile.dmslauncher.Home">
+
+        <RelativeLayout
+            android:id="@+id/rela_bg_checkin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bgblack60" />
+
+        <View
+            android:id="@+id/margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent" />
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/CheckInLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/margin_top"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/sending">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bgblack60"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/btn_get_checkin"
+                        android:layout_width="0.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:background="@drawable/button_drawable"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/circle_bg_main"
+                            android:padding="8.0dip">
+
+                            <ImageView
+                                android:layout_width="48.0dip"
+                                android:layout_height="48.0dip"
+                                android:layout_gravity="center"
+                                android:background="@drawable/getlocation_btn" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="12.0dip"
+                            android:text="@string/get_location"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="15.0sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_get_photo_checkin"
+                        android:layout_width="0.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:background="@drawable/button_drawable"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/circle_bg_main"
+                            android:padding="8.0dip">
+
+                            <ImageView
+                                android:layout_width="48.0dip"
+                                android:layout_height="48.0dip"
+                                android:layout_gravity="center"
+                                android:background="@drawable/camera_btn" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="12.0dip"
+                            android:text="@string/take_picture"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="15.0sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/edit_check_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/bgblack60"
+                        android:gravity="center"
+                        android:hint="@string/check_in"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btn_save_send_checkin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/button_note_drawable"
+                        android:drawableTop="@drawable/v_btn"
+                        android:paddingTop="5dp"
+                        android:text="@string/save_send"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="40dip"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/txtAddressIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/location_none"
+                        android:textColor="@android:color/white" />
+
+                    <ImageView
+                        android:id="@+id/imagePhotoIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dip"
+                        android:layout_weight="1"
+                        android:src="@mipmap/ic_launcher"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+
+    </RelativeLayout>
+</layout>

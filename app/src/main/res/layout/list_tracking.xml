@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:weightSum="16">
+
+    <TextView
+        android:id="@+id/txtTT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_weight="1"
+        android:text="TT" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="0dp"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="T.Gian Đến" />
+
+    <TextView
+        android:id="@+id/txtTenDuong"
+        android:layout_width="0dp"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content"
+        android:layout_weight="6.5"
+        android:text="TÊN ĐƯỜNG NÀY RẤT LÀ DÀI VA CHIẾM TẦm KHOẢNG 2 DÒNG ĐÓ NHA"
+
+        />
+
+
+    <TextView
+        android:id="@+id/txtTimeStop"
+        android:layout_width="0dp"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:text="T.Gian Dừng" />
+
+    <LinearLayout
+        android:id="@+id/linear_report_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/noavatar_btn"
+            android:visibility="gone"
+
+            />
+
+        <TextView
+            android:id="@+id/txt_report"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:textColor="@color/colorBlueDark"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtPin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="Pin" />
+
+
+    <TextView
+        android:id="@+id/txtGPS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_weight="1"
+        android:text="GPS" />
+
+    <TextView
+        android:id="@+id/txtMang"
+        android:layout_width="0dp"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Mạng" />
+
+    <TextView
+        android:id="@+id/txtAir"
+        android:textColor="@android:color/black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Air" />
+
+
+</LinearLayout>

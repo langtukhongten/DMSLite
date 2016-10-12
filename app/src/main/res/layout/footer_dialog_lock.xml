@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btnDialogCancel"
+        android:layout_width="0dp"
+        android:background="@drawable/button_lock_drawable"
+        android:text="@string/cancel"
+        android:textColor="@android:color/white"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnDialogOk"
+        android:layout_width="0dp"
+        android:text="@string/accept"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_lock_drawable"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+</LinearLayout>

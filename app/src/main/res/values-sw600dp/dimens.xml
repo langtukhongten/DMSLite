@@ -1,0 +1,20 @@
+<resources>
+    <!-- 7inch tablet. -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="margin_button_size">6dp</dimen>
+    <dimen name="iconsize">68dp</dimen>
+    <dimen name="textFontSize">15sp</dimen>
+    <dimen name="textFontSize2">16sp</dimen>
+    <dimen name="textFontSize3">18sp</dimen>
+    <dimen name="textFontSize4">20sp</dimen>
+    <dimen name="minHeight">100dp</dimen>
+    <dimen name="minHeightKPI">145dp</dimen>
+    <dimen name="minHeightStatusBarHome">70dp</dimen>
+    <dimen name="paddingSpinner">10sp</dimen>
+    <dimen name="maxHeighInStore">60dp</dimen>
+    <dimen name="minHeighOrder">125dp</dimen>
+    <dimen name="size_toolbar_order">120dp</dimen>
+    <dimen name="size_toolbar_top">60dp</dimen>
+    <dimen name="minHeightSurvey">60dp</dimen>
+
+</resources>

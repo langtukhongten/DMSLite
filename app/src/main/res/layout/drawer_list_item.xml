@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="100dp">
+
+        <TextView
+            android:id="@+id/nameStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:text="Gió"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textFontSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/nameStatus"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:text="23 phút trước"
+            android:textSize="@dimen/textFontSize"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+</LinearLayout>

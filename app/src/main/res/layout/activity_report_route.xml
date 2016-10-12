@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear_report_route"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/ReportRouteLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/out_store">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_toolbar_top"
+                    android:orientation="horizontal">
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spStaff_Report_"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorBlueDark"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textSize="@dimen/textFontSize"
+                        app:ms_alignLabels="false"
+                        app:ms_arrowColor="@color/percentageUnfilledColor"
+                        app:ms_baseColor="@android:color/white"
+                        app:ms_enableErrorLabel="false"
+                        app:ms_enableFloatingLabel="false"
+                        app:ms_errorColor="@color/colorRed"
+                        app:ms_floatingLabelColor="@color/colorBlueDark"
+                        app:ms_floatingLabelText="floating label"
+                        app:ms_highlightColor="@color/colorBlueDark"
+                        app:ms_hint="@string/staff_list"
+                        app:ms_hintColor="@color/colorBlueDark"
+                        app:ms_multiline="false"
+                        app:ms_thickness="0dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/darker_gray" />
+                    <Button
+                        android:id="@+id/btn_select_day_report_route"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorBlueDark"
+                        android:text="@string/choice_date"
+                        android:textColor="@android:color/white" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/darker_gray" />
+
+                    <Button
+                        android:id="@+id/report_route_load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorBlueDark"
+                        android:text="@string/load"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/webviewRoute"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+        android:id="@+id/LogInRouteLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/margin_top"
+        app:lv_color="@android:color/white"
+        app:lv_loading="false"
+        app:lv_title="@string/load_order">
+
+    <LinearLayout
+        android:id="@+id/linear_log_in_route"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_white">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_login_route"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@drawable/custom_bolder_linear"
+                android:text="@string/log_in_route"
+                android:textColor="@color/bpblack"
+                android:textSize="@dimen/textFontSize"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/ll_login_route"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_bolder_order"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/username" />
+
+                    <EditText
+                        android:id="@+id/ed_user_route"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:hint="@string/hint_username" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/hint_password" />
+
+                    <EditText
+                        android:id="@+id/ed_pass_route"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:inputType="textPassword"
+                        android:layout_weight="2"
+                        android:hint="@string/hint_password" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <Button
+                android:layout_below="@+id/ll_login_route"
+                android:id="@+id/btn_signin_route"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_note_drawable"
+                android:text="@string/log_in"
+                android:textColor="@color/white_alpha" />
+        </RelativeLayout>
+    </LinearLayout>
+    </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+</layout>

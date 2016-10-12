@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/linearInputValue"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:showIn="@layout/fragment_right">
+
+        <RelativeLayout
+            android:background="@drawable/bgblack60"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialog_full_holo_light"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_note_drawable"
+                    android:textColor="@color/white_alpha"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_input_title"
+                        android:paddingLeft="5dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:shadowColor="@android:color/darker_gray"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:textColor="@color/white_alpha"
+                        android:shadowRadius="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="@string/error_title" />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/input_value" />
+
+                    <EditText
+
+                        android:id="@+id/product_input_value"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="@string/input_value"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center|left"
+                        android:minHeight="50dp"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/input_price" />
+
+                    <EditText
+                        android:id="@+id/product_input_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center|left"
+                        android:inputType="number"
+                        android:hint="@string/input_price"
+                        android:minHeight="50dp"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textSize="20sp" />
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_accept_input"
+                    android:background="@drawable/button_note_drawable"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/white_alpha"
+                    android:layout_height="wrap_content"
+                    android:text="@string/accept" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/rela_customer_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linear_top_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/custom_bolder_linear"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/dialog_customer_checkin"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/button_drawable"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle_bg_main"
+                    android:padding="8.0dip">
+
+                    <ImageView
+                        android:layout_width="36.0dip"
+                        android:layout_height="36.0dip"
+                        android:layout_gravity="center"
+                        android:background="@drawable/getlocation_btn" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2.0dip"
+                    android:text="@string/check_in_customer"
+                    android:textColor="@color/colorBlueDark"
+                    android:textSize="12.0sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialog_customer_order"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/button_drawable"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle_bg_main"
+                    android:padding="8.0dip">
+
+                    <ImageView
+                        android:layout_width="36.0dip"
+                        android:layout_height="36.0dip"
+                        android:layout_gravity="center"
+                        android:background="@drawable/hand_btn" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2.0dip"
+                    android:text="@string/get_order"
+                    android:textColor="@color/colorBlueDark"
+                    android:textSize="12.0sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/dialog_customer_update"
+            android:layout_below="@+id/linear_top_customer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_bolder_linear"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_no" />
+
+                            <TextView
+                                android:id="@+id/dialog_customer_no_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center|left"
+                                android:minHeight="50dp"
+                                android:paddingLeft="20dp"
+                                android:text="KH 01"
+                                android:textColor="@color/colorBlueDark"
+                                android:textSize="14sp" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/dialog_customer_phone_call"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="20dp"
+                                android:drawableRight="@android:drawable/sym_action_call"
+                                android:text="@string/customer_phone" />
+
+                            <TextView
+                                android:id="@+id/dialog_customer_phone_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center|left"
+                                android:minHeight="50dp"
+                                android:paddingLeft="20dp"
+                                android:text="0909909909"
+                                android:textColor="@color/colorBlueDark"
+                                android:textSize="14sp" />
+
+                        </FrameLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
+
+                            <ImageView
+                                android:id="@+id/dialog_customer_photo_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/image_circle"
+                                android:minHeight="100dp"
+                                android:src="@mipmap/ic_launcher" />
+                        </FrameLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/customer_route" />
+
+                        <TextView
+                            android:id="@+id/dialog_customer_route_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:minHeight="50dp"
+                            android:paddingLeft="20dp"
+                            android:text="T2(S),T3(C),T4(S)"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/customer_name" />
+
+                        <TextView
+                            android:id="@+id/dialog_customer_name_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center|left"
+                            android:minHeight="50dp"
+                            android:paddingLeft="20dp"
+                            android:text="Nguyễn Văn A"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/customer_address" />
+
+                        <TextView
+                            android:id="@+id/dialog_customer_address_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:minHeight="50dp"
+                            android:paddingLeft="20dp"
+                            android:text="7 Gò Cẩm Đệm, P10, Quận Tân Bình, HCM"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_bolder_linear"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_location" />
+
+                            <TextView
+                                android:id="@+id/dialog_customer_location_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center|left"
+                                android:paddingLeft="20dp"
+                                android:text="10.7759283,106.6463433"
+                                android:textColor="@color/colorBlueDark"
+                                android:textSize="20sp" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:id="@+id/dialog_customer_location_view"
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:background="@drawable/button_drawable"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/circle_bg_customer"
+                                android:padding="8.0dip">
+
+                                <ImageView
+                                    android:layout_width="36.0dip"
+                                    android:layout_height="36.0dip"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/manager_btn" />
+                            </FrameLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/dialog_customer_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_note_drawable"
+            android:text="@string/edit_customer"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+</layout>

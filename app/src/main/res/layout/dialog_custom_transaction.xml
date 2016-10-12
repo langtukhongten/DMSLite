@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_margin="2dip"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="2dip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@drawable/background_border_blue"
+            android:orientation="horizontal"
+            android:padding="5dip">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dialog_txt_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingRight="2dip"
+                    android:text="1. Công Ty TNHH Phần mềm DMS"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dialog_txt_company_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingRight="2dip"
+                    android:text="Mr. Cường - 091.900.1404"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/dialog_txt_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorBlueTransaction"
+                    android:gravity="center"
+                    android:text="Kết thúc \n(05:30)" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@drawable/background_border_gray"
+            android:padding="5dip">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dialog_txt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dip"
+                    android:text="18 Gò Cẩm Đệm P.10 Q. Tân Bình, HCM"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/dialog_txt_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dip"
+                    android:text="Note: Khách hàng cần giao dịch trong ngày"
+                    android:textColor="@color/bpRed"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/dialog_txt_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorTime"
+                    android:gravity="center"
+                    android:text="08:10"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5">
+
+            <Button
+                android:id="@+id/dialog_btn_confirm_transaction"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dip"
+                android:layout_weight="1"
+                android:background="@drawable/background_button_transaction"
+                android:text="@string/btn_accept_trans"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/dialog_btn_record_transaction"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dip"
+                android:layout_weight="1"
+                android:background="@drawable/background_button_transaction"
+                android:text="@string/btn_record_trans"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewTransactionPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            android:layout_weight="2.5"></android.support.v4.view.ViewPager>
+    </LinearLayout>
+</RelativeLayout>

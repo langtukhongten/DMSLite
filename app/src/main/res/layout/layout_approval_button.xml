@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/linear_approval_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bgblack60">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                    android:id="@+id/ApprovalButtonLoadingView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/margin_top"
+                    android:layout_centerInParent="true"
+                    app:lv_color="@android:color/white"
+                    app:lv_loading="false"
+                    app:lv_title="@string/load_order">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/dialog_full_holo_light"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtAppNameApproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Cài đặt"
+                            android:textSize="@dimen/textFontSize"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btn_accept_approval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_drawable_create"
+                            android:text="@string/accept"
+                            android:textSize="@dimen/textFontSize" />
+
+                        <Button
+                            android:id="@+id/btn_accept_company_aproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_drawable_create"
+                            android:text="@string/accept_company"
+                            android:textSize="@dimen/textFontSize" />
+
+                        <Button
+                            android:id="@+id/btn_decline_approval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_drawable_create"
+                            android:text="@string/decline"
+                            android:textSize="@dimen/textFontSize" />
+
+                    </LinearLayout>
+                </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

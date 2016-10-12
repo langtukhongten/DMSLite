@@ -1,0 +1,54 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="textFontSize">11sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="margin_button_size">16dp</dimen>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="element_horizontal_margin">8dp</dimen>
+    <dimen name="element_vertical_margin">8dp</dimen>
+    <dimen name="minHeight">60sp</dimen>
+
+    <!--      <dimen name="patternview_max_size">400dp</dimen> -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!--
+         Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html
+    -->
+    <dimen name="navigation_drawer_width">270dp</dimen>
+    <dimen name="switch_radius">1dp</dimen>
+    <dimen name="main_button_radius">10dp</dimen>
+    <dimen name="overlay_radius">10dp</dimen>
+    <dimen name="passwordview_button_radius">10dp</dimen>
+    <dimen name="patternview_radius">10dp</dimen>
+    <dimen name="locker_button_margin">5dp</dimen>
+    <dimen name="locker_button_text_size">40sp</dimen>
+    <dimen name="locker_button_radius">5dp</dimen>
+    <dimen name="locker_button_small">12sp</dimen>
+
+    <!-- These are for the Upper part (above the buttons) -->
+    <dimen name="main_horizontal_padding">20dp</dimen>
+    <dimen name="main_vertical_padding">10dp</dimen>
+
+    <!--  -->
+    <dimen name="password_horizontal_padding">10dp</dimen>
+    <dimen name="password_top_margin">10dp</dimen>
+    <dimen name="password_bottom_margin">0dp</dimen>
+    <dimen name="image_right_margin">10dp</dimen>
+    <dimen name="footerscroll_vertical_padding">5dp</dimen>
+    <dimen name="minHeightKPI">90dp</dimen>
+    <dimen name="textFontSize4">15sp</dimen>
+    <dimen name="textFontSize3">14sp</dimen>
+    <dimen name="textFontSize2">13sp</dimen>
+    <dimen name="minHeightStatusBarHome">50dp</dimen>
+    <dimen name="paddingSpinner">5sp</dimen>
+    <dimen name="minHeightButton">40dp</dimen>
+    <dimen name="minHeightButtonMap">25dp</dimen>
+    <dimen name="maxHeighInStore">30dp</dimen>
+    <dimen name="minHeighOrder">70dp</dimen>
+    <dimen name="size_toolbar_order">100dp</dimen>
+    <dimen name="size_toolbar_top">50dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+</resources>

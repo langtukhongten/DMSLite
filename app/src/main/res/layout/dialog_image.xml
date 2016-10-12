@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+   >
+    <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+        android:id="@+id/ImageReportLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        app:lv_color="@android:color/black"
+        app:lv_loading="false"
+        app:lv_title="@string/loading">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="12"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <ImageButton
+                android:id="@+id/img_back_dialog_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/button_note_drawable"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/left_arrow_btn" />
+            <TextView
+                android:id="@+id/txt_title_dialog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorBlueDark"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Báo Cáo X"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/img_download"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/button_note_drawable"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/download_btn" />
+
+            <ImageButton
+                android:id="@+id/img_open_download"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorBlueDark"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/open_download_btn" />
+        </LinearLayout>
+
+
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+            android:id="@+id/imageReport"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+        <Button
+            android:id="@+id/btnDialogCloseImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_note_drawable"
+            android:text="Đóng"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+    </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorBlueDark"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/input_note"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+
+    <EditText
+        android:id="@+id/edit_note_order_cancel"
+        android:layout_width="match_parent"
+        android:hint="@string/input_note_cancel"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp" />
+    <org.buraktamturk.loadingview.LoadingView
+        android:id="@+id/CancelOrderLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:lv_color="@android:color/black"
+        app:lv_loading="false"
+        app:lv_title="@string/loading">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:id="@+id/btn_accept_order_note"
+            android:background="@drawable/button_note_drawable"
+            android:textColor="@android:color/white"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:text="@string/accept" />
+
+        <Button
+            android:id="@+id/btn_cancel_order_note"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_note_drawable"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+    </org.buraktamturk.loadingview.LoadingView>
+</LinearLayout>

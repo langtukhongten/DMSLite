@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:drawable="@color/colorBlueDark" />
+    <item android:state_pressed="true" android:drawable="@color/colorBlue" />
+    <item android:drawable="@color/colorBlueDark" />  //means normal
+</selector>

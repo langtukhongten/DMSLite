@@ -1,0 +1,242 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:plainpie="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@drawable/widget"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginLeft="2sp"
+            android:layout_marginRight="2sp"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/bgwhitetransparent">
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spSelectStaff_BI"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_toLeftOf="@+id/spStyleView"
+                android:layout_weight="2"
+                android:background="@color/colorBlueDark"
+                android:gravity="center_horizontal|center_vertical"
+                app:ms_alignLabels="false"
+                app:ms_arrowColor="@color/percentageUnfilledColor"
+                app:ms_baseColor="@android:color/white"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="false"
+                app:ms_errorColor="@color/colorRed"
+                app:ms_floatingLabelColor="@android:color/black"
+                app:ms_floatingLabelText="floating label"
+                app:ms_highlightColor="@color/colorBlueDark"
+                app:ms_hint="@string/staff_list"
+                app:ms_hintColor="@color/colorBlueDark"
+                app:ms_multiline="false"
+                app:ms_thickness="0dp" />
+
+            <Spinner
+                android:id="@+id/spStyleView_BI"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></Spinner>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2sp"
+            android:layout_marginLeft="2sp"
+            android:layout_marginRight="2sp"
+            android:background="@drawable/custom_bolder_order"
+            android:orientation="horizontal"
+
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Ghé thăm"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+
+                <az.plainpie.PieView
+                    android:id="@+id/pieViewCountVisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/minHeightKPI"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_bolder_order"
+                    plainpie:inner_pie_padding="100"
+                    plainpie:inner_text_visibility="true"
+                    plainpie:percentage="0"
+                    plainpie:percentage_size="35" />
+
+                <TextView
+                    android:id="@+id/leftfrag_Visit"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="10/100"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Đặt hàng"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+
+                <az.plainpie.PieView
+                    android:id="@+id/pieViewCountOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/minHeightKPI"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_bolder_order"
+                    plainpie:inner_pie_padding="100"
+                    plainpie:inner_text_visibility="true"
+                    plainpie:percentage="0"
+                    plainpie:percentage_size="35" />
+
+                <TextView
+                    android:id="@+id/txtleftFrag_Order"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="3/10"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2sp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="SKU"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+
+                <az.plainpie.PieView
+                    android:id="@+id/pieViewSKU"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/minHeightKPI"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_bolder_order"
+                    plainpie:inner_pie_padding="100"
+                    plainpie:inner_text_visibility="true"
+                    plainpie:percentage="0"
+                    plainpie:percentage_size="35" />
+
+                <TextView
+                    android:id="@+id/txtLeftFrag_SKU"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="3tr/10tr"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2sp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Doanh số"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+
+                <az.plainpie.PieView
+                    android:id="@+id/pieViewAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/minHeightKPI"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_bolder_order"
+                    plainpie:inner_pie_padding="100"
+                    plainpie:inner_text_visibility="true"
+                    plainpie:percentage="0"
+                    plainpie:percentage_size="35" />
+
+                <TextView
+                    android:id="@+id/txtleftfrag_Amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="5/10"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textFontSize" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2sp"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartDS"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_bolder_order"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/BarChartDS"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="2sp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_bolder_order" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

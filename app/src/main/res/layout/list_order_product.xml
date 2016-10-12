@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <!--  ListRow Left sied Thumbnail image -->
+
+    <!-- Title Of Song-->
+    <TextView
+        android:id="@+id/row_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rihanna Love the way lie"
+        android:typeface="sans"
+        android:textSize="@dimen/textFontSize3"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/row_product_txtSTT"
+        android:layout_toEndOf="@+id/row_product_txtSTT" />
+
+    <!-- Artist Name -->
+    <TextView
+        android:id="@+id/row_product_no"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/row_product_name"
+        android:textSize="@dimen/textFontSize3"
+        android:layout_marginTop="1dip"
+        android:text="Just gona stand there and ..." />
+
+    <!-- Rightend Duration -->
+    <TextView
+        android:id="@+id/row_product_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/row_product_name"
+        android:gravity="right"
+        android:text="5:45"
+        android:layout_marginRight="5dip"
+        android:textSize="@dimen/textFontSize3"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/row_product_price"
+        android:layout_alignTop="@id/row_product_no"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:textSize="@dimen/textFontSize3"
+        android:textStyle="bold"
+        android:text="100000 VND"
+        android:layout_below="@+id/row_product_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:typeface="sans"
+        android:layout_alignParentTop="true"
+        android:text="1."
+        android:textStyle="bold"
+        android:textSize="@dimen/textFontSize3"
+        android:id="@+id/row_product_txtSTT"
+        android:layout_above="@+id/row_product_price" />
+
+
+</RelativeLayout>

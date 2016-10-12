@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/linearReasonNotOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        tools:showIn="@layout/fragment_right">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bgblack60">
+
+
+            <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                android:id="@+id/ReasonLoadingView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/margin_top"
+                app:lv_color="@android:color/white"
+                app:lv_loading="false"
+                app:lv_title="@string/load_order">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/dialog_full_holo_light"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_input_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:gravity="center"
+                            android:paddingLeft="5dp"
+                            android:shadowColor="@android:color/darker_gray"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:background="@color/colorPrimary"
+                            android:textColor="@color/white_alpha"
+                            android:shadowRadius="2"
+                            android:text="@string/reason_not_order"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerReasonNotOrder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_reason_exit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_note_drawable"
+                            android:text="@string/cancel"
+                            android:textColor="@android:color/white" />
+                        <View
+                            android:layout_width="1dp"
+                            android:background="@color/white_alpha"
+                            android:layout_height="match_parent"/>
+                        <Button
+                            android:id="@+id/btn_reason_accept"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_note_drawable"
+                            android:text="@string/accept"
+                            android:textColor="@android:color/white" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

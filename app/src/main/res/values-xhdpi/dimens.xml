@@ -1,0 +1,11 @@
+<resources>
+    <!-- 4.7 inch -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="margin_button_size">16dp</dimen>
+    <dimen name="iconsize">45dp</dimen>
+    <dimen name="textFontSize">15sp</dimen>
+    <dimen name="minHeightKPI">90dp</dimen>
+    <dimen name="size_toolbar_order">120dp</dimen>
+    <dimen name="size_toolbar_top">60dp</dimen>
+    <dimen name="minHeightSurvey">80dp</dimen>
+</resources>

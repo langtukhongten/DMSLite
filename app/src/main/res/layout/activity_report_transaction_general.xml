@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear_report_transaction_general"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/ReportTransactionGeneraloadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/out_store">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_toolbar_top"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_select_day_report_transaction_general"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorBlueDark"
+                        android:text="@string/please_select_from_date"
+                        android:textColor="@android:color/white" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/darker_gray" />
+
+                    <Button
+                        android:id="@+id/report_transaction_general_load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorBlueDark"
+                        android:text="@string/load"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/webviewTransactionGeneral"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </LinearLayout>
+</layout>

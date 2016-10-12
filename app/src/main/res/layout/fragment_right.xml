@@ -1,0 +1,396 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/rela_right_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rela_bg_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background" />
+
+        <include
+            android:id="@+id/checkin"
+            layout="@layout/layout_checkin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            android:id="@+id/login"
+            layout="@layout/layout_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/setting"
+            layout="@layout/layout_setting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/transaction"
+            layout="@layout/layout_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/transaction_detail"
+            layout="@layout/layout_transaction_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/product"
+            layout="@layout/layout_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/product_detail"
+            layout="@layout/layout_product_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/customer"
+            layout="@layout/layout_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/customer_detail"
+            layout="@layout/layout_customer_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/customer_update"
+            layout="@layout/layout_customer_update"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+
+        <include
+            android:id="@+id/gcm"
+            layout="@layout/layout_gcm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/map_order"
+            layout="@layout/layout_map_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/customer_update_map"
+            layout="@layout/customer_update_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/order"
+            layout="@layout/layout_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/order_product"
+            layout="@layout/layout_order_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/order_main"
+            layout="@layout/layout_order_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/order_detail"
+            layout="@layout/layout_order_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/input_value"
+            layout="@layout/layout_input_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/customer_view_map"
+            layout="@layout/customer_view_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/map_check_in_customer"
+            layout="@layout/layout_map_checkin_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/in_store"
+            layout="@layout/layout_in_store"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/create_customer"
+            layout="@layout/layout_create_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/inventory_employee"
+            layout="@layout/layout_inventory_employee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/history"
+            layout="@layout/layout_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/note"
+            layout="@layout/layout_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/select_route"
+            layout="@layout/layout_select_route"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/approval_app_lock"
+            layout="@layout/layout_approval_app_lock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/approval_button"
+            layout="@layout/layout_approval_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/report_web"
+            layout="@layout/layout_report_web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/report_time_check_in"
+            layout="@layout/layout_report_time_check_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/update_image_customer"
+            layout="@layout/layout_update_image_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <include
+            android:id="@+id/reason_not_order"
+            layout="@layout/layout_reason_not_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+        <include
+            android:id="@+id/login_route"
+            layout="@layout/layout_login_route"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp" />
+
+        <RelativeLayout
+            android:id="@+id/rela_layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp">
+
+            <ScrollView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bgblack60">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/txtManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dip"
+                        android:text="@string/manager"
+                        android:textColor="@color/bpWhite"
+                        android:textSize="@dimen/textFontSize4"
+                        android:textStyle="bold|italic"
+                        android:visibility="invisible" />
+
+                    <View
+                        android:id="@+id/viewManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_below="@+id/txtManager"
+                        android:background="@color/colorBlue"
+                        android:visibility="invisible" />
+
+                    <com.vietdms.mobile.dmslauncher.CustomClass.MenuGridView
+                        android:id="@+id/gridMenuManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/viewManager"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:horizontalSpacing="16dp"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:verticalSpacing="16dp" />
+
+                    <TextView
+                        android:id="@+id/txtListMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/gridMenuManager"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/menu"
+                        android:textColor="@color/bpWhite"
+                        android:textSize="@dimen/textFontSize4"
+                        android:textStyle="bold|italic"
+                        android:visibility="invisible" />
+
+                    <View
+                        android:id="@+id/viewListMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_below="@+id/txtListMenu"
+                        android:background="@color/colorBlue"
+                        android:visibility="invisible" />
+
+                    <com.vietdms.mobile.dmslauncher.CustomClass.MenuGridView
+                        android:id="@+id/gridListMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/txtListMenu"
+                        android:layout_alignStart="@+id/txtListMenu"
+                        android:layout_below="@+id/viewListMenu"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:horizontalSpacing="16dp"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:verticalSpacing="16dp" />
+
+                    <TextView
+                        android:id="@+id/txtListReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/gridListMenu"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/report"
+                        android:textColor="@color/bpWhite"
+                        android:textSize="@dimen/textFontSize4"
+                        android:textStyle="bold|italic"
+                        android:visibility="invisible" />
+
+                    <View
+                        android:id="@+id/viewReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_below="@+id/txtListReport"
+                        android:background="@color/colorBlue"
+                        android:visibility="invisible" />
+
+                    <com.vietdms.mobile.dmslauncher.CustomClass.MenuGridView
+                        android:id="@+id/gridReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/viewReport"
+                        android:layout_marginTop="15dp"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:horizontalSpacing="16dp"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:verticalSpacing="16dp" />
+
+                </RelativeLayout>
+
+            </ScrollView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtMessageError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/sign_up"
+                android:textColor="@color/colorYellow"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_restart_app_error"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/restart_app"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

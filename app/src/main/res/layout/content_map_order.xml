@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/mapOrderFragMent"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/txtOrderNo"
+            android:layout_width="wrap_content"
+            android:text="Mã đơn hàng : ABC"
+            android:textSize="20dp"
+            android:textStyle="bold|italic"
+            android:textColor="@color/colorBlue"
+            android:gravity="left|center_vertical"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_alignBottom="@+id/fabGetAgainOrder"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/fabGetAgainOrder"
+            android:layout_toStartOf="@+id/fabGetAgainOrder"
+            android:layout_toLeftOf="@+id/fabGetAgainOrder" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGetAgainOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/checkout_btn"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</LinearLayout>
+</layout>

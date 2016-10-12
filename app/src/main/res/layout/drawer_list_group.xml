@@ -1,0 +1,51 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:src="@drawable/noavatar_btn"
+        android:id="@+id/imageStaff"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/nameStaff"
+            android:paddingLeft="5dp"
+            android:textSize="@dimen/textFontSize"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Gió"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/time_Staff"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/nameStaff"
+            android:textSize="@dimen/textFontSize"
+            android:textStyle="italic"
+            android:layout_toLeftOf="@+id/distanceStaff"
+            android:paddingLeft="5dp"
+            android:gravity="center"
+            android:text="23 phút trước"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/distanceStaff"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/textFontSize"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/bpRed"
+            android:text="100 m"
+            android:paddingRight="5dp"
+            android:gravity="center_vertical|right"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</LinearLayout>

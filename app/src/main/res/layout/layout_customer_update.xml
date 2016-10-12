@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/rela_customer_update"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/UpdateCustomerLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/margin_top"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/updating">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ScrollView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/linear_update_button"
+                        android:layout_below="@+id/linear_top_customer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/custom_bolder_linear"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/dialog_customer_no"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2"
+                                    android:gravity="center|left"
+                                    android:paddingLeft="20dp"
+                                    android:text="KH01"
+                                    android:textColor="@color/colorBlueDark"
+                                    android:textSize="14sp" />
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_route" />
+
+                                    <TextView
+                                        android:id="@+id/dialog_customer_route"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="T2(S),T3(C),T4(S)"
+                                        android:textColor="@color/colorBlueDark"
+                                        android:textSize="14sp" />
+                                </FrameLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_route_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_edit" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_name" />
+
+                                    <TextView
+                                        android:id="@+id/dialog_customer_name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="Nguyễn Văn A"
+                                        android:textColor="@color/colorBlueDark"
+                                        android:textSize="14sp" />
+                                </FrameLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_name_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_edit" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_address" />
+
+                                    <TextView
+                                        android:id="@+id/dialog_customer_address"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="7 Gò Cẩm Đệm, P10, Quận Tân Bình, HCM"
+                                        android:textColor="@color/colorBlueDark"
+                                        android:textSize="14sp" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_address_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_edit" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_phone" />
+
+                                    <TextView
+                                        android:id="@+id/dialog_customer_phone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="0909909909"
+                                        android:textColor="@color/colorBlueDark"
+                                        android:textSize="14sp" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_phone_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_edit" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_photo" />
+
+                                    <ImageView
+                                        android:id="@+id/dialog_customer_photo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:src="@mipmap/ic_launcher" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_photo_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_camera" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_bolder_linear"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/customer_location" />
+
+                                    <TextView
+                                        android:id="@+id/dialog_customer_location"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="10.7759283,106.6463433"
+                                        android:textColor="@color/colorBlueDark"
+                                        android:textSize="20sp" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/dialog_customer_location_edit"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/button_drawable"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/circle_bg_customer"
+                                        android:padding="8.0dip">
+
+                                        <ImageView
+                                            android:layout_width="36.0dip"
+                                            android:layout_height="36.0dip"
+                                            android:layout_gravity="center"
+                                            android:background="@android:drawable/ic_menu_edit" />
+                                    </FrameLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                        </LinearLayout>
+                    </ScrollView>
+
+                    <LinearLayout
+                        android:id="@+id/linear_update_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/dialog_customer_update_ok"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_note_drawable"
+                            android:text="@string/update"
+                            android:textColor="@android:color/white" />
+
+                        <Button
+                            android:id="@+id/dialog_customer_update_cancel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_note_drawable"
+                            android:text="@string/back"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+    </RelativeLayout>
+</layout>

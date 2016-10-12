@@ -1,0 +1,14 @@
+<resources>
+    <!-- Danh cho 5 inch -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="margin_button_size">16dp</dimen>
+    <dimen name="iconsize">52dp</dimen>
+    <dimen name="textFontSize">12sp</dimen>
+    <dimen name="textFontSize2">12sp</dimen>
+    <dimen name="textFontSize3">13sp</dimen>
+    <dimen name="textFontSize4">14sp</dimen>
+    <dimen name="minHeight">65sp</dimen>
+    <dimen name="minHeightKPI">88dp</dimen>
+    <dimen name="minHeightStatusBarHome">50dp</dimen>
+    <dimen name="minHeightSurvey">90dp</dimen>
+</resources>

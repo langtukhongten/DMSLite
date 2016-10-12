@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/ll_search_box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/img_back_search_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:src="@drawable/left_arrow_btn" />
+
+            <SearchView
+                android:id="@+id/search_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:queryHint="@string/hint_search_app"></SearchView>
+
+            <ImageButton
+                android:id="@+id/img_search_google_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:src="@drawable/google_play_btn" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recentbg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_app_recent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/recent_btn"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="@string/app_recent"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <GridView
+                android:id="@+id/gridListAppSearchBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:horizontalSpacing="16dp"
+                android:numColumns="4"
+                android:padding="5dp"
+                android:scrollbars="none"
+                android:verticalSpacing="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

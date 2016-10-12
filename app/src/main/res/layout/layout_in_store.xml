@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/linear_in_store"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+            android:id="@+id/InStoreLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/margin_top"
+            app:lv_color="@android:color/black"
+            app:lv_loading="false"
+            app:lv_title="@string/out_store">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="2sp">
+
+                            <TextView
+                                android:id="@+id/store_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_dark_border_line"
+                                android:gravity="left|bottom"
+                                android:minHeight="35dp"
+                                android:paddingLeft="5dp"
+                                android:text="@string/customer_name"
+                                android:textSize="@dimen/textFontSize4"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/blue_light" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:minHeight="40dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="5dp">
+
+                                <TextView
+                                    android:id="@+id/store_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:gravity="center_vertical|left"
+                                    android:paddingRight="5dp"
+                                    android:text="@string/customer"
+                                    android:textSize="@dimen/textFontSize4" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="40dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="5dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/store_phone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:gravity="center_vertical|right"
+                                    android:paddingRight="5dp"
+                                    android:text="@string/phone"
+                                    android:textSize="@dimen/textFontSize4"
+                                    android:visibility="visible" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="75dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/store_camera"
+                                android:layout_width="74dp"
+                                android:layout_height="74dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:src="@drawable/camera_btn" />
+
+                            <TextView
+                                android:id="@+id/txt_time_in_store"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="00:00:00"
+                                android:textColor="@color/bpRed"
+                                android:textSize="@dimen/textFontSize" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@android:color/darker_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="153dp"
+                    android:layout_weight="0.11"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/minHeight">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_order_in_store"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/transaction_btn"
+                                android:maxHeight="@dimen/maxHeighInStore"
+                                android:padding="5dp"
+                                android:text="@string/order_store"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_inventory_report"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/product_btn"
+                                android:padding="5dp"
+                                android:text="@string/report_inventory"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_in_stote_display"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/product_poster_btn"
+                                android:padding="5dp"
+                                android:text="@string/display"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/minHeight">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            <!--Ẩn nút phát sinh đơn hàng thay bằng ghi nhận-->
+                            <!--<Button-->
+                            <!--android:id="@+id/btn_order_incurred"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_alignParentTop="true"-->
+                            <!--android:layout_marginBottom="2sp"-->
+                            <!--android:layout_marginRight="2sp"-->
+                            <!--android:layout_marginTop="2sp"-->
+                            <!--android:background="@drawable/button_drawable"-->
+                            <!--android:drawableLeft="@drawable/order_check_btn"-->
+                            <!--android:maxHeight="@dimen/maxHeighInStore"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:text="@string/order_incurre"-->
+                            <!--android:textAllCaps="false"-->
+                            <!--android:textSize="@dimen/textFontSize4" />-->
+                            <Button
+                                android:id="@+id/btn_order_report"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/edit_btn"
+                                android:maxHeight="@dimen/maxHeighInStore"
+                                android:padding="5dp"
+                                android:text="@string/check_in_title"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_in_store_sample"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/product_sample_btn"
+                                android:maxHeight="@dimen/maxHeighInStore"
+                                android:padding="5dp"
+                                android:text="@string/product_sample"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            <!--Ẩn nút phát sinh đơn hàng thay bằng ghi nhận-->
+                            <!--<Button-->
+                            <!--android:id="@+id/btn_order_incurred"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_alignParentTop="true"-->
+                            <!--android:layout_marginBottom="2sp"-->
+                            <!--android:layout_marginRight="2sp"-->
+                            <!--android:layout_marginTop="2sp"-->
+                            <!--android:background="@drawable/button_drawable"-->
+                            <!--android:drawableLeft="@drawable/order_check_btn"-->
+                            <!--android:maxHeight="@dimen/maxHeighInStore"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:text="@string/order_incurre"-->
+                            <!--android:textAllCaps="false"-->
+                            <!--android:textSize="@dimen/textFontSize4" />-->
+                            <Button
+                                android:id="@+id/btn_store_library"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/library_btn"
+                                android:maxHeight="@dimen/maxHeighInStore"
+                                android:padding="5dp"
+                                android:text="@string/library"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/minHeight">
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_store_survey_customer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/survey_btn"
+                                android:maxHeight="@dimen/maxHeighInStore"
+                                android:padding="5dp"
+                                android:text="@string/survey_customer"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_store_survey_not_customer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@drawable/survey_btn"
+                                android:padding="5dp"
+                                android:text="@string/survey_not_customer"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btn_out_store"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginBottom="2sp"
+                                android:layout_marginLeft="2sp"
+                                android:layout_marginRight="2sp"
+                                android:layout_marginTop="2sp"
+                                android:background="@drawable/button_drawable"
+                                android:drawableLeft="@android:drawable/sym_call_missed"
+                                android:padding="5dp"
+                                android:text="@string/out_store"
+                                android:textAllCaps="false"
+                                android:textSize="@dimen/textFontSize4" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/store_note"
+                        style="@style/TextAppearance.EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:background="@drawable/custom_bolder_order"
+                        android:gravity="top"
+                        android:hint="@string/note_store"
+                        android:inputType="textMultiLine"
+                        android:minHeight="50dp"
+                        android:textSize="@dimen/textFontSize4"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                        android:id="@+id/TransactionLineInStoreLoadingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/margin_top"
+                        app:lv_color="@android:color/black"
+                        app:lv_loading="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_floating_material_light"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_dark_border_line"
+                                android:gravity="center"
+                                android:text="@string/transaction_history"
+                                android:textSize="@dimen/textFontSize3"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/blue_light" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerTransactionLineInStore"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="0sp"
+                                android:clipToPadding="false"
+                                android:padding="5dp" />
+                        </LinearLayout>
+                    </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
+
+
+    </LinearLayout>
+</layout>
