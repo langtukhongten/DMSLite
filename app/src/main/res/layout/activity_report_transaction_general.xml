@@ -26,7 +26,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_toolbar_top"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -38,6 +38,7 @@
                          >
                         <LinearLayout
                             android:layout_weight="1"
+                            android:layout_margin="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
                             <Spinner
@@ -45,20 +46,25 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="match_parent"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/darker_gray" />
                             <Spinner
                                 android:id="@+id/sp_group_general"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="match_parent"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:background="@android:color/darker_gray"
+                            android:layout_height="2dp"/>
                         <LinearLayout
                             android:layout_weight="1"
+                            android:layout_margin="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/darker_gray" />
 
                             <Button
                                 android:id="@+id/btn_select_from_day_report_transaction_general"

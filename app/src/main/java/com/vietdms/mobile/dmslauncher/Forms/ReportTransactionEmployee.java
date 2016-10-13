@@ -20,6 +20,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.codetroopers.betterpickers.Utils;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.ArrayUserAdapter;
 import com.vietdms.mobile.dmslauncher.CustomClass.LayoutLoadingManager;
@@ -39,6 +40,7 @@ import java.util.Date;
 import CommonLib.Const;
 import CommonLib.EventPool;
 import CommonLib.EventType;
+import CommonLib.Model;
 import CommonLib.UserInfo;
 
 public class ReportTransactionEmployee extends AppCompatActivity implements View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener, AdapterView.OnItemSelectedListener {
@@ -130,6 +132,11 @@ public class ReportTransactionEmployee extends AppCompatActivity implements View
         }, 1000);
 
 
+        DateFormat formatFromDate = new SimpleDateFormat("dd/MM/yy");
+        fromDateReportTransactionEmployee = CommonLib.Utils.getMonthBegin(Model.getServerTime());
+        toDateReportTransactionEmployee = Model.getServerTime();
+        binding.btnSelectFromDayReportTransactionEmployee.setText(formatFromDate.format(fromDateReportTransactionEmployee));
+        binding.btnSelectToDayReportTransactionEmployee.setText(formatFromDate.format(toDateReportTransactionEmployee));
         binding.reportTransactionEmployeeLoad.setOnClickListener(this);
         binding.btnSelectFromDayReportTransactionEmployee.setOnClickListener(this);
         binding.btnSelectToDayReportTransactionEmployee.setOnClickListener(this);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -18,8 +19,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.ArrayUserAdapter;
 import com.vietdms.mobile.dmslauncher.CustomClass.LayoutLoadingManager;
@@ -141,6 +145,9 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
         }, 1000);
 
 
+        DateFormat formatFromDate = new SimpleDateFormat("dd/MM/yy");
+        toDateReportRoute = Model.getServerTime();
+        binding.btnSelectDayReportRoute.setText(formatFromDate.format(toDateReportRoute));
         binding.reportRouteLoad.setOnClickListener(this);
         binding.btnSelectDayReportRoute.setOnClickListener(this);
         binding.spStaffReport.setOnItemSelectedListener(this);
@@ -222,9 +229,31 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
         toDateReportRoute = toReportRoute.getTime();
         binding.btnSelectDayReportRoute.setText(formatDate.format(toDateReportRoute));
     }
+    void setSpinnerColorWhite(AdapterView<?> parent, int Color) {
+        if (MyMethod.isVisible(Home.bindingRight.createCustomer.relaCreateCustomer))
+            return;
+        TextView textSpinner = null;
+        try {
+            textSpinner = (TextView) (((RelativeLayout) (((RelativeLayout) ((parent.getChildAt(0)))).getChildAt(0))).getChildAt(0));
+        } catch (Exception e) {
+            try {
+                textSpinner = (TextView) parent.getChildAt(0);
+            } catch (Exception ex) {
+            }
+        }
+        try {
+            if (textSpinner != null) {
+                textSpinner.setTextColor(Color);
+                textSpinner.setTextSize(parent.getResources().getDimensionPixelSize(R.dimen.textFontSize4) / parent.getResources().getDisplayMetrics().density);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        setSpinnerColorWhite(adapterView,Color.WHITE);
         switch (adapterView.getId()) {
             case R.id.spStaff_Report_:
                 if (arrayStaff.size() > 0) {

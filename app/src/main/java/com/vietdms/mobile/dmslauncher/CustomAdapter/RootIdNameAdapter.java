@@ -17,22 +17,22 @@ import CommonLib.IdStatus;
 
 public class RootIdNameAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
-    private List<IdStatus> list;
+    private List<IdStatus> listFilter;
     private Context context;
 
     public RootIdNameAdapter(Context context, List<IdStatus> list) {
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.list = list;
+        this.listFilter = list;
     }
 
     public IdStatus getObjectClick(int position) {
-        return list.get(position);
+        return listFilter.get(position);
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return listFilter.size();
     }
 
     @Override
@@ -56,20 +56,16 @@ public class RootIdNameAdapter extends BaseAdapter {
         } else {
             lViewHolder = (ViewHolder) view.getTag();
         }
-        lViewHolder.name.setText(list.get(i).name);
+        lViewHolder.name.setText(listFilter.get(i).name);
         return view;
     }
 
     static class ViewHolder {
         CheckedTextView name;
     }
-    public synchronized void updateByRoot(int root){
-        for (IdStatus ids : list) {
-            if(ids.rootId != root){
-                list.remove(ids);
-
-            }
-        }
-        notifyDataSetChanged();
+    public void updateList(List<IdStatus> newlist) {
+        listFilter.clear();
+        listFilter.addAll(newlist);
+        this.notifyDataSetChanged();
     }
 }

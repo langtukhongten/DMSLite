@@ -349,7 +349,7 @@
                     <com.vietdms.mobile.dmslauncher.CustomClass.MenuGridView
                         android:id="@+id/gridReport"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/viewReport"
                         android:layout_marginTop="15dp"
                         android:layout_alignParentBottom="true"

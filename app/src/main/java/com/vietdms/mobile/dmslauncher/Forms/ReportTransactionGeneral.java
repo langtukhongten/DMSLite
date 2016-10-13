@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 
+import com.codetroopers.betterpickers.Utils;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.IdNameAdapter;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.RootIdNameAdapter;
@@ -38,6 +39,7 @@ import CommonLib.Const;
 import CommonLib.EventPool;
 import CommonLib.EventType;
 import CommonLib.IdStatus;
+import CommonLib.Model;
 import CommonLib.Status;
 
 public class ReportTransactionGeneral extends AppCompatActivity  implements View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener, AdapterView.OnItemSelectedListener {
@@ -69,7 +71,7 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
     private boolean loadingFinished = true;
     private boolean redirect = false;
     private ArrayList<Status> arrBranch;
-    private ArrayList<IdStatus> arrGroup;
+    private ArrayList<IdStatus> arrGroup,arrGroupTem;
     private IdNameAdapter adapterBranch;
     private RootIdNameAdapter adapterGroup;
     private void processEvent(EventType.EventBase event) {
@@ -119,8 +121,9 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
     private void event() {
         arrBranch = new ArrayList<>();
         arrGroup = new ArrayList<>();
+        arrGroupTem = new ArrayList<>();
         adapterBranch = new IdNameAdapter(context,arrBranch);
-        adapterGroup = new RootIdNameAdapter(context,arrGroup);
+        adapterGroup = new RootIdNameAdapter(context,arrGroupTem);
         binding.spBranchGeneral.setAdapter(adapterBranch);
         binding.spGroupGeneral.setAdapter(adapterGroup);
         handler.postDelayed(new Runnable() {
@@ -130,7 +133,11 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
             }
         }, 1000);
 
-
+        DateFormat formatFromDate = new SimpleDateFormat("dd/MM/yy");
+        fromDateReportTransactionGeneral = CommonLib.Utils.getMonthBegin(Model.getServerTime());
+        toDateReportTransactionGeneral = Model.getServerTime();
+        binding.btnSelectFromDayReportTransactionGeneral.setText(formatFromDate.format(fromDateReportTransactionGeneral));
+        binding.btnSelectToDayReportTransactionGeneral.setText(formatFromDate.format(toDateReportTransactionGeneral));
         binding.reportTransactionGeneralLoad.setOnClickListener(this);
         binding.btnSelectFromDayReportTransactionGeneral.setOnClickListener(this);
         binding.btnSelectToDayReportTransactionGeneral.setOnClickListener(this);
@@ -141,7 +148,7 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.report_transaction_employee_load:
+            case R.id.report_transaction_general_load:
                 url = Const.HttpReportTransactionGeneral + branch + Const.GroupParameter+group+ Const.DateFromParameter + fromDateReportTransactionGeneral + Const.DateToParameter + toDateReportTransactionGeneral;
                 binding.webviewTransactionGeneral.clearCache(true);
                 binding.webviewTransactionGeneral.getSettings().setJavaScriptEnabled(true);
@@ -252,7 +259,8 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
                         branch = arrBranch.get(0).id + "";
                     else
                         branch = arrBranch.get(position).id + "";
-                    adapterGroup.updateByRoot(Integer.parseInt(branch));
+                    arrGroupTem = filterGroup(Integer.parseInt(branch));
+                    adapterGroup.updateList(arrGroupTem);
                 } else {
                     branch = "-1";
                 }
@@ -274,6 +282,15 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
             default:
                 break;
         }
+    }
+
+    private ArrayList<IdStatus> filterGroup(int root) {
+        ArrayList<IdStatus> result = new ArrayList<>();
+        for(IdStatus idStatus : arrGroup){
+            if(idStatus.rootId==root)
+                result.add(idStatus);
+        }
+        return result;
     }
 
     @Override
