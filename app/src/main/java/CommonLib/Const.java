@@ -52,9 +52,9 @@ public abstract class Const {
     public static final String HttpReportTransactionGeneral = "http://v3.dinhvidienthoai.com/ReportEmployeeDateAllSPR.aspx?cn=";
 
     public static final String DateParameter = "&d=";
-    public static final String DateFromParameter = "&dF";
-    public static final String DateToParameter = "&dT";
-    public static final String GroupParameter = "&nhom";
+    public static final String DateFromParameter = "&dF=";
+    public static final String DateToParameter = "&dT=";
+    public static final String GroupParameter = "&nhom=";
 //    public static final String HttpEndpoint = "http://v3.dinhvidienthoai.com//HttpService.aspx";
 //    public static final String LinkReportImage = "http://v3.dinhvidienthoai.com//ReportImages/";
 //    public static final String LinkCustomerImage = "http://v3.dinhvidienthoai.com//CustomerImages/";

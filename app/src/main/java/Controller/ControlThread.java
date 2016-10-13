@@ -227,6 +227,10 @@ public class ControlThread extends Thread {
 
         switch (event.type) {
 
+            case BranchGroup:{
+                   NetworkTransaction.inst(context).loadBranchGroups();
+            }
+                break;
             case Login: {
                 String fatalError = Model.inst().getFatalError();
                 if (fatalError != null) {
@@ -256,17 +260,14 @@ public class ControlThread extends Thread {
                 gcm.status = 0;
                 test.add(gcm);
                 gcm = new GCM();
-                gcm.title = "Tiên đã đọc";
-                gcm.content = "Tiên đang test GCM tin nhắn này rất dài nha";
+                gcm.title = "GCM 1";
+                gcm.content = "GCM Content 1";
                 gcm.date = System.currentTimeMillis();
                 gcm.status = 1;
                 test.add(gcm);
                 gcm = new GCM();
-                gcm.title = "Tiên";
-                gcm.content = "Anh ko cho em được gì ngoài những yêu thương thật lòng\n" +
-                        "Anh không thể mua tặng em những món quà mà em thích\n" +
-                        "Anh nhận ra tình yêu ko chỉ dc nuôi bằng những cảm xúc\n" +
-                        "Em có thể đến 1 nơi mà em sẽ sống cuộc sống mọi thứ nhẹ nhàng hơn nơi anh.";
+                gcm.title = "GCM 2";
+                gcm.content = "GCM Content 2";
                 gcm.date = System.currentTimeMillis();
                 gcm.status = 0;
                 test.add(gcm);

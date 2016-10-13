@@ -44,6 +44,7 @@ import CommonLib.UserInfo;
 
 public class ReportRoute extends AppCompatActivity implements View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener, AdapterView.OnItemSelectedListener {
     private static final java.lang.String FRAG_TAG_DATE_PICKER = "Date_Picker";
+    private static final String TAG = "ReportRoute";
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -65,11 +66,12 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
     private Date toReportRoute;
     Context context;
     ActivityReportRouteBinding binding;
-    private String id_employee = "";
+    private String id_employee = "-1";
     private ArrayUserAdapter adapterStaff;
     private ArrayList<UserInfo> arrayStaff;
     private Handler handler;
-
+    private boolean loadingFinished = true;
+    private boolean redirect = false;
     private void processEvent(EventType.EventBase event) {
         switch (event.type) {
             case GetUsers:
@@ -81,37 +83,10 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
                     Collections.addAll(arrayStaff, eventGetUsersResult.arrayUsers);
 
                 }
+                binding.spStaffReport.setSelection(1);
                 adapterStaff.notifyDataSetChanged();
 
-                url = Const.HttpReportRoute + arrayStaff.get(0).id_employee + Const.DateParameter + toDateReportRoute;
-                binding.webviewRoute.clearCache(true);
-                binding.webviewRoute.getSettings().setJavaScriptEnabled(true);
-                if (Build.VERSION.SDK_INT >= 19) {
-                    binding.webviewRoute.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                } else {
-                    binding.webviewRoute.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                binding.webviewRoute.loadUrl(url);
-                binding.webviewRoute.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                        super.onPageStarted(view, url, favicon);
-                        LayoutLoadingManager.Show_OnLoading(binding.ReportRouteLoadingView, context.getString(R.string.load_report_web), 30);
-                    }
 
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        super.onPageFinished(view, url);
-                        Log.d("Webview", "Finished");
-                        LayoutLoadingManager.Show_OffLoading(binding.ReportRouteLoadingView);
-                    }
-
-                    @Override
-                    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                        super.onReceivedError(view, request, error);
-                        Log.d("Webview", "error: " + error.toString());
-                    }
-                });
 
                 break;
             default:
@@ -175,20 +150,57 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.report_route_load:
+                Log.d(TAG, "onClick: load report route");
                 url = Const.HttpReportRoute + id_employee + Const.DateParameter + toDateReportRoute;
+                binding.webviewRoute.clearCache(true);
+                binding.webviewRoute.getSettings().setJavaScriptEnabled(true);
+                if (Build.VERSION.SDK_INT >= 19) {
+                    binding.webviewRoute.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                } else {
+                    binding.webviewRoute.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
                 binding.webviewRoute.loadUrl(url);
-                LayoutLoadingManager.Show_OnLoading(binding.ReportRouteLoadingView, context.getString(R.string.load_report_web), 100);
                 binding.webviewRoute.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        if (!loadingFinished) {
+                            redirect = true;
+                        }
+
+                        loadingFinished = false;
+                        view.loadUrl(url);
+                        return true;
+                    }
+
                     public void onPageFinished(WebView view, String url) {
                         // do your stuff here
-                        LayoutLoadingManager.Show_OffLoading(binding.ReportRouteLoadingView);
+                        if(!redirect){
+                            loadingFinished = true;
+                        }
+
+                        if(loadingFinished && !redirect){
+                            //HIDE LOADING IT HAS FINISHED
+                            LayoutLoadingManager.Show_OffLoading(binding.ReportRouteLoadingView);
+                        } else{
+                            redirect = false;
+                        }
+
+                    }
+
+                    @Override
+                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                        loadingFinished = false;
+                        //SHOW LOADING IF IT ISNT ALREADY VISIBLE
+                        LayoutLoadingManager.Show_OnLoading(binding.ReportRouteLoadingView, context.getString(R.string.load_report_web), 100);
                     }
 
                     @Override
                     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                        super.onReceivedError(view, request, error);
                         Log.d("Webview", "error: " + error.toString());
+                        LayoutLoadingManager.Show_OffLoading(binding.ReportRouteLoadingView);
                     }
+
+
                 });
                 break;
             case R.id.btn_select_day_report_route:
@@ -215,17 +227,18 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         switch (adapterView.getId()) {
             case R.id.spStaff_Report_:
-                if (position == -1) {
-                    if (arrayStaff.size() > 0) {
+                if (arrayStaff.size() > 0) {
+                    if (position == -1)
                         id_employee = arrayStaff.get(0).id_employee + "";
-                    }
-
+                    else
+                        id_employee = arrayStaff.get(position).id_employee + "";
+                    binding.reportRouteLoad.setSoundEffectsEnabled(false);
+                    binding.reportRouteLoad.performClick();
                 } else {
-                    id_employee = arrayStaff.get(position).id_employee + "";
+                    id_employee = "-1";
                 }
 
-                binding.reportRouteLoad.setSoundEffectsEnabled(false);
-                binding.reportRouteLoad.performClick();
+
                 break;
             default:
                 break;

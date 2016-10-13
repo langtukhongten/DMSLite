@@ -152,8 +152,8 @@
     <string name="none_staff">Không có nhân viên nào.</string>
     <string name="hide_tracking">Ẩn lộ trình</string>
     <string name="see_again">Xem lại</string>
-    <string name="please_select_from_date">Vui lòng chọn ngày bắt đầu</string>
-    <string name="please_select_to_date">Vui lòng chọn ngày kết thúc</string>
+    <string name="please_select_from_date">Ngày bắt đầu</string>
+    <string name="please_select_to_date">Ngày kết thúc</string>
     <string name="pending">Thiết bị đã được đăng ký. Vui lòng liên hệ với quản trị viên để kích hoạt.</string>
     <string name="android">"Android "</string>
     <string name="not_confirm">Không xác định</string>
@@ -488,4 +488,5 @@
     <string name="report_transaction_employee">Giao dịch nhân viên</string>
     <string name="report_transaction_general">Giao dịch tổng hợp</string>
     <string name="choice_date">Chọn ngày</string>
+    <string name="none_branch_group">Không có chi nhánh và nhóm!</string>
 </resources>

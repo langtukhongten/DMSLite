@@ -883,6 +883,32 @@ public class NetworkTransaction {
         }
     }
 
+    public synchronized boolean loadBranchGroups(){
+        try{
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketBranchGroups().getData(), true);
+            if (result != null) {
+                Log.i("loadBranchGroups", "success");
+                Packets.FromServer.PacketBranchGroups packetBranchGroups = new Packets.FromServer.PacketBranchGroups(result);
+                if (packetBranchGroups.listBranch.size() != 0) {
+                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(true, packetBranchGroups.message, packetBranchGroups.listBranch,packetBranchGroups.listGroup));
+
+                } else {
+                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không có dữ liệu", null,null));
+
+                }
+                return true;
+            } else {
+                Log.w("loadBranchGroups", "fail");
+                EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không thể kết nối đến máy chủ", null,null));
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventBranchGroupResult(false,"Lỗi không xác định",null,null));
+            return false;
+        }
+    }
+
     public synchronized boolean loadTransactionLine(int id) {
         try {
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadTransactionLines(id).getData(), true);

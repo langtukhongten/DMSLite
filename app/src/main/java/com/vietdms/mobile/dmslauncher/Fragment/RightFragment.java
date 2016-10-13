@@ -5055,6 +5055,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private void processEvent(EventType.EventBase event) {
         switch (event.type) {
+
             case LogInRoute:
                 EventType.EventLogInRouteResult logInRouteResult = (EventType.EventLogInRouteResult) event;
                 if (logInRouteResult.success) {

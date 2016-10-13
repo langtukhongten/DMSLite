@@ -67,7 +67,8 @@ public abstract class EventType {
         LogInRoute,
         SyncSurvey,
         SyncSurveyDetail,
-        UpdateData
+        UpdateData,
+        BranchGroup
     }
 
     public static class EventBase {
@@ -98,6 +99,11 @@ public abstract class EventType {
         }
     }
 
+    public static class EventBranchGroupRequest extends EventBase {
+        public EventBranchGroupRequest(){
+            super(Type.BranchGroup);
+        }
+    }
     public static class EventReportRequest extends EventBase {
         public final Const.LocationVisitedType visitedType;
         public final String visitedId;
@@ -705,6 +711,21 @@ public abstract class EventType {
 //            this.arrOrder = arrOrder;
 //        }
 //    }
+
+    public static class EventBranchGroupResult extends EventBase {
+        public final boolean success;
+        public final String meassage;
+        public final ArrayList<Status> listBranch;
+        public final ArrayList<IdStatus> listGroup;
+        public EventBranchGroupResult(boolean success,String message,ArrayList<Status> listBranch,ArrayList<IdStatus> listGroup) {
+            super(Type.BranchGroup);
+            this.success = success;
+            this.meassage = message;
+            this.listBranch = listBranch;
+            this.listGroup = listGroup;
+
+        }
+    }
 
     public static class EventLoadGCMResult extends EventBase {
         public final String message;

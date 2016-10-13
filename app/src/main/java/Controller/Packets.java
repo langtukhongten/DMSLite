@@ -22,6 +22,7 @@ import CommonLib.City;
 import CommonLib.Const;
 import CommonLib.County;
 import CommonLib.Customer;
+import CommonLib.IdStatus;
 import CommonLib.LibraryDetail;
 import CommonLib.LibraryGroup;
 import CommonLib.LocationVisited;
@@ -36,6 +37,7 @@ import CommonLib.ProductGroup;
 import CommonLib.ReasonNotOrder;
 import CommonLib.ReportCheckIn;
 import CommonLib.Route;
+import CommonLib.Status;
 import CommonLib.SurveyCampaign;
 import CommonLib.SurveyHeader;
 import CommonLib.SurveyLine;
@@ -713,6 +715,34 @@ abstract class Packets {
 
             public final String message;
             public final ArrayList<Transaction> arrayTransactions;
+        }
+
+        public static class PacketBranchGroups extends  Packet {
+            public PacketBranchGroups(byte[] data) throws Exception {
+                super(data);
+                message = readString();
+                int len = readInt();
+                int len2 = readInt();
+                listBranch = new ArrayList<>(len);
+                for (int i = 0 ; i <len ; i++) {
+                    Status st = new Status();
+                    st.id = readInt();
+                    st.name = readString();
+                    listBranch.add(st);
+                }
+                listGroup = new ArrayList<>(len2);
+                for (int i = 0 ; i <len2 ; i++) {
+                    IdStatus ist = new IdStatus();
+                    ist.rootId = readInt();
+                    ist.id = readInt();
+                    ist.name = readString();
+                    listGroup.add(ist);
+                }
+                inflater.end();
+            }
+            public final String message;
+            public final ArrayList<Status> listBranch;
+            public final ArrayList<IdStatus> listGroup;
         }
 
         public static class PacketLoadTransactionLines extends Packet {
@@ -1404,7 +1434,8 @@ abstract class Packets {
             LogInRoute(47),
             SyncSurvey(48),
             SyncSurveyDetail(49),
-            UpdateData(50);
+            UpdateData(50),
+            BranchGroup(51);
             private final int id;
 
             PacketType(int id) {
@@ -1615,6 +1646,12 @@ abstract class Packets {
                 super(PacketType.LogInRoute);
                 write(user);
                 write(pass);
+            }
+        }
+
+        public static class PacketBranchGroups extends Packet {
+            public PacketBranchGroups() throws IOException {
+                super(PacketType.BranchGroup);
             }
         }
 
@@ -1963,6 +2000,7 @@ abstract class Packets {
                 write(rowId);
             }
         }
+
 
         public static class PacketLoadTransactionLinesInStore extends Packet {
             public PacketLoadTransactionLinesInStore(int id_customer, int lastId) throws IOException {
