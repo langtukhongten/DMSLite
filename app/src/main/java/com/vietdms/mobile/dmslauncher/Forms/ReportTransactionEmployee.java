@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -18,6 +19,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.Utils;
@@ -248,9 +251,31 @@ public class ReportTransactionEmployee extends AppCompatActivity implements View
         }
 
     }
+    void setSpinnerColorWhite(AdapterView<?> parent, int Color) {
+        if (MyMethod.isVisible(Home.bindingRight.createCustomer.relaCreateCustomer))
+            return;
+        TextView textSpinner = null;
+        try {
+            textSpinner = (TextView) (((RelativeLayout) (((RelativeLayout) ((parent.getChildAt(0)))).getChildAt(0))).getChildAt(0));
+        } catch (Exception e) {
+            try {
+                textSpinner = (TextView) parent.getChildAt(0);
+            } catch (Exception ex) {
+            }
+        }
+        try {
+            if (textSpinner != null) {
+                textSpinner.setTextColor(Color);
+                textSpinner.setTextSize(parent.getResources().getDimensionPixelSize(R.dimen.textFontSize4) / parent.getResources().getDisplayMetrics().density);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        setSpinnerColorWhite(adapterView, Color.WHITE);
         switch (adapterView.getId()) {
             case R.id.spStaff_Report_Employee:
                 if (arrayStaff.size() > 0) {

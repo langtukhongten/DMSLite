@@ -44,13 +44,19 @@ public class NetworkReceiver extends BroadcastReceiver {
             }
         }
         if(MyMethod.isFirstOff){
+            if (PhoneState.inst().isWifi() != 1) {
+                if (PhoneState.inst().is3G() != 1) {
+
             Log.w(TAG, "isNetWorkAvailable: Ket noi mang tat" );
             Log.w("Message", "thông báo bat mạng ");
                 Intent messageService = new Intent(context, MessageService.class);
                 messageService.putExtra("MessageBody", "CMD►NETWORK►1" );
                 messageService.putExtra("API", Const.UpdateVersion);
                 context.startService(messageService);
+                }
+            }
             MyMethod.isFirstOff =false;
+
         }
 
         else{

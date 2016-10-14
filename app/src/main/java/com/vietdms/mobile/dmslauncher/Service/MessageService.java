@@ -58,6 +58,7 @@ import CommonLib.EventPool;
 import CommonLib.EventType;
 import CommonLib.LocalDB;
 import CommonLib.Model;
+import CommonLib.PhoneState;
 import Controller.ControlThread;
 
 /**
@@ -359,14 +360,17 @@ public class MessageService extends Service {
                             showMessage();
                         }
 
-                    } else if (sender.contains("►NETWORK►")) {
+                    } else if (sender.contains("►NETWORK")) {
                         Log.w(TAG, "onStartCommand: Yêu cầu 3G cũ");
-                        if(sender.contains("1")){
-                            showMessage();
-                        } else
-                        if (long2Minute(System.currentTimeMillis() - timeOld3G) >= 60)//Sau 30 phút lại báo
-                        {
-                            showMessage();
+                        if (PhoneState.inst().isWifi() != 1) {
+                            if (PhoneState.inst().is3G() != 1) {
+                                if (sender.contains("1")) {
+                                    showMessage();
+                                } else if (long2Minute(System.currentTimeMillis() - timeOld3G) >= 60)//Sau 30 phút lại báo
+                                {
+                                    showMessage();
+                                }
+                            }
                         }
                     } else {
                         Log.w(TAG, "onStartCommand: Yêu cầu GPS cũ");

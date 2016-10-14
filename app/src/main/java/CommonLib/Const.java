@@ -141,7 +141,8 @@ public abstract class Const {
         iTimeOffCount,
         MessageBody,
         EmployeeID,
-        TransactionWorking
+        TransactionWorking,
+        isManager
     }
 
     public enum LocationVisitedType {

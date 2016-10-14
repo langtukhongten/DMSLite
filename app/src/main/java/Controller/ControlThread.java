@@ -425,7 +425,7 @@ public class ControlThread extends Thread {
                     AlarmTimer.inst().clrTimer();
                     AlarmTimer.inst().clrRealtimeTimer();
                 } else {
-                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking) {
+                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
                         if (Model.inst().getNextWokingTimer() == 0) {
                             MyMethod.isLocationUpdate = false;
                             NetworkTransaction.inst(context).sendSystemLog();
@@ -487,15 +487,18 @@ public class ControlThread extends Thread {
             break;
             case AlarmTriggerRealtime: {
                 Log.i("Control_processEvent", "AlarmTriggerRealtime");
-                if (Model.inst().isRealtimeValid()) {
-                    LocationDetector.inst().updateRealtime(true);
-                    NetworkTransaction.inst(context).sendTracking(true);
-                    AlarmTimer.inst().setRealtimeTimer(Model.inst().getLastRealtimeTimer(1));
-                } else {
-                    LocationDetector.inst().updateRealtime(false);
-                    NetworkTransaction.inst(context).sendSystemLog();
-                    AlarmTimer.inst().setRealtimeTimer(Model.inst().getLastRealtimeTimer(Model.inst().getConfigValue(Const.ConfigKeys.RealtimeTrackingIntervalIdleMultiplier, Const.DefaultRealtimeTrackingIntervalIdleMultiplier)));
-                }
+                if(Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
+                    //Nếu không phải giám sát
+                    if (Model.inst().isRealtimeValid()) {
+                        LocationDetector.inst().updateRealtime(true);
+                        NetworkTransaction.inst(context).sendTracking(true);
+                        AlarmTimer.inst().setRealtimeTimer(Model.inst().getLastRealtimeTimer(1));
+                    } else {
+                        LocationDetector.inst().updateRealtime(false);
+                        NetworkTransaction.inst(context).sendSystemLog();
+                        AlarmTimer.inst().setRealtimeTimer(Model.inst().getLastRealtimeTimer(Model.inst().getConfigValue(Const.ConfigKeys.RealtimeTrackingIntervalIdleMultiplier, Const.DefaultRealtimeTrackingIntervalIdleMultiplier)));
+                    }
+                }//
                 WakeLock.inst().release();
             }
             break;

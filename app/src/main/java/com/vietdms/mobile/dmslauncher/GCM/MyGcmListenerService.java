@@ -126,7 +126,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
                         }
                         break;
                     case StartRealtimeTracking:
-                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000) {
+                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
                             Model.inst().setConfigValue(Const.ConfigKeys.RealtimeTrackingTime, "60");
                             LocationDetector.inst().updateRealtime(true);
                             NetworkTransaction.inst(context).sendTracking(true);
@@ -135,7 +135,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
                         }
                         break;
                     case StopRealtimeTracking:
-                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000) {
+                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
                             Model.inst().setConfigValue(Const.ConfigKeys.RealtimeTrackingTime, "0");
                             LocationDetector.inst().updateRealtime(false);
                         }
