@@ -54,8 +54,8 @@ public class IdNameAdapter extends BaseAdapter {
         ViewHolder lViewHolder;
         if (view == null) {
             lViewHolder = new ViewHolder();
-            view = layoutInflater.inflate(android.R.layout.simple_list_item_single_choice, viewGroup, false);
-            lViewHolder.name = (CheckedTextView) view.findViewById(android.R.id.text1);
+            view = layoutInflater.inflate(android.R.layout.simple_list_item_1, viewGroup, false);
+            lViewHolder.name = (TextView) view.findViewById(android.R.id.text1);
             view.setTag(lViewHolder);
         } else {
             lViewHolder = (ViewHolder) view.getTag();
@@ -65,6 +65,6 @@ public class IdNameAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        CheckedTextView name;
+        TextView name;
     }
 }

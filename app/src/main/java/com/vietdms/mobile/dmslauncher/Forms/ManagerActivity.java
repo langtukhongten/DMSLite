@@ -44,6 +44,8 @@ import com.vietdms.mobile.dmslauncher.MyMethod;
 import com.vietdms.mobile.dmslauncher.R;
 import com.vietdms.mobile.dmslauncher.databinding.ActivityManagerBinding;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -86,7 +88,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
         }
     };
     private Date from, to;
-    private HashMap<Integer, Marker> hashUserMarker;
+    public HashMap<Integer, Marker> hashUserMarker;
     private LatLng VIETNAM = new LatLng(17, 107);
     private int timeCount;
     private boolean userNeedTracking;//Người dùng chọn tracking
@@ -97,6 +99,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
     private LatLng currentPostition;//Vị trí hiện tại
     private ArrayList<Circle> arrCircles;
     private Marker markerClick;
+    private boolean isSeeTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     EventPool.control().enQueue(new EventType.EventRealTimeTrackingRequest(arr));
                 } else {
                     //chu ki 20s request 1 lan vi tri tat ca
+                    isSeeTracking = false;
                     MyMethod.isRealTime = false;
                     binding.content.linearRealtime.setEnabled(false);
                     binding.content.swRealtime.setEnabled(false);
@@ -262,6 +266,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.btnSeeAgain:
                 if (isDateOK()) {
                     if (Utils.long2Day(to.getTime() - from.getTime()) <= 3) {
+                        isSeeTracking = true;
                         LayoutLoadingManager.Show_OnLoading(binding.content.ManagerLoadingView, this.getString(R.string.load_tracking), 30);
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, true));
@@ -273,6 +278,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.btnSeeAll:
                 if (isDateOK()) {
                     if (Utils.long2Day(to.getTime() - from.getTime()) <= 1) {
+                        isSeeTracking = true;
                         LayoutLoadingManager.Show_OnLoading(binding.content.ManagerLoadingView, this.getString(R.string.load_tracking_all), 30);
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, false));
@@ -328,7 +334,21 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-
+        DateFormat formatDate = new SimpleDateFormat("dd/MM/yy");
+        switch (MyMethod.Date) {
+            case 0:
+                //from date set
+                from = new Date(year - 1900, monthOfYear, dayOfMonth);
+                binding.content.btnFromDate.setText(formatDate.format(from.getTime()));
+                break;
+            case 1:
+                //to date set
+                to = new Date(year - 1900, monthOfYear, dayOfMonth);
+                binding.content.btnToDate.setText(formatDate.format(to.getTime()));
+                break;
+            default:
+                break;
+        }
     }
 
     //METHOD
@@ -395,7 +415,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                 try {
                     timeCount++;
                     if (timeCount % timeRealAll == 0) {
-                        if (!MyMethod.isRealTime) {
+                        if (!MyMethod.isRealTime && !isSeeTracking) {
                             Log.w("REALTIME", "TẤT CẢ");
                             MyMethod.isUpdateLocation = true;
                             EventPool.control().enQueue(new EventType.EventGetUsersRequest());
@@ -438,7 +458,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-    private void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
+    private synchronized void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -454,7 +474,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    private void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
+    private synchronized void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -470,12 +490,12 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    private void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final MyLocation[] arrayLocations, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
+    private synchronized void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final MyLocation[] arrayLocations, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
-                    new LoadingAll(loadingView, googleMap, context, infoArrayList, spinner).execute();
+                    //new LoadingAll(loadingView, googleMap, context, infoArrayList, spinner).execute();
                     new Loading(loadingView, googleMap, context, arrayLocations, spinner).execute();
 
                 }
@@ -929,7 +949,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     }
 
                 }
-                LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
+                //LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
                 if (!MyMethod.isUpdateLocation) {// Nếu không phải đang realtime
                     adapterStaff.notifyDataSetChanged();
                 }
@@ -951,7 +971,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     Marker temp = hashUserMarker.get(user.id_employee);
                     temp.setTitle(user.fullname + "\n" + user.address + "\n" + Utils.long2String(user.trackingDate));
                     temp.setSnippet(Utils.long2OverTime(user.locationDate) + "- sai số: " + (int) user.accuracy + "m");
-                    MyMethod.animateMarker(temp, new LatLng(user.latitude, user.longitude), false, googleMap);
+                    MyMethod.animateMarker(temp, user, false, googleMap);
                     countRealTime++;
                     if (countRealTime == 3) {//Nếu lấy 3 lần vị trí thì ngưng realtime
                         if (userNeedTracking) {//Nếu người dùng chọn tracking live

@@ -36,7 +36,6 @@
                         android:layout_weight="1"
                         android:background="@color/colorBlueDark"
                         android:gravity="center_horizontal|center_vertical"
-                        android:textSize="@dimen/textFontSize"
                         app:ms_alignLabels="false"
                         app:ms_arrowColor="@color/percentageUnfilledColor"
                         app:ms_baseColor="@android:color/white"

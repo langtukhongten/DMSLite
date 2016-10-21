@@ -19,7 +19,7 @@ public class Order {
     public int id_branch;
     public int id_employee;
     public int id_parent;
-    public int document_type; //0: Bán hàng trực tiếp 1: BC Tồn kho cửa hiệu 2: Đề nghị nhập tồn 3: Bán Hàng trên tồn kho nhân viên
+    public int document_type; //0: Bán hàng trực tiếp 1: BC Tồn kho cửa hiệu 2: Đề nghị nhập tồn 3: Bán Hàng trên tồn kho nhân viên 4: kho công ty
     public String imageUrl;
     public String employeeName;
     public ArrayList<OrderDetail> orderDetails;

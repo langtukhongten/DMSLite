@@ -45,7 +45,7 @@
                         <fr.ganfra.materialspinner.MaterialSpinner
                             android:id="@+id/spStaff"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/size_toolbar_top"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="top"
                             android:layout_toLeftOf="@+id/spStyleView"
                             android:layout_weight="2"
@@ -64,7 +64,7 @@
                             app:ms_hint="@string/staff_list"
                             app:ms_hintColor="@color/colorBlueDark"
                             app:ms_multiline="false"
-                            app:ms_thickness="0dp"  />
+                            app:ms_thickness="0dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -225,19 +225,22 @@
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
+
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:orientation="horizontal"
-                                        android:layout_height="wrap_content">
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
                                         <TextView
                                             android:id="@+id/txtTrackingMeter"
                                             android:layout_width="0dp"
-                                            android:layout_weight="1"
                                             android:layout_height="wrap_content"
+                                            android:layout_weight="1"
                                             android:gravity="center"
                                             android:textColor="@color/bpRed"
                                             android:textSize="@dimen/textFontSize2"
                                             android:textStyle="bold" />
+
                                         <TextView
                                             android:id="@+id/txtHideTracking"
                                             android:layout_width="wrap_content"

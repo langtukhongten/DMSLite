@@ -286,27 +286,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private LatLng latLngTransactionLine = null;
     private long createDateTransactionLine = 0;
     //CREATE CUSTOMER
-    private EditText edCustomerName, edCustomerAddress, edCustomerPhone, edCustomerNo;
-    private Spinner spCustomerCity, spCustomerCounty;
+    private EditText edCustomerNo;
     private ArrayList<City> arrCitys = new ArrayList<>();
     private ArrayList<County> arrCountys = new ArrayList<>();
-    private ImageView imgCreateCustomer;
-    private Button btnCustomerGetLocation;
     private TextInputLayout inputLayoutCustomerName, inputLayoutCustomerAddress, inputLayoutCustomerPhone, inputLayoutCustomerNo;
     //MAP
-    private Button btnUpdateLocationCustomer;
 
     //LAYOUT ORDER TITLE
-    private static TextView title_detail_order_detail;
-    private static TextView title_trans_day_detail;
-    private static TextView title_discount_order_detail;
-    private static TextView title_amount_order_detail;
-    private TextView title_detail_order;
-    private TextView title_trans_day;
-    private TextView title_discount_order;
-    private TextView title_amount_order;
-    private static Button btn_order_detail_add;
-    private static Button btn_order_detail_save_send;
 
 
     private int nowIdApproval = -1;//Mã nhân viên đang chọn trong Màn hình Phân quyền truy cập
@@ -322,7 +308,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private int positionEditOrder; // Vị trí lúc nhấn lâu vào item trong đơn hàng sửa
     private String filtersvApproval = "";
     private int lastRowIdApproval = -1;//Vị trí cuối cùng của Approval trong màn hình Phân quyền truy cập
-    private TextView txtAppNameApproval;
     private int lastRowIdProduct = -1;//id cuối cùng của sản phẩm
     private int lastRowIdCustomer = -1; //id cuối cùng của khách hàng
     private int maxPrice, maxSale, maxQuantity; // so luong ki tu lon nhat khi in
@@ -405,7 +390,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.setting.txtDeviceSerial.setText(Build.SERIAL);
         Home.bindingRight.setting.txtDeviceVersion.setText(context.getString(R.string.android) + Build.VERSION.RELEASE);
         Home.bindingRight.setting.txtAppVersion.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ") " + "update " + Const.UpdateVersion);
-
+        Home.bindingRight.setting.txtStatusTracking.setText(Model.inst().getConfigValue(Const.ConfigKeys.isActive, 1) == 0 ? "Không theo dõi" : "Theo dõi");
         Log.d(TAG, "onCreateView end");
         return v;
     }
@@ -1366,6 +1351,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         transactionLineArrayList.clear();
         adapterTransaction.notifyDataSetChanged();
         MyMethod.isLoadTransactionByID = false;
+        MyMethod.isLoadTransactionByIDInMessage = false;
         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
         Home.swipeTransaction.setRefreshing(false);
     }
@@ -1610,7 +1596,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         v.requestLayout();
         Home.orderListProductAdapter = new OrderListProductAdapter(this.getActivity(), Home.orderDetailArrayList);
         Home.lstOrderProduct.setAdapter(Home.orderListProductAdapter);
-        btnUpdateLocationCustomer = (Button) v.findViewById(R.id.btn_update_location_customer);
         //Order Detail Id
         Home.txtOrderDetailAmount = (TextView) v.findViewById(R.id.order_detail_amount);
         Home.txtOrderDetailAmountSale = (TextView) v.findViewById(R.id.order_detail_amount_sale);
@@ -1655,13 +1640,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
         //CREATE CUSTOMER
         edCustomerNo = (EditText) v.findViewById(R.id.edCustomerNo);
-        edCustomerName = (EditText) v.findViewById(R.id.edCustomerName);
-        edCustomerAddress = (EditText) v.findViewById(R.id.edCustomerAddress);
-        edCustomerPhone = (EditText) v.findViewById(R.id.edCustomerPhone);
-        spCustomerCity = (Spinner) v.findViewById(R.id.spCustomerCity);
-        spCustomerCounty = (Spinner) v.findViewById(R.id.spCustomerCounty);
-        imgCreateCustomer = (ImageView) v.findViewById(R.id.image_create_customer);
-        btnCustomerGetLocation = (Button) v.findViewById(R.id.btn_customer_get_location);
         inputLayoutCustomerNo = (TextInputLayout) v.findViewById(R.id.input_layout_customer_no);
         inputLayoutCustomerName = (TextInputLayout) v.findViewById(R.id.input_layout_customer_name);
         inputLayoutCustomerAddress = (TextInputLayout) v.findViewById(R.id.input_layout_customer_address);
@@ -1683,16 +1661,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         btn_create_customer_route = (Button) v.findViewById(R.id.btn_customer_select_route);
 
         //TITLE LAYOUT ORDER
-        title_detail_order = (TextView) v.findViewById(R.id.title_detail_order);
-        title_trans_day = (TextView) v.findViewById(R.id.title_trans_day);
-        title_discount_order = (TextView) v.findViewById(R.id.title_order_discount);
-        title_amount_order = (TextView) v.findViewById(R.id.title_order_amount);
-        title_detail_order_detail = (TextView) v.findViewById(R.id.title_detail_order_detail);
-        title_trans_day_detail = (TextView) v.findViewById(R.id.title_trans_day_detail);
-        title_discount_order_detail = (TextView) v.findViewById(R.id.title_order_discount_detail);
-        title_amount_order_detail = (TextView) v.findViewById(R.id.title_order_amount_detail);
-        btn_order_detail_add = (Button) v.findViewById(R.id.order_detail_add_product);
-        btn_order_detail_save_send = (Button) v.findViewById(R.id.order_detail_save_send);
         Home.swipeTimeLine = (SwipeRefreshLayout) v.findViewById(R.id.swipe_timeline_top);
         Home.swipeInventoryEmployee = (SwipeRefreshLayout) v.findViewById(R.id.swipe_Inventory_Employee);
         Home.swipeTimeLineBottom = (SwipeRefreshLayoutBottom) v.findViewById(R.id.swipe_timeline_bottom);
@@ -1702,7 +1670,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.history.recyclerTimeline.setLayoutManager(manager);
         Home.bindingRight.history.toolbarTimeLine.setTitleTextColor(getResources().getColor(android.R.color.white));
         ((AppCompatActivity) getActivity()).setSupportActionBar(Home.bindingRight.history.toolbarTimeLine);
-        txtAppNameApproval = (TextView) v.findViewById(R.id.txtAppNameApproval);
         Home.bindingRight.setting.btnSyncData.setCurrentText(context.getString(R.string.sync_data));
         Home.bindingRight.setting.btnUpdateData.setCurrentText(context.getString(R.string.update_data));
     }
@@ -1902,6 +1869,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private void loadMoreTransaction() {
         MyMethod.isLoadTransactionByID = false;
         adapterTransaction.notifyDataSetChanged();
+        MyMethod.isLoadTransactionByIDInMessage = false;
         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastRowIdTransaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
         Home.swipeTransactionBottom.setRefreshing(false);
     }
@@ -2068,7 +2036,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    imgCreateCustomer.setImageBitmap(MyMethod.cropCircleBitmap(photoCreateCustomer));
+                    Home.bindingRight.createCustomer.imageCreateCustomer.setImageBitmap(MyMethod.cropCircleBitmap(photoCreateCustomer));
                 }
                 break;
                 case REQUEST_CONNECT_DEVICE: {
@@ -2459,7 +2427,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case R.id.btn_customer_get_location:
                 //Lấy vị trí khách hàng
                 MyMethod.isGetLocationCreateCustomer = true;
-                btnUpdateLocationCustomer.setText(context.getString(R.string.get_location));
+                Home.bindingRight.customerUpdateMap.btnUpdateLocationCustomer.setText(context.getString(R.string.get_location));
                 Home.LayoutMyManager.ShowLayout(Layouts.MapUpdate);
                 Home.mapUpdateFragment.getMapAsync(this);
                 MyMethod.refreshMap(context, googleMap);
@@ -2512,17 +2480,17 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.bindingHome.btnComeBack.setText(context.getString(R.string.create_customer_title));
                 //Tạo mã kh ngẫu nhiên
                 photoCreateCustomer = null;
-                imgCreateCustomer.setImageResource(R.drawable.camera_btn);
-                btnCustomerGetLocation.setText(context.getString(R.string.get_location));
+                Home.bindingRight.createCustomer.imageCreateCustomer.setImageResource(R.drawable.camera_btn);
+                Home.bindingRight.createCustomer.btnCustomerGetLocation.setText(context.getString(R.string.get_location));
                 btn_create_customer_route.setText(context.getString(R.string.select_route));
-                edCustomerName.setText("");
-                edCustomerAddress.setText("");
-                edCustomerPhone.setText("");
+                Home.bindingRight.createCustomer.edCustomerName.setText("");
+                Home.bindingRight.createCustomer.edCustomerAddress.setText("");
+                Home.bindingRight.createCustomer.edCustomerPhone.setText("");
                 Random kh = new Random();
                 String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
                 nowCustomer = new Customer();
                 nowCustomer.no_ = "KH" + alphabet.charAt(kh.nextInt(alphabet.length())) + alphabet.charAt(kh.nextInt(alphabet.length())) + Model.getServerTime();
-                edCustomerNo.setText(nowCustomer.no_);
+                Home.bindingRight.createCustomer.edCustomerNo.setText(nowCustomer.no_);
                 Home.LayoutMyManager.ShowLayout(Layouts.CreateCustomer);
                 EventPool.control().enQueue(new EventType.EventLoadCitysRequest());
 
@@ -2757,7 +2725,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 //Hàng mẫu
                 Home.orderDetailArrayList.clear();
                 Home.orderListProductAdapter.notifyDataSetChanged();
-                title_detail_order.setText(context.getString(R.string.order_sample_title));
+                Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.order_sample_title));
                 updateOrderView();
                 MyMethod.isInventoryReport = false;
                 MyMethod.isInventoryInput = false;
@@ -2785,7 +2753,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 //Hàng trưng bày/ poster
                 Home.orderDetailArrayList.clear();
                 Home.orderListProductAdapter.notifyDataSetChanged();
-                title_detail_order.setText(context.getString(R.string.order_display_title));
+                Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.order_display_title));
                 updateOrderView();
                 MyMethod.isInventoryReport = false;
                 MyMethod.isInventoryInput = false;
@@ -2816,7 +2784,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.nowAmountSale = 0;
                 Home.orderDetailArrayList.clear();
                 Home.orderListProductAdapter.notifyDataSetChanged();
-                title_detail_order.setText(context.getString(R.string.order_sale_title));
+                Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.order_sale_title));
                 updateOrderView();
                 MyMethod.isInventoryReport = false;
                 MyMethod.isInventoryInput = false;
@@ -2914,7 +2882,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.isOrderPhone = true;
                         Home.orderDetailArrayList.clear();
                         Home.orderListProductAdapter.notifyDataSetChanged();
-                        title_detail_order.setText(context.getString(R.string.order_sale_title));
+                        Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.order_sale_title));
                         updateOrderView();
                         MyMethod.isInventoryReport = false;
                         MyMethod.isInventoryInput = false;
@@ -3097,7 +3065,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             nowOrder.document_type = (Integer.parseInt(Model.inst().getConfigValue(Const.ConfigKeys.PreSale)) == 0) ? 0 : 3;
                     } else if (MyMethod.isInventoryInput) { // Nhập tồn nv
                         nowOrder.id_customer = 0;
-                        nowOrder.document_type = 2;
+                        if (Model.inst().getConfigValue(Const.ConfigKeys.PreSale) == null) {
+                            nowOrder.document_type = 4;//nhập kho công ty
+                        } else {
+                            nowOrder.document_type = (Integer.parseInt(Model.inst().getConfigValue(Const.ConfigKeys.PreSale)) == 0) ? 4 : 2;
+                        }
                     } else if (MyMethod.isProductSample) {
                         nowOrder.id_customer = nowCustomer.id;
                         nowOrder.document_type = 4;
@@ -3267,6 +3239,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 transactionArrayList.clear();
                 transactionLineArrayList.clear();
                 MyMethod.isLoadTransactionByID = false;
+                MyMethod.isLoadTransactionByIDInMessage = false;
                 EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
                 break;
             case R.id.btn_update_location_customer:
@@ -3285,9 +3258,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                     public void onClick(DialogInterface dialog, int id) {
                                         nowCustomer.latitude = Home.location.getLatitude();
                                         nowCustomer.longitude = Home.location.getLongitude();
-                                        btnCustomerGetLocation.setText(Home.markerNow.getSnippet());
-                                        if (edCustomerAddress.getText().toString().isEmpty()) { // Nếu chưa đánh địa chỉ thì gán vào fied địa chỉ
-                                            edCustomerAddress.setText(Home.markerNow.getSnippet());
+                                        Home.bindingRight.createCustomer.btnCustomerGetLocation.setText(Home.markerNow.getSnippet());
+                                        if (Home.bindingRight.createCustomer.edCustomerAddress.getText().toString().isEmpty()) { // Nếu chưa đánh địa chỉ thì gán vào fied địa chỉ
+                                            Home.bindingRight.createCustomer.edCustomerAddress.setText(Home.markerNow.getSnippet());
                                         }
                                         dialog.dismiss();
                                         Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
@@ -3720,28 +3693,39 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     //Cập nhật lại view cho phù hợp
     private void updateInventoryView() {
-        title_detail_order.setText(context.getString(R.string.detail_inventory));
-        title_trans_day.setText(context.getString(R.string.report_day));
-        MyMethod.setGone(title_discount_order);
-        MyMethod.setGone(title_amount_order);
+        Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.detail_inventory));
+        Home.bindingRight.order.titleTransDay.setText(context.getString(R.string.report_day));
+        MyMethod.setGone(Home.bindingRight.order.titleOrderDiscount);
+        MyMethod.setGone(Home.bindingRight.order.titleOrderAmount);
         MyMethod.setGone(Home.txtOrderAmount);
         MyMethod.setGone(Home.txtOrderDiscount);
         Home.btnOrderAddProduct.setText(context.getString(R.string.add_inventory));
     }
 
     private void updateInventoryInputView() {
-        title_detail_order.setText(context.getString(R.string.detail_inventory_input));
-        title_trans_day.setText(context.getString(R.string.input_day));
+        String type = "";
+        if (Model.inst().getConfigValue(Const.ConfigKeys.PreSale) == null) {
+            type = " công ty";
+        } else {
+            if (Integer.parseInt(Model.inst().getConfigValue(Const.ConfigKeys.PreSale)) == 0) {
+                type = " công ty";
+            } else {
+                type = " nhân viên";
+            }
+        }
+
+        Home.bindingRight.order.titleDetailOrder.setText(context.getString(R.string.detail_inventory_input) + type);
+        Home.bindingRight.order.titleTransDay.setText(context.getString(R.string.input_day));
         MyMethod.setGone(Home.img_pre_sale);
-        MyMethod.setVisible(title_discount_order);
-        MyMethod.setVisible(title_amount_order);
+        MyMethod.setVisible(Home.bindingRight.order.titleOrderDiscount);
+        MyMethod.setVisible(Home.bindingRight.order.titleOrderAmount);
         MyMethod.setVisible(Home.txtOrderAmount);
         MyMethod.setVisible(Home.txtOrderDiscount);
         Home.btnOrderAddProduct.setText(context.getString(R.string.add_product));
     }
 
     private void updateOrderView() {
-        title_trans_day.setText(context.getString(R.string.trans_day));
+        Home.bindingRight.order.titleTransDay.setText(context.getString(R.string.trans_day));
         if (Model.inst().getConfigValue(Const.ConfigKeys.PreSale) == null) {
             MyMethod.setInVisible(Home.img_pre_sale);
         } else if (Integer.parseInt(Model.inst().getConfigValue(Const.ConfigKeys.PreSale)) == 0) {
@@ -3749,46 +3733,46 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         } else {
             MyMethod.setVisible(Home.img_pre_sale);
         }
-        MyMethod.setVisible(title_discount_order);
-        MyMethod.setVisible(title_amount_order);
+        MyMethod.setVisible(Home.bindingRight.order.titleOrderDiscount);
+        MyMethod.setVisible(Home.bindingRight.order.titleOrderAmount);
         MyMethod.setVisible(Home.txtOrderAmount);
         MyMethod.setVisible(Home.txtOrderDiscount);
         Home.btnOrderAddProduct.setText(context.getString(R.string.add_product));
     }
 
     public static void updateInventoryDetailView(Context context) {//Không cho chỉnh sửa
-        title_detail_order_detail.setText(context.getString(R.string.detail_inventory));
-        title_trans_day_detail.setText(context.getString(R.string.report_day));
-        MyMethod.setGone(title_discount_order_detail);
-        MyMethod.setGone(title_amount_order_detail);
-        MyMethod.setGone(btn_order_detail_save_send);
+        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory));
+        Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailSaveSend);
         MyMethod.setGone(Home.img_pre_sale);
-        MyMethod.setGone(btn_order_detail_add);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailAddProduct);
         MyMethod.setGone(Home.txtOrderDetailAmount);
         MyMethod.setGone(Home.txtOrderDetailDiscount);
         Home.edOrderDetailNote.setEnabled(false);
     }
 
     private static void updateInventoryBillDetailView(Context context) {
-        title_detail_order_detail.setText(context.getString(R.string.detail_inventory_bill));
-        title_trans_day_detail.setText(context.getString(R.string.report_day));
-        MyMethod.setGone(title_discount_order_detail);
-        MyMethod.setGone(title_amount_order_detail);
-        MyMethod.setGone(btn_order_detail_save_send);
+        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_bill));
+        Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailSaveSend);
         MyMethod.setGone(Home.img_pre_sale);
-        MyMethod.setGone(btn_order_detail_add);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailAddProduct);
         MyMethod.setGone(Home.txtOrderDetailAmount);
         MyMethod.setGone(Home.txtOrderDetailDiscount);
         Home.edOrderDetailNote.setEnabled(false);
     }
 
     private static void updateInventoryEmployeeDetailView(Context context) {
-        title_detail_order_detail.setText(context.getString(R.string.detail_inventory_employee));
-        title_trans_day_detail.setText(context.getString(R.string.report_day));
-        MyMethod.setGone(title_discount_order_detail);
-        MyMethod.setGone(title_amount_order_detail);
-        MyMethod.setGone(btn_order_detail_save_send);
-        MyMethod.setGone(btn_order_detail_add);
+        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_employee));
+        Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailSaveSend);
+        MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailAddProduct);
         MyMethod.setGone(Home.img_pre_sale);
         MyMethod.setGone(Home.txtOrderDetailAmount);
         MyMethod.setGone(Home.txtOrderDetailDiscount);
@@ -3796,10 +3780,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     public static void updateOrderDetailView(Context context) {
-        title_detail_order_detail.setText(context.getString(R.string.order_sale_title));
-        title_trans_day_detail.setText(context.getString(R.string.trans_day));
-        MyMethod.setVisible(title_discount_order_detail);
-        MyMethod.setVisible(title_amount_order_detail);
+        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.order_sale_title));
+        Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.trans_day));
+        MyMethod.setVisible(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
+        MyMethod.setVisible(Home.bindingRight.orderDetail.titleOrderAmountDetail);
         MyMethod.setVisible(Home.txtOrderDetailAmount);
         if (Model.inst().getConfigValue(Const.ConfigKeys.PreSale) == null) {
             MyMethod.setInVisible(Home.img_pre_sale);
@@ -3907,7 +3891,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                 break;
             case CreateCustomer:
-                popup = new PopupMenu(context, imgCreateCustomer);
+                popup = new PopupMenu(context, Home.bindingRight.createCustomer.imageCreateCustomer);
                 popup.getMenuInflater()
                         .inflate(R.menu.take_photo, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -3919,7 +3903,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             case R.id.delete_photo:
                                 imageCreateCustomerPath = "";
                                 photoCreateCustomer = null;
-                                imgCreateCustomer.setImageResource(R.drawable.camera_btn);
+                                Home.bindingRight.createCustomer.imageCreateCustomer.setImageResource(R.drawable.camera_btn);
                                 break;
                             default:
                                 break;
@@ -4373,7 +4357,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(context.getString(R.string.confirm_create_customer));
         builder.setIcon(R.drawable.edit_btn);
-        builder.setMessage(edCustomerName.getText().toString() + "\n" + edCustomerAddress.getText().toString() + "\n" + edCustomerPhone.getText().toString());
+        builder.setMessage(Home.bindingRight.createCustomer.edCustomerName.getText().toString() + "\n" + Home.bindingRight.createCustomer.edCustomerAddress.getText().toString() + "\n" + Home.bindingRight.createCustomer.edCustomerPhone.getText().toString());
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 submitCreateCustomer();
@@ -4394,9 +4378,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         builder.setTitle(context.getString(R.string.confirm_reset));
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                edCustomerName.setText("");
-                edCustomerPhone.setText("");
-                edCustomerAddress.setText("");
+                Home.bindingRight.createCustomer.edCustomerName.setText("");
+                Home.bindingRight.createCustomer.edCustomerPhone.setText("");
+                Home.bindingRight.createCustomer.edCustomerAddress.setText("");
                 dialog.dismiss();
             }
         })
@@ -4547,7 +4531,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 LocationDetector.inst().setHighPrecision(true);
                 Home.bindingHome.btnComeBack.setText(context.getString(R.string.update_location) + " " + nowCustomer.name);
                 MyMethod.isGetLocationCreateCustomer = false;
-                btnUpdateLocationCustomer.setText(context.getString(R.string.update_location));
+                Home.bindingRight.customerUpdateMap.btnUpdateLocationCustomer.setText(context.getString(R.string.update_location));
                 showLayout(Layouts.MapUpdate, context);
                 Home.mapUpdateFragment.getMapAsync(this);
                 break;
@@ -4630,12 +4614,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.positionOrder = position;
             nowOrder = ordersArrayList.get(position);
             if (nowOrder.status == 0 || nowOrder.status == 2) {
-                MyMethod.setVisible(btn_order_detail_save_send);
-                MyMethod.setVisible(btn_order_detail_add);
+                MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailSaveSend);
+                MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailAddProduct);
                 Home.lstOrderDetail.setOnItemLongClickListener(this);
             } else {
-                MyMethod.setGone(btn_order_detail_save_send);
-                MyMethod.setGone(btn_order_detail_add);
+                MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailSaveSend);
+                MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailAddProduct);
                 Home.lstOrderDetail.setOnItemLongClickListener(null);
             }
             Home.LayoutMyManager.ShowLayout(Layouts.OrderDetail);
@@ -4676,6 +4660,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             showLayout(Layouts.TransactionDetail, context);
             LayoutLoadingManager.Show_OnLoading(Home.loadingTransactionLine, context.getString(R.string.load_transaction_line), 30);
             MyMethod.isLoadTransactionByID = true;
+            MyMethod.isLoadTransactionByIDInMessage = false;
             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(Home.timelinesArrayList.get(position).id_transaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, true, nowTransactionStatus));
             EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(Home.timelinesArrayList.get(position).id_transaction));
         } else if (MyMethod.isVisible(Home.bindingRight.approvalAppLock.linearAppprovalAppLock)) {
@@ -4687,7 +4672,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private void updateApprovalView() {
-        txtAppNameApproval.setText(context.getString(R.string.approval_from) + " " + nowApproval.appName + " " + context.getString(R.string.from) + " " + nowApproval.employeeName);
+        Home.bindingRight.approvalButton.txtAppNameApproval.setText(context.getString(R.string.approval_from) + " " + nowApproval.appName + " " + context.getString(R.string.from) + " " + nowApproval.employeeName);
     }
 
     //Cap nhat thong tin header trong xem chi tiet giao dich
@@ -4958,55 +4943,55 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private boolean validateCustomerName() {
-        if (edCustomerName.getText().toString().trim().isEmpty()) {
+        if (Home.bindingRight.createCustomer.edCustomerName.getText().toString().trim().isEmpty()) {
             inputLayoutCustomerName.setError(getString(R.string.customer_name_empty));
-            MyMethod.requestFocus(edCustomerName);
+            MyMethod.requestFocus(Home.bindingRight.createCustomer.edCustomerName);
             return false;
         } else {
-            nowCustomer.name = edCustomerName.getText().toString();
+            nowCustomer.name = Home.bindingRight.createCustomer.edCustomerName.getText().toString();
             inputLayoutCustomerName.setErrorEnabled(false);
         }
         return true;
     }
 
     private boolean validateCustomerNo() {
-        if (edCustomerNo.getText().toString().trim().isEmpty()) {
+        if (Home.bindingRight.createCustomer.edCustomerNo.getText().toString().trim().isEmpty()) {
             inputLayoutCustomerNo.setError(getString(R.string.customer_no_empty));
-            MyMethod.requestFocus(edCustomerNo);
+            MyMethod.requestFocus(Home.bindingRight.createCustomer.edCustomerNo);
             return false;
         } else {
-            nowCustomer.no_ = edCustomerNo.getText().toString();
+            nowCustomer.no_ = Home.bindingRight.createCustomer.edCustomerNo.getText().toString();
             inputLayoutCustomerNo.setErrorEnabled(false);
         }
         return true;
     }
 
     private boolean validateCustomerPhone() {
-        if (edCustomerPhone.getText().toString().trim().isEmpty()) {
+        if (Home.bindingRight.createCustomer.edCustomerPhone.getText().toString().trim().isEmpty()) {
             inputLayoutCustomerPhone.setError(getString(R.string.customer_phone_empty));
-            MyMethod.requestFocus(edCustomerPhone);
+            MyMethod.requestFocus(Home.bindingRight.createCustomer.edCustomerPhone);
             return false;
         } else {
-            nowCustomer.phoneNumber = edCustomerPhone.getText().toString();
+            nowCustomer.phoneNumber = Home.bindingRight.createCustomer.edCustomerPhone.getText().toString();
             inputLayoutCustomerPhone.setErrorEnabled(false);
         }
         return true;
     }
 
     private boolean validateCustomerAddress() {
-        if (edCustomerAddress.getText().toString().trim().isEmpty()) {
+        if (Home.bindingRight.createCustomer.edCustomerAddress.getText().toString().trim().isEmpty()) {
             inputLayoutCustomerAddress.setError(getString(R.string.customer_address_empty));
-            MyMethod.requestFocus(edCustomerAddress);
+            MyMethod.requestFocus(Home.bindingRight.createCustomer.edCustomerAddress);
             return false;
         } else {
-            nowCustomer.address = edCustomerAddress.getText().toString();
+            nowCustomer.address = Home.bindingRight.createCustomer.edCustomerAddress.getText().toString();
             inputLayoutCustomerAddress.setErrorEnabled(false);
         }
         return true;
     }
 
     private boolean validateCustomerLocation() {
-        if (btnCustomerGetLocation.getText().toString().contains(context.getString(R.string.get_location))) {
+        if (Home.bindingRight.createCustomer.btnCustomerGetLocation.getText().toString().contains(context.getString(R.string.get_location))) {
             MyMethod.showToast(context, context.getString(R.string.please_get_location));
             return false;
         }
@@ -5154,12 +5139,15 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case LoadTransactions:
                 EventType.EventLoadTransactionsResult transactionsResult = (EventType.EventLoadTransactionsResult) event;
                 if (transactionsResult != null && transactionsResult.success) {
-
                     if (MyMethod.isLoadTransactionByID) {
                         nowTransaction = transactionsResult.arrTransactions.get(0);
                         updateValueTransaction(nowTransaction);
                     } else {
                         lastRowIdTransaction = transactionsResult.arrTransactions.get(transactionsResult.arrTransactions.size() - 1).rowId;
+                        if (MyMethod.isLoadTransactionByIDInMessage) {
+                            //Nếu load theo id từ tin nhắn thì xóa trắng
+                            transactionArrayList.clear();
+                        }
                         transactionArrayList.addAll(transactionsResult.arrTransactions);
                     }
                 } else {
@@ -5739,7 +5727,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     flagOutStore = false;
                     Home.nowIdExtNo = Integer.parseInt(orderResult.message);
                     MyMethod.showToast(context, context.getString(R.string.send_order_success));
-                    LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
+                    if (nowCustomer != null) {
+                        LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
+                    }
                     //luu don hang vao local
 //                    LocalDB.inst().addOrder(nowOrder, 1);
 //                    LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList);
@@ -6242,14 +6232,14 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private void clearDataCreateCustomer() {
         nowCustomer = new Customer();
-        edCustomerName.setText("");
-        edCustomerPhone.setText("");
-        edCustomerAddress.setText("");
+        Home.bindingRight.createCustomer.edCustomerName.setText("");
+        Home.bindingRight.createCustomer.edCustomerPhone.setText("");
+        Home.bindingRight.createCustomer.edCustomerAddress.setText("");
         edCustomerNo.setText("");
-        btnCustomerGetLocation.setText(context.getString(R.string.get_location));
+        Home.bindingRight.createCustomer.btnCustomerGetLocation.setText(context.getString(R.string.get_location));
         imageCreateCustomerPath = "";
         photoCreateCustomer = null;
-        imgCreateCustomer.setImageResource(R.drawable.camera_btn);
+        Home.bindingRight.createCustomer.imageCreateCustomer.setImageResource(R.drawable.camera_btn);
     }
 
     private void updateStoreValue() {
@@ -6906,6 +6896,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             transactionArrayList.clear();
                             transactionLineArrayList.clear();
                             MyMethod.isLoadTransactionByID = false;
+                            MyMethod.isLoadTransactionByIDInMessage = false;
                             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastRowIdTransaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, Const.TransactionStatus.All.getValue()));
                         }
                         break;

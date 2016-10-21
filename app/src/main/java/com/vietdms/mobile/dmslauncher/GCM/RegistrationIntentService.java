@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.vietdms.mobile.dmslauncher.MyMethod;
 
 import java.io.IOException;
@@ -49,7 +50,6 @@ public class RegistrationIntentService extends IntentService {
             EventPool.control().enQueue(new EventType.EventGCMToken(token));
             // Subscribe to topic channels
             subscribeTopics(token);
-
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
@@ -68,7 +68,7 @@ public class RegistrationIntentService extends IntentService {
 
     /**
      * Persist registration to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's GCM registration token with any server-side account
      * maintained by your application.
      *
@@ -86,6 +86,8 @@ public class RegistrationIntentService extends IntentService {
      */
     // [START subscribe_topics]
     private void subscribeTopics(String token) throws IOException {
+        FirebaseMessaging.getInstance().subscribeToTopic("VietDMS");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
     }
     // [END subscribe_topics]
 

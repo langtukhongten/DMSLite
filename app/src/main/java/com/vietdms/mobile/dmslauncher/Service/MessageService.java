@@ -215,7 +215,7 @@ public class MessageService extends Service {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    windowManager.removeView(main);
+                windowManager.removeView(main);
             }
         });
         btnRead.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +254,7 @@ public class MessageService extends Service {
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
                         }
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        MyMethod.isLoadTransactionByIDInMessage = false;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, Model.getServerTime(), -1, "", false, Const.TransactionStatus.Working.getValue()));
                     } else {
                         Intent dialogIntent = new Intent(context, Home.class);
@@ -265,12 +266,13 @@ public class MessageService extends Service {
                 } else if (flag2G) {
                     windowManager.removeView(main);
 
-                }  else {
+                } else {
                     windowManager.removeView(main);
                     if (currentApp().contains(HOME_PACKAGE)) {
                         if (Home.bindingHome != null) Home.bindingHome.viewpager.setCurrentItem(2);
                         Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.Transaction);
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        MyMethod.isLoadTransactionByIDInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     } else {
                         Intent dialogIntent = new Intent(context, Home.class);
@@ -283,6 +285,7 @@ public class MessageService extends Service {
                             e.printStackTrace();
                         }
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        MyMethod.isLoadTransactionByIDInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     }
                 }

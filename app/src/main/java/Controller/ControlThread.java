@@ -425,7 +425,7 @@ public class ControlThread extends Thread {
                     AlarmTimer.inst().clrTimer();
                     AlarmTimer.inst().clrRealtimeTimer();
                 } else {
-                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
+                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
                         if (Model.inst().getNextWokingTimer() == 0) {
                             MyMethod.isLocationUpdate = false;
                             NetworkTransaction.inst(context).sendSystemLog();
@@ -487,7 +487,7 @@ public class ControlThread extends Thread {
             break;
             case AlarmTriggerRealtime: {
                 Log.i("Control_processEvent", "AlarmTriggerRealtime");
-                if(Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
+                if(Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
                     //Nếu không phải giám sát
                     if (Model.inst().isRealtimeValid()) {
                         LocationDetector.inst().updateRealtime(true);

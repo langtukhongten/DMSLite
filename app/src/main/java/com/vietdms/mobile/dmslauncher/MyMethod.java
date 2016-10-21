@@ -149,6 +149,7 @@ public class MyMethod {
     public static boolean isFirstOff = true; // lan dau vao receiver tat mang
     public static boolean selectRouteInCreateCustomer;//Chon tuyen trong tao khach hangf / cap nhat kh
     public static boolean UpdateCustomerRoute; // cap nhat tuyen kh
+    public static boolean isLoadTransactionByIDInMessage;//Load theo id trong message
 
 
     /**
@@ -1630,9 +1631,10 @@ public class MyMethod {
         return false;
     }
 
-    public static void animateMarker(final Marker marker, final LatLng toPosition,
+    public static void animateMarker(final Marker marker, final UserInfo user,
                                      final boolean hideMarker, final GoogleMap map) {
         try {
+            final LatLng toPosition = new LatLng(user.latitude, user.longitude);
             final Handler handler = new Handler();
             final long start = SystemClock.uptimeMillis();
             Projection proj = map.getProjection();
@@ -1640,6 +1642,9 @@ public class MyMethod {
             final LatLng startLatLng = proj.fromScreenLocation(startPoint);
             final long duration = 500;
             final Interpolator interpolator = new LinearInterpolator();
+            Marker temp = marker;
+            temp.setPosition(toPosition);
+            RightFragment.hashUserMarker.put(user.id_employee, temp);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1656,6 +1661,7 @@ public class MyMethod {
                     map.animateCamera(cameraUpdate);
                     marker.showInfoWindow();
                     Home.currentPostition = marker.getPosition();
+
                     if (t < 1.0) {
                         // Post again 16ms later.
                         handler.postDelayed(this, 16);

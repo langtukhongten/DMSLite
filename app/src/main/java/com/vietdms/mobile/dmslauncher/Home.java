@@ -60,6 +60,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.ArrayUserAdapter;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.CustomAdapterGripView;
@@ -231,7 +232,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         prefs = getSharedPreferences("com.vietdms.mobile.dmslauncher", MODE_PRIVATE);
+        prefs = getSharedPreferences("com.vietdms.mobile.dmslauncher", MODE_PRIVATE);
         bindingHome = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mService = new BluetoothService(this, mHandler);
         if (mService.isAvailable() == false) {
@@ -270,6 +271,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
                             rightFragment.transactionArrayList.clear();
                             rightFragment.adapterTransaction.notifyDataSetChanged();
                             LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                            MyMethod.isLoadTransactionByIDInMessage = true;
                             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                             MyMethod.IDFromMessageService = lastId;
                         } catch (Exception e) {

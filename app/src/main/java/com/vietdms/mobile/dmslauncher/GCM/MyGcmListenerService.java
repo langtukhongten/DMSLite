@@ -126,7 +126,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
                         }
                         break;
                     case StartRealtimeTracking:
-                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
+                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
                             Model.inst().setConfigValue(Const.ConfigKeys.RealtimeTrackingTime, "60");
                             LocationDetector.inst().updateRealtime(true);
                             NetworkTransaction.inst(context).sendTracking(true);
@@ -135,14 +135,14 @@ public class MyGcmListenerService extends FirebaseMessagingService {
                         }
                         break;
                     case StopRealtimeTracking:
-                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isManager,0) == 0) {
+                        if (dataLong == 0 || Math.abs(Model.getServerTime() - dataLong) < Model.inst().getConfigValue(Const.ConfigKeys.GcmCommandTimeout, Const.DefaultGcmCommandTimeoutInSeconds) * 1000 && Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
                             Model.inst().setConfigValue(Const.ConfigKeys.RealtimeTrackingTime, "0");
                             LocationDetector.inst().updateRealtime(false);
                         }
                         break;
                     case Transaction:
                         //Tin nhắn giao dịch
-                        if(Model.inst().getStatusWorking()== Const.StatusWorking.Tracking  && Model.inst().getNextWokingTimer() == 0 && MyMethod.isCanNotice()) {
+                        if(MyMethod.isCanNotice()) {
                             Log.w("FIREBASE TRANSACTION", dataStr);
                             Intent messageService = new Intent(context, MessageService.class);
                             messageService.putExtra("MessageBody", dataStr);

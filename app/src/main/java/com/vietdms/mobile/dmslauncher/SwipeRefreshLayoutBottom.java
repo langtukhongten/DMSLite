@@ -30,7 +30,6 @@ public class SwipeRefreshLayoutBottom extends ViewGroup {
     public static final int LARGE = MaterialProgressDrawable.LARGE;
     // Maps to ProgressBar default style
     public static final int DEFAULT = MaterialProgressDrawable.DEFAULT;
-
     private static final String LOG_TAG = SwipeRefreshLayoutBottom.class.getSimpleName();
 
     private static final int MAX_ALPHA = 255;
