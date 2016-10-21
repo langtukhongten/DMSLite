@@ -16,8 +16,8 @@ android {
         applicationId "com.vietdms.mobile.dmslauncher"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 31
-        versionName "3.0"
+        versionCode 32
+        versionName "3.2"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         // Enabling multidex support.

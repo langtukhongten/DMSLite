@@ -6342,7 +6342,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.now_btn)));
                     LatLng header = null;
                     try {
-                        header = new LatLng(nowTransaction.latitude, nowTransaction.longtitude);
+                        if(nowTransaction.latitude!=-1) {
+                            //Neu co vi tri header thi ve ra
+                            header = new LatLng(nowTransaction.latitude, nowTransaction.longtitude);
+                        }else{
+                            //khong co thi gan vi tri line vao luon ( truong hop ghi nhan checkin,checkout)
+                            header = line;
+                        }
                         transactionHeaderMarker = googleMap.addMarker(new MarkerOptions()
                                 .position(header)
                                 .title(nowTransaction.description + "\n" + Html.fromHtml("<font color='red'>" + Home.nowTransactionLine.note + "</font>"))

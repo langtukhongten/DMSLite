@@ -17,8 +17,10 @@ import com.vietdms.mobile.dmslauncher.MyMethod;
 
 import java.io.IOException;
 
+import CommonLib.Const;
 import CommonLib.EventPool;
 import CommonLib.EventType;
+import CommonLib.Model;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -86,8 +88,7 @@ public class RegistrationIntentService extends IntentService {
      */
     // [START subscribe_topics]
     private void subscribeTopics(String token) throws IOException {
-        FirebaseMessaging.getInstance().subscribeToTopic("VietDMS");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic(Model.inst().getConfigValue(Const.ConfigKeys.CompanyName));
     }
     // [END subscribe_topics]
 

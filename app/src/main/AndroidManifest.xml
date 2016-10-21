@@ -95,11 +95,7 @@
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
 
-            <service
-                android:name=".Service.MessageService"
-                android:description="@string/app_design_name"
-                android:enabled="true"
-                android:exported="false" />
+
         </activity>
         <activity
             android:name=".LockView"
@@ -281,11 +277,7 @@
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
 
-            <service
-                android:name=".Service.MessageService"
-                android:description="@string/app_design_name"
-                android:enabled="true"
-                android:exported="false" />
+
         </activity>
         <activity
             android:name=".Forms.ReportTransactionEmployee"
@@ -295,11 +287,7 @@
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
 
-            <service
-                android:name=".Service.MessageService"
-                android:description="@string/app_design_name"
-                android:enabled="true"
-                android:exported="false" />
+
         </activity>
         <activity
             android:name=".Forms.ReportTransactionGeneral"
@@ -309,11 +297,7 @@
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
 
-            <service
-                android:name=".Service.MessageService"
-                android:description="@string/app_design_name"
-                android:enabled="true"
-                android:exported="false" />
+
         </activity>
     </application>
 
