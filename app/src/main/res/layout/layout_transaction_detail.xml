@@ -201,6 +201,7 @@
                     android:background="@color/blue_light" />
 
                 <LinearLayout
+                    android:id="@+id/linear_checkin_note_record"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -257,6 +258,14 @@
                         android:textAllCaps="false"
                         android:textSize="@dimen/textFontSize3" />
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btn_accept_work"
+                    android:text="@string/accept_work"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_note_drawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"

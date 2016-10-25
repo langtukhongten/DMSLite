@@ -68,7 +68,8 @@ public abstract class EventType {
         SyncSurvey,
         SyncSurveyDetail,
         UpdateData,
-        BranchGroup
+        BranchGroup,
+        AcceptWork
     }
 
     public static class EventBase {
@@ -389,6 +390,14 @@ public abstract class EventType {
         public final int id_employee_viewed;
     }
 
+    public static class EventAcceptWorkRequest extends EventBase {
+        public EventAcceptWorkRequest(int id){
+            super(Type.AcceptWork);
+            this.id = id;
+        }
+        public final int id;
+    }
+
     public static class EventLoadInventoryEmployeesRequest extends EventBase {
         public EventLoadInventoryEmployeesRequest(int rowId, long msTo, int id_employee_viewed, int inventory_group, int on_stock, String filter) {
             super(Type.LoadInventoryEmployees);
@@ -655,6 +664,21 @@ public abstract class EventType {
         }
     }
 
+    public static class EventAcceptWorkResult extends EventBase {
+        public final boolean success;
+        public final String mesasage;
+        public final int result;
+        public final int id;
+        public EventAcceptWorkResult(boolean success,String message,int result,int id) {
+            super(Type.AcceptWork);
+            this.success = success;
+            this.mesasage = message;
+            this.result = result; // 0 : error 1: success 2: rejected
+            this.id = id;
+
+        }
+    }
+
     public static class EventLogInRouteResult extends EventBase {
         public final boolean success;
         public final String message;
@@ -755,12 +779,14 @@ public abstract class EventType {
         public final boolean success;
         public final String message;
         public final ArrayList<TransactionLine> arrTransactionLine;
+        public final int permission;//0 chi doc, 1 chap nhan giao dich, 2 hien chuc nang
 
-        public EventLoadTransactionLinesResult(boolean success, String message, ArrayList<TransactionLine> arrTransactionLine) {
+        public EventLoadTransactionLinesResult(boolean success, String message, ArrayList<TransactionLine> arrTransactionLine,int permission) {
             super(Type.LoadTransactionLines);
             this.success = success;
             this.message = message;
             this.arrTransactionLine = arrTransactionLine;
+            this.permission = permission;
         }
     }
 

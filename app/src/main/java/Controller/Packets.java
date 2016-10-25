@@ -717,6 +717,18 @@ abstract class Packets {
             public final ArrayList<Transaction> arrayTransactions;
         }
 
+        public static class PacketAcceptWork extends Packet {
+            public PacketAcceptWork(byte[] data) throws Exception {
+                super(data);
+                success = readBool();
+                message = readString();
+                result = readInt();
+            }
+            public final boolean success;
+            public final String message;
+            public final int result;
+        }
+
         public static class PacketBranchGroups extends  Packet {
             public PacketBranchGroups(byte[] data) throws Exception {
                 super(data);
@@ -769,11 +781,13 @@ abstract class Packets {
                     tl.name_employee = readString();
                     arrayTransactionLines.add(tl);
                 }
+                permission = readInt();
                 inflater.end();
             }
 
             public final String message;
             public final ArrayList<TransactionLine> arrayTransactionLines;
+            public final int permission;
         }
 
 
@@ -1435,7 +1449,8 @@ abstract class Packets {
             SyncSurvey(48),
             SyncSurveyDetail(49),
             UpdateData(50),
-            BranchGroup(51);
+            BranchGroup(51),
+            AcceptWork(52);
             private final int id;
 
             PacketType(int id) {
@@ -1652,6 +1667,13 @@ abstract class Packets {
         public static class PacketBranchGroups extends Packet {
             public PacketBranchGroups() throws IOException {
                 super(PacketType.BranchGroup);
+            }
+        }
+
+        public static class PacketAcceptWork extends Packet {
+            public PacketAcceptWork(int id) throws IOException {
+                super(PacketType.AcceptWork);
+                write(id);
             }
         }
 

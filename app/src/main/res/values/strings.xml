@@ -489,4 +489,6 @@
     <string name="report_transaction_general">Giao dịch tổng hợp</string>
     <string name="choice_date">Chọn ngày</string>
     <string name="none_branch_group">Không có chi nhánh và nhóm!</string>
+    <string name="accept_work">Chấp nhận công việc</string>
+    <string name="accepting">Đang gửi yêu cầu ...</string>
 </resources>

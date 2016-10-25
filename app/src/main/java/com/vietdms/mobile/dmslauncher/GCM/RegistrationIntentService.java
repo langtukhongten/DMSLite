@@ -21,6 +21,7 @@ import CommonLib.Const;
 import CommonLib.EventPool;
 import CommonLib.EventType;
 import CommonLib.Model;
+import CommonLib.Utils;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -88,7 +89,7 @@ public class RegistrationIntentService extends IntentService {
      */
     // [START subscribe_topics]
     private void subscribeTopics(String token) throws IOException {
-        FirebaseMessaging.getInstance().subscribeToTopic(Model.inst().getConfigValue(Const.ConfigKeys.CompanyName));
+        FirebaseMessaging.getInstance().subscribeToTopic(Utils.unAccent(Model.inst().getConfigValue(Const.ConfigKeys.CompanyName)).replace(" ",""));
     }
     // [END subscribe_topics]
 

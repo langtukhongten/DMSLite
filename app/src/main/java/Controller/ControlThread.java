@@ -227,6 +227,12 @@ public class ControlThread extends Thread {
 
         switch (event.type) {
 
+            case AcceptWork: {
+                EventType.EventAcceptWorkRequest eventAcceptWorkRequest  = (EventType.EventAcceptWorkRequest) event;
+                NetworkTransaction.inst(context).acceptWork(eventAcceptWorkRequest.id);
+            }
+            break;
+
             case BranchGroup:{
                    NetworkTransaction.inst(context).loadBranchGroups();
             }

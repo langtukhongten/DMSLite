@@ -9,7 +9,7 @@ public abstract class Const {
     public static final String REPORTIMAGEDMS = "DMSData/ReportImageDMS";
     public static final String LIBRARYFOLDER = "DMSData/Library";
     public static final int UpdateVersion = 8; // Phiên bản cập nhật
-    public static final int APILevel = 26;// Thêm createdate modifieddate
+    public static final int APILevel = 27;// Thêm permission transaction line
     public static final int DefaultAlarmIntervalBoostedInSeconds = 1 * 60; // chu kì cập nhật location
     public static final int DefaultAlarmIntervalBoostedMultiplier = 3;
     public static final int DefaultAlarmIntervalNormalInSeconds = DefaultAlarmIntervalBoostedInSeconds * DefaultAlarmIntervalBoostedMultiplier; // chu kì cập nhật location
@@ -55,22 +55,22 @@ public abstract class Const {
     public static final String DateFromParameter = "&dF=";
     public static final String DateToParameter = "&dT=";
     public static final String GroupParameter = "&nhom=";
-    public static final String HttpEndpoint = "http://v3.dinhvidienthoai.com//HttpService.aspx";
-    public static final String LinkReportImage = "http://v3.dinhvidienthoai.com//ReportImages/";
-    public static final String LinkCustomerImage = "http://v3.dinhvidienthoai.com//CustomerImages/";
-    public static final String LinkItemImage = "http://v3.dinhvidienthoai.com//ItemImages/";
-    public static final String LinkSurveyImage = "http://v3.dinhvidienthoai.com//SurveyImages/";
+//    public static final String HttpEndpoint = "http://v3.dinhvidienthoai.com//HttpService.aspx";
+//    public static final String LinkReportImage = "http://v3.dinhvidienthoai.com//ReportImages/";
+//    public static final String LinkCustomerImage = "http://v3.dinhvidienthoai.com//CustomerImages/";
+//    public static final String LinkItemImage = "http://v3.dinhvidienthoai.com//ItemImages/";
+//    public static final String LinkSurveyImage = "http://v3.dinhvidienthoai.com//SurveyImages/";
 
 //        public static final String HttpEndpoint = "http://192.168.1.213:82/HttpService.aspx";
 //        public static final String LinkReportImage = "http://192.168.1.213:82/ReportImages/";
 //        public static final String LinkCustomerImage = "http://192.168.1.213:82/CustomerImages/";
 //        public static final String LinkItemImage = "http://192.168.1.213:82/ItemImages/";
 
-//    public static final String HttpEndpoint = "http://192.168.1.166:1012//HttpService.aspx";
-//    public static final String LinkReportImage = "http://192.168.1.166:1012//ReportImages/";
-//    public static final String LinkCustomerImage = "http://192.168.1.166:1012//CustomerImages/";
-//    public static final String LinkSurveyImage = "http://192.168.1.166:1012//SurveyImages/";
-//    public static final String LinkItemImage = "http://192.168.1.166:1012//ItemImages/";
+    public static final String HttpEndpoint = "http://192.168.1.166:1012//HttpService.aspx";
+    public static final String LinkReportImage = "http://192.168.1.166:1012//ReportImages/";
+    public static final String LinkCustomerImage = "http://192.168.1.166:1012//CustomerImages/";
+    public static final String LinkSurveyImage = "http://192.168.1.166:1012//SurveyImages/";
+    public static final String LinkItemImage = "http://192.168.1.166:1012//ItemImagesmImages/";
     public static final String[] Weekdays = {"Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"};
 
     public enum SyncKeys {

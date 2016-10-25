@@ -2,6 +2,7 @@ package com.vietdms.mobile.dmslauncher.RecycleView;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -51,7 +53,13 @@ public class RecyclerViewAdapterTransaction extends RecyclerView.Adapter<Recycle
         contactViewHolder.transactionPhone.setText(t.phone_no_);
         contactViewHolder.transactionStatus.setImageDrawable(Utils.statusTransaction(context, t.status));
         contactViewHolder.transactionDate.setText(Utils.long2OverTime(t.modifieddate));
-        contactViewHolder.transactionNote.setText(t.note+" status: "+t.status);
+        contactViewHolder.transactionNote.setText(t.note);
+        // doi mau giao dich chua co nguoi nhan
+        if(t.id_employee == 0){
+            contactViewHolder.linearMain.setBackgroundColor(Color.YELLOW);
+        } else {
+            contactViewHolder.linearMain.setBackgroundColor(Color.TRANSPARENT);
+        }
         i++;
         int color;
         TextDrawable photoDrawable = null;
@@ -92,6 +100,7 @@ public class RecyclerViewAdapterTransaction extends RecyclerView.Adapter<Recycle
         protected TextView transactionName, transactionNo, transactionAddress, transactionPhone, transactionNote, transactionDate;
         protected ImageView transactionStt;
         protected CircleImageView transactionStatus;
+        protected LinearLayout linearMain;
 
         public ContactViewHolder(View v) {
             super(v);
@@ -103,6 +112,7 @@ public class RecyclerViewAdapterTransaction extends RecyclerView.Adapter<Recycle
             transactionNote = (TextView) v.findViewById(R.id.transaction_note);
             transactionStatus = (CircleImageView) v.findViewById(R.id.transaction_status);
             transactionDate = (TextView) v.findViewById(R.id.transaction_time);
+            linearMain = (LinearLayout) v.findViewById(R.id.linear_main_card_transaction);
         }
     }
 

@@ -11,6 +11,7 @@ import com.vietdms.mobile.dmslauncher.MyMethod;
 import com.vietdms.mobile.dmslauncher.Service.MessageService;
 
 import CommonLib.Const;
+import CommonLib.Model;
 import CommonLib.PhoneState;
 import CommonLib.Utils;
 
@@ -46,13 +47,14 @@ public class NetworkReceiver extends BroadcastReceiver {
         if(MyMethod.isFirstOff){
             if (PhoneState.inst().isWifi() != 1) {
                 if (PhoneState.inst().is3G() != 1) {
-
-            Log.w(TAG, "isNetWorkAvailable: Ket noi mang tat" );
-            Log.w("Message", "thông báo bat mạng ");
-                Intent messageService = new Intent(context, MessageService.class);
-                messageService.putExtra("MessageBody", "CMD►NETWORK►1" );
-                messageService.putExtra("API", Const.UpdateVersion);
-                context.startService(messageService);
+                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getNextWokingTimer() == 0 && MyMethod.isCanNotice()) {
+                    Log.w(TAG, "isNetWorkAvailable: Ket noi mang tat");
+                    Log.w("Message", "thông báo bat mạng ");
+                    Intent messageService = new Intent(context, MessageService.class);
+                    messageService.putExtra("MessageBody", "CMD►NETWORK►1");
+                    messageService.putExtra("API", Const.UpdateVersion);
+                    context.startService(messageService);
+                }
                 }
             }
             MyMethod.isFirstOff =false;

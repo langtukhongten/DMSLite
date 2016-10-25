@@ -189,7 +189,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static LoadingView loadingReportWeb, loadingUpdateImage, loadingLogin, loadingMapOrder, loadingCancelOrder,
             loadingListGCM, loadingCheckIn, loadingTransactionLineInStore,
             loadingCustomer, loadingProduct, loadingProductOfOrder, loadingOrderMain,
-            loadingTransaction, loadingTransactionLine, loadingSendOrder, loadingUpdateCustomer,
+            loadingTransaction, loadingSendOrder, loadingUpdateCustomer,
             loadingMapCustomerCheckIn, loadingInStore, loadingCreateCustomer, loadingOrderDetail,
             loadingHistory, loadingInventoryEmployee, loadingApprovalAppLock, loadingReportCheckIn;
     public static int positionGCM, positionTransaction, positionCustomer, positionProduct;

@@ -883,6 +883,27 @@ public class NetworkTransaction {
         }
     }
 
+    public synchronized boolean acceptWork(int id) {
+        try{
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketAcceptWork(id).getData(), true);
+            if (result != null) {
+                Log.i("acceptWork", "success");
+                Packets.FromServer.PacketAcceptWork packetAcceptWork = new Packets.FromServer.PacketAcceptWork(result);
+                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(packetAcceptWork.success, packetAcceptWork.message, packetAcceptWork.result,id));
+
+                return true;
+            } else {
+                Log.w("acceptWork", "fail");
+                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false, "Không thể kết nối đến máy chủ", 0,id));
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false,"Lỗi không xác định",0,id));
+            return false;
+        }
+    }
+
     public synchronized boolean loadBranchGroups(){
         try{
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketBranchGroups().getData(), true);
@@ -916,21 +937,21 @@ public class NetworkTransaction {
                 Log.i("loadTransactionLine", "success");
                 Packets.FromServer.PacketLoadTransactionLines packetLoadTransactionLines = new Packets.FromServer.PacketLoadTransactionLines(result);
                 if (packetLoadTransactionLines.arrayTransactionLines.size() != 0) {
-                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(true, packetLoadTransactionLines.message, packetLoadTransactionLines.arrayTransactionLines));
+                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(true, packetLoadTransactionLines.message, packetLoadTransactionLines.arrayTransactionLines, packetLoadTransactionLines.permission));
 
                 } else {
-                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không có dữ liệu", null));
+                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không có dữ liệu", null,  packetLoadTransactionLines.permission));
 
                 }
                 return true;
             } else {
                 Log.w("loadTransactionLine", "fail");
-                EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không thể kết nối đến máy chủ", null));
+                EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không thể kết nối đến máy chủ", null,  0));
                 return false;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Lỗi không xác định", null));
+            EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Lỗi không xác định", null,  0));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }

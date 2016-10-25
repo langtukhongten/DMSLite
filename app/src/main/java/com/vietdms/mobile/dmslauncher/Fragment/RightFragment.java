@@ -616,6 +616,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.transactionDetail.btnTransactionNote.setOnClickListener(this);
         Home.bindingRight.transactionDetail.btnTransactionCheckIn.setOnClickListener(this);
         Home.bindingRight.transactionDetail.btnTransactionWrite.setOnClickListener(this);
+        Home.bindingRight.transactionDetail.btnAcceptWork.setOnClickListener(this);
         v.findViewById(R.id.btn_customer_select_route).setOnClickListener(this);
         v.findViewById(R.id.btn_accept_select_route).setOnClickListener(this);
         v.findViewById(R.id.btn_accept_approval).setOnClickListener(this);
@@ -623,7 +624,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         v.findViewById(R.id.btn_decline_approval).setOnClickListener(this);
         v.findViewById(R.id.update_take_again).setOnClickListener(this);
         v.findViewById(R.id.update_again).setOnClickListener(this);
-
         btnFromDateTransaction = (Button)
                 v.findViewById(R.id.transaction_from);
         btnToDateOrder = (Button)
@@ -1459,7 +1459,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.loadingProduct = (LoadingView) v.findViewById(R.id.ProductLoadingView);
         Home.loadingOrderMain = (LoadingView) v.findViewById(R.id.OrderMainLoadingView);
         Home.loadingTransaction = (LoadingView) v.findViewById(R.id.TransactionLoadingView);
-        Home.loadingTransactionLine = (LoadingView) v.findViewById(R.id.TransactionLineLoadingView);
         Home.loadingTransactionLineInStore = (LoadingView) v.findViewById(R.id.TransactionLineInStoreLoadingView);
         Home.loadingSendOrder = (LoadingView) v.findViewById(R.id.OrderLoadingView);
         Home.loadingProductOfOrder = (LoadingView) v.findViewById(R.id.ProductOfOrderLoadingView);
@@ -1891,6 +1890,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         Log.w(TAG, "onViewStateRestored begin");
+        try {
+            LocalBroadcastManager.getInstance(context).registerReceiver(receiver, new IntentFilter("OnFire"));
+        } catch (Exception e) {
+        }
         Log.w(TAG, "onViewStateRestored end");
     }
 
@@ -2280,7 +2283,27 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.btn_accept_work:
+                AlertDialog.Builder builderWork = new AlertDialog.Builder(context);
+                builderWork.setMessage("Xác nhận nhận công việc  " + nowTransaction.description)
+                        .setCancelable(false)
+                        .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Xu li nhan cong viec
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView,getString(R.string.accepting),30);
+                            EventPool.control().enQueue(new EventType.EventAcceptWorkRequest(nowTransaction.rowId));
+                            dialog.dismiss();
+                            }
+                        });
+                AlertDialog alertWork = builderWork.create();
+                alertWork.show();
+                break;
             case R.id.btn_reason_accept:
                 //Xử lí chấp nhận lý do rời cửa hàng
                 String content = "";
@@ -4556,7 +4579,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             showLayout(Layouts.TransactionDetail, context);
             transactionLineArrayList.clear();
             adapterTransactionLine.notifyDataSetChanged();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingTransactionLine, context.getString(R.string.load_transaction_line), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, context.getString(R.string.load_transaction_line), 30);
             EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
             try {
                 if (nowTransaction.rowId == MyMethod.IDFromMessageService) {
@@ -4658,7 +4681,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             //now transaction
             MyMethod.isTransactionDetailOfHistory = true;
             showLayout(Layouts.TransactionDetail, context);
-            LayoutLoadingManager.Show_OnLoading(Home.loadingTransactionLine, context.getString(R.string.load_transaction_line), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, context.getString(R.string.load_transaction_line), 30);
             MyMethod.isLoadTransactionByID = true;
             MyMethod.isLoadTransactionByIDInMessage = false;
             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(Home.timelinesArrayList.get(position).id_transaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, true, nowTransactionStatus));
@@ -5186,7 +5209,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
                 } else {
                     MyMethod.showToast(context, getString(R.string.dont_have_transaction_line));
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingTransactionLine);
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView);
                 }
                 Collections.sort(transactionLineArrayList, new Comparator<TransactionLine>() {
                     @Override
@@ -5203,10 +5226,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
                 });
                 Home.nowTransactionLine = transactionLineArrayList.get(0);
+                updatePermissionLine(transactionLinesResult.permission);//Cap nhat quyen tuong tac
                 latLngTransactionLine = new LatLng(Home.nowTransactionLine.latitude, Home.nowTransactionLine.longitude);
                 adapterTransactionLine.setItems(transactionLineArrayList);
                 adapterTransactionLine.notifyDataSetChanged();
-                LayoutLoadingManager.Show_OffLoading(Home.loadingTransactionLine);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView);
                 break;
             case LoadTransactionLinesInStore:
                 EventType.EventLoadTransactionLinesInStoreResult transactionLinesInStoreResult = (EventType.EventLoadTransactionLinesInStoreResult) event;
@@ -5745,7 +5769,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         showLayout(Layouts.GoStore, context);
                         Home.nowTransactionLine.id_customer = nowCustomer.id;
                         if (MyMethod.isOrderPhone) {
-                            MyMethod.isInStore = false;
+                           MyMethod.isInStore = false;
                             if (MyMethod.isCheckInCustomerTransactionDetail) {
                                 showLayout(Layouts.TransactionDetail, context);
                                 EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
@@ -5926,7 +5950,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     } else if (MyMethod.isVisible(Home.bindingRight.transactionDetail.relaTransactionDetail)) {
                         transactionLineArrayList.clear();
                         adapterTransactionLine.notifyDataSetChanged();
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingTransactionLine, context.getString(R.string.load_transaction_line), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, context.getString(R.string.load_transaction_line), 30);
                         EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
                     } else if (MyMethod.isVisible(Home.bindingRight.reasonNotOrder.linearReasonNotOrder)) {
 
@@ -6215,7 +6239,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Intent intent = new Intent(getActivity(), SurveyQAActivity.class);
                     int ID_Customer = MyMethod.idCustomer;
                     int Root_Customer = MyMethod.rootCustomer;
-
                     intent.putExtra("Campaign", selectedSurvey);
                     intent.putParcelableArrayListExtra("Headers", arrSurveyHeaders);
                     intent.putParcelableArrayListExtra("Lines", arrSurveyLines);
@@ -6224,8 +6247,51 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     startActivity(intent);
                 }
                 break;
+            case AcceptWork:
+                EventType.EventAcceptWorkResult eventAcceptWorkResult = (EventType.EventAcceptWorkResult) event;
+                if(eventAcceptWorkResult.success){
+                        updatePermissionLine(2);
+                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
+                }else{
+                    if(eventAcceptWorkResult.result==2){//Neu cong viec da co nguoi nhan
+                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
+                        updatePermissionLine(0);
+                    }else{
+                        updatePermissionLine(1);
+                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
+                    }
+
+                }
+                EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(eventAcceptWorkResult.id));
+                break;
             default:
                 Log.w(TAG, "unhandled " + event.type);
+                break;
+        }
+    }
+
+    private void updatePermissionLine(int permission) {
+        switch (permission){
+            case 0://chi ghi chu
+                Home.bindingRight.transactionDetail.linearCheckinNoteRecord.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnTransactionNote.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnTransactionWrite.setVisibility(View.GONE);
+                Home.bindingRight.transactionDetail.btnTransactionCheckIn.setVisibility(View.GONE);
+                Home.bindingRight.transactionDetail.btnAcceptWork.setVisibility(View.GONE);
+                break;
+            case 1://Chap nhan giao dich
+                Home.bindingRight.transactionDetail.linearCheckinNoteRecord.setVisibility(View.GONE);
+                Home.bindingRight.transactionDetail.btnAcceptWork.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                Home.bindingRight.transactionDetail.linearCheckinNoteRecord.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnTransactionNote.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnTransactionWrite.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnTransactionCheckIn.setVisibility(View.VISIBLE);
+                Home.bindingRight.transactionDetail.btnAcceptWork.setVisibility(View.GONE);
+
+                break;
+            default:
                 break;
         }
     }
@@ -6586,6 +6652,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         setSpinnerColorWhite(parent, Color.WHITE);
         switch (parent.getId()) {
+
             case R.id.spCustomer://Chọn tuyến KH
                 Home.nowRoute = arrSpRoute.get(position).id;
                 //Chon xong tim luon
