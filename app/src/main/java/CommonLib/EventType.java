@@ -69,7 +69,8 @@ public abstract class EventType {
         SyncSurveyDetail,
         UpdateData,
         BranchGroup,
-        AcceptWork
+        AcceptWork,
+        RejectWork
     }
 
     public static class EventBase {
@@ -390,6 +391,14 @@ public abstract class EventType {
         public final int id_employee_viewed;
     }
 
+    public static class EventRejectWorkRequest extends EventBase {
+        public EventRejectWorkRequest(int id){
+            super(Type.RejectWork);
+            this.id = id;
+        }
+        public final int id;
+    }
+
     public static class EventAcceptWorkRequest extends EventBase {
         public EventAcceptWorkRequest(int id){
             super(Type.AcceptWork);
@@ -664,15 +673,26 @@ public abstract class EventType {
         }
     }
 
+
+    public static class EventRejectWorkResult extends EventBase {
+        public final boolean success;
+        public final String message ;
+        public EventRejectWorkResult(boolean success,String message) {
+            super(Type.RejectWork);
+            this.success = success;
+            this.message = message;
+        }
+    }
+
     public static class EventAcceptWorkResult extends EventBase {
         public final boolean success;
-        public final String mesasage;
+        public final String message;
         public final int result;
         public final int id;
         public EventAcceptWorkResult(boolean success,String message,int result,int id) {
             super(Type.AcceptWork);
             this.success = success;
-            this.mesasage = message;
+            this.message = message;
             this.result = result; // 0 : error 1: success 2: rejected
             this.id = id;
 

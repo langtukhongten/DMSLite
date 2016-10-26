@@ -491,4 +491,7 @@
     <string name="none_branch_group">Không có chi nhánh và nhóm!</string>
     <string name="accept_work">Chấp nhận công việc</string>
     <string name="accepting">Đang gửi yêu cầu ...</string>
+    <string name="transaction_cancel">Hủy bỏ giao dịch</string>
+    <string name="confirm_cancel">Xác nhận hủy bỏ giao dịch : \n</string>
+    <string name="rejecting">Đang hủy bỏ ...</string>
 </resources>

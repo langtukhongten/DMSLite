@@ -2296,9 +2296,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         .setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Xu li nhan cong viec
-                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView,getString(R.string.accepting),30);
-                            EventPool.control().enQueue(new EventType.EventAcceptWorkRequest(nowTransaction.rowId));
-                            dialog.dismiss();
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, getString(R.string.accepting), 30);
+                                EventPool.control().enQueue(new EventType.EventAcceptWorkRequest(nowTransaction.rowId));
+                                dialog.dismiss();
                             }
                         });
                 AlertDialog alertWork = builderWork.create();
@@ -3963,6 +3963,25 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 MyMethod.isReportNotOrder = false;
                                 MyMethod.CheckInCustomer = false;
                                 showLayout(Layouts.CheckIn, context);
+                                break;
+                            case R.id.transaction_cancel:
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle(context.getString(R.string.confirm_transaction_cancel));
+                                builder.setIcon(R.drawable.edit_btn);
+                                builder.setMessage(getString(R.string.confirm_cancel) + nowTransaction.description);
+                                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView,getString(R.string.rejecting),30);
+                                        EventPool.control().enQueue(new EventType.EventRejectWorkRequest(nowTransaction.rowId));
+                                        dialog.dismiss();
+                                    }
+                                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                    // Create the AlertDialog object and return it
+                                });
+                                builder.show();
                                 break;
                             default:
                                 break;
@@ -5769,7 +5788,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         showLayout(Layouts.GoStore, context);
                         Home.nowTransactionLine.id_customer = nowCustomer.id;
                         if (MyMethod.isOrderPhone) {
-                           MyMethod.isInStore = false;
+                            MyMethod.isInStore = false;
                             if (MyMethod.isCheckInCustomerTransactionDetail) {
                                 showLayout(Layouts.TransactionDetail, context);
                                 EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
@@ -6247,22 +6266,37 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     startActivity(intent);
                 }
                 break;
+
             case AcceptWork:
                 EventType.EventAcceptWorkResult eventAcceptWorkResult = (EventType.EventAcceptWorkResult) event;
-                if(eventAcceptWorkResult.success){
-                        updatePermissionLine(2);
-                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
-                }else{
-                    if(eventAcceptWorkResult.result==2){//Neu cong viec da co nguoi nhan
-                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
+                if (eventAcceptWorkResult.success) {
+                    updatePermissionLine(2);
+                    MyMethod.showToast(context, eventAcceptWorkResult.message);
+                } else {
+                    if (eventAcceptWorkResult.result == 2) {//Neu cong viec da co nguoi nhan
+                        MyMethod.showToast(context, eventAcceptWorkResult.message);
                         updatePermissionLine(0);
-                    }else{
+                    } else {
                         updatePermissionLine(1);
-                        MyMethod.showToast(context,eventAcceptWorkResult.mesasage);
+                        MyMethod.showToast(context, eventAcceptWorkResult.message);
                     }
 
                 }
                 EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(eventAcceptWorkResult.id));
+                break;
+            case RejectWork:
+                EventType.EventRejectWorkResult eventRejectWorkResult = (EventType.EventRejectWorkResult) event;
+                if (eventRejectWorkResult.success) {
+                    MyMethod.showToast(context, eventRejectWorkResult.message);
+                    Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
+                    Home.bindingHome.btnComeBack.performClick();
+
+                } else {
+                        MyMethod.showToast(context, eventRejectWorkResult.message);
+
+
+                }
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView);
                 break;
             default:
                 Log.w(TAG, "unhandled " + event.type);
@@ -6271,7 +6305,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private void updatePermissionLine(int permission) {
-        switch (permission){
+        switch (permission) {
             case 0://chi ghi chu
                 Home.bindingRight.transactionDetail.linearCheckinNoteRecord.setVisibility(View.VISIBLE);
                 Home.bindingRight.transactionDetail.btnTransactionNote.setVisibility(View.VISIBLE);
@@ -6408,10 +6442,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.now_btn)));
                     LatLng header = null;
                     try {
-                        if(nowTransaction.latitude!=-1) {
+                        if (nowTransaction.latitude != -1) {
                             //Neu co vi tri header thi ve ra
                             header = new LatLng(nowTransaction.latitude, nowTransaction.longtitude);
-                        }else{
+                        } else {
                             //khong co thi gan vi tri line vao luon ( truong hop ghi nhan checkin,checkout)
                             header = line;
                         }

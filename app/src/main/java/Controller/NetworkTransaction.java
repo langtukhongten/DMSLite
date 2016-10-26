@@ -904,6 +904,27 @@ public class NetworkTransaction {
         }
     }
 
+    public synchronized boolean rejectWork(int id) {
+        try{
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketRejectWork(id).getData(), true);
+            if (result != null) {
+                Log.i("rejectWork", "success");
+                Packets.FromServer.PacketRejectWork packetRejectWork = new Packets.FromServer.PacketRejectWork(result);
+                EventPool.view().enQueue(new EventType.EventRejectWorkResult(packetRejectWork.success, packetRejectWork.message));
+
+                return true;
+            } else {
+                Log.w("rejectWork", "fail");
+                EventPool.view().enQueue(new EventType.EventRejectWorkResult(false, "Không thể kết nối đến máy chủ"));
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventRejectWorkResult(false,"Lỗi không xác định"));
+            return false;
+        }
+    }
+
     public synchronized boolean loadBranchGroups(){
         try{
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketBranchGroups().getData(), true);

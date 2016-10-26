@@ -9,5 +9,9 @@
         android:id="@+id/transaction_finish"
         android:title="@string/transaction_finish" />
 
+    <item
+        android:id="@+id/transaction_cancel"
+        android:title="@string/transaction_cancel" />
+
 
 </menu>

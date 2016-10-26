@@ -717,6 +717,16 @@ abstract class Packets {
             public final ArrayList<Transaction> arrayTransactions;
         }
 
+        public static class PacketRejectWork extends Packet {
+            public PacketRejectWork(byte[] data) throws Exception {
+                super(data);
+                success = readBool();
+                message = readString();
+            }
+            public final boolean success;
+            public final String message;
+        }
+
         public static class PacketAcceptWork extends Packet {
             public PacketAcceptWork(byte[] data) throws Exception {
                 super(data);
@@ -1450,7 +1460,8 @@ abstract class Packets {
             SyncSurveyDetail(49),
             UpdateData(50),
             BranchGroup(51),
-            AcceptWork(52);
+            AcceptWork(52),
+            RejectWork(53);
             private final int id;
 
             PacketType(int id) {
@@ -1673,6 +1684,13 @@ abstract class Packets {
         public static class PacketAcceptWork extends Packet {
             public PacketAcceptWork(int id) throws IOException {
                 super(PacketType.AcceptWork);
+                write(id);
+            }
+        }
+
+        public static class PacketRejectWork extends Packet {
+            public PacketRejectWork(int id) throws IOException {
+                super(PacketType.RejectWork);
                 write(id);
             }
         }

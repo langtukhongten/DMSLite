@@ -226,7 +226,11 @@ public class ControlThread extends Thread {
         }
 
         switch (event.type) {
-
+            case RejectWork: {
+                EventType.EventRejectWorkRequest eventRejectWorkRequest = (EventType.EventRejectWorkRequest) event;
+                NetworkTransaction.inst(context).rejectWork(eventRejectWorkRequest.id);
+            }
+            break;
             case AcceptWork: {
                 EventType.EventAcceptWorkRequest eventAcceptWorkRequest  = (EventType.EventAcceptWorkRequest) event;
                 NetworkTransaction.inst(context).acceptWork(eventAcceptWorkRequest.id);
