@@ -271,7 +271,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
                             rightFragment.transactionArrayList.clear();
                             rightFragment.adapterTransaction.notifyDataSetChanged();
                             LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
-                            MyMethod.isLoadTransactionByIDInMessage = true;
+                            MyMethod.isLoadTransactionInMessage = true;
                             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                             MyMethod.IDFromMessageService = lastId;
                         } catch (Exception e) {

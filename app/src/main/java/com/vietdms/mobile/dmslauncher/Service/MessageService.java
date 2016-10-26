@@ -1,5 +1,6 @@
 package com.vietdms.mobile.dmslauncher.Service;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,15 +15,19 @@ import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -106,6 +111,7 @@ public class MessageService extends Service {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -122,41 +128,46 @@ public class MessageService extends Service {
         mainParams.setMargins(20, 0, 20, 0);
         main.setLayoutParams(mainParams);
         main.setBackgroundColor(Color.WHITE);
+        main.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_full_holo_light));
         main.setOrientation(LinearLayout.VERTICAL);
 //        //endregion
         //region Create linearLayout Top
         lltop = new LinearLayout(this);
         LinearLayout.LayoutParams lltopParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lltop.setLayoutParams(lltopParams);
-        lltop.setBackgroundColor(Color.RED);
         lltop.setOrientation(LinearLayout.HORIZONTAL);
         icon = new ImageView(this);
         LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        iconParams.setMargins(5, 5, 5, 5);
+
         icon.setLayoutParams(iconParams);
         icon.setPadding(5, 5, 5, 5);
         icon.setImageResource(R.drawable.logo_btn);
         title = new TextView(this);
-        title.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2));
-        title.setText(context.getString(R.string.notice));
-        title.setTextColor(Color.WHITE);
+        title.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2));
+        title.setText(context.getString(R.string.notice_from_dms));
+        title.setTextColor(Color.BLACK);
         title.setTypeface(null, Typeface.BOLD);
-        title.setGravity(Gravity.LEFT);
+        title.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.places_ic_clear, 0);
         lltop.addView(icon);
         lltop.addView(title);
         //endregion
         main.addView(lltop);
         LinearLayout line = new LinearLayout(this);
-        LinearLayout.LayoutParams linela = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
+        LinearLayout.LayoutParams linela = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
         line.setLayoutParams(linela);
-        line.setPadding(0, 0, 0, 10);
+
         line.setBackgroundColor(Color.DKGRAY);
         main.addView(line);
         info = new TextView(this);
         info.setGravity(Gravity.LEFT);
-        info.setInputType(Typeface.ITALIC);
+        info.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        info.setMinLines(2);
+        info.setSingleLine(false);
+        info.setLines(2);
+        info.setMaxLines(4);
         info.setTextColor(Color.BLACK);
-        info.setPadding(0, 5, 0, 15);
+        info.setPadding(20, 5, 0, 15);
         info.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         main.addView(info);
 
@@ -169,6 +180,8 @@ public class MessageService extends Service {
         message.setPadding(0, 15, 0, 30);
         message.setTypeface(null, Typeface.BOLD);
         message.setGravity(Gravity.LEFT);
+        message.setMinLines(2);
+        message.setMaxLines(4);
         message.setTextColor(Color.BLACK);
         message.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         downloadProgressBar.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
@@ -187,17 +200,23 @@ public class MessageService extends Service {
         main.addView(line2);
 
         LinearLayout llbutton = new LinearLayout(this);
-        llbutton.setPadding(0, 20, 0, 10);
+        llbutton.setPadding(0, 20, 0, 0);
         llbutton.setOrientation(LinearLayout.HORIZONTAL);
         btnRead = new Button(this);
         btnRead.setText(context.getString(R.string.read));
-        btnRead.setBackgroundColor(Color.BLUE);
-        btnRead.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        btnRead.setBackgroundColor(Color.DKGRAY);
+        btnRead.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        LinearLayout line3 = new LinearLayout(this);
+        LinearLayout.LayoutParams linela3 = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        line3.setBackgroundColor(Color.WHITE);
+        line3.setLayoutParams(linela3);
         btnClose = new Button(this);
         btnClose.setText(context.getString(R.string.close));
         btnClose.setBackgroundColor(Color.DKGRAY);
-        btnClose.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        btnClose.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         llbutton.addView(btnRead);
+        llbutton.addView(line3);
         llbutton.addView(btnClose);
         main.addView(llbutton);
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -211,7 +230,24 @@ public class MessageService extends Service {
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD,
                 PixelFormat.TRANSPARENT
         );
+        title.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
 
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (event.getX() >= (title.getWidth() - title.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        btnClose.performClick();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,7 +290,7 @@ public class MessageService extends Service {
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
                         }
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
-                        MyMethod.isLoadTransactionByIDInMessage = false;
+                        MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, Model.getServerTime(), -1, "", false, Const.TransactionStatus.Working.getValue()));
                     } else {
                         Intent dialogIntent = new Intent(context, Home.class);
@@ -272,7 +308,7 @@ public class MessageService extends Service {
                         if (Home.bindingHome != null) Home.bindingHome.viewpager.setCurrentItem(2);
                         Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.Transaction);
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
-                        MyMethod.isLoadTransactionByIDInMessage = true;
+                        MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     } else {
                         Intent dialogIntent = new Intent(context, Home.class);
@@ -285,7 +321,7 @@ public class MessageService extends Service {
                             e.printStackTrace();
                         }
                         LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
-                        MyMethod.isLoadTransactionByIDInMessage = true;
+                        MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     }
                 }
@@ -331,13 +367,14 @@ public class MessageService extends Service {
                 Log.w(TAG, "Tin nhắn: " + sender);
                 try {
                     int id_message = Integer.parseInt(sender.split("ß")[0].trim());
+                    int sendby = Integer.parseInt(sender.split("ß")[2].trim());
                     if (id_message != lastId)//Tin nhắn mơi
                     {
                         lastId = id_message;
                         showMessage();
                     } else {//Tin nhắn cũ
                         Log.w(TAG, "onStartCommand: Tin nhắn cũ");
-                        if (long2Minute(System.currentTimeMillis() - timeOldMessage) >= 5)//Sau 5 phút lại báo
+                        if (long2Minute(System.currentTimeMillis() - timeOldMessage) >= 5 || sendby == 0)//Sau 5 phút hoac tin nhan gui giao dich topic lại báo
                         {
                             showMessage();
                         }
@@ -375,7 +412,7 @@ public class MessageService extends Service {
                                 }
                             }
                         }
-                    } else {
+                    } else if (sender.contains("►GPS")) {
                         Log.w(TAG, "onStartCommand: Yêu cầu GPS cũ");
                         if (long2Minute(System.currentTimeMillis() - timeOldGPS) >= 30)//Sau 30 phút lại báo
                         {
@@ -391,7 +428,7 @@ public class MessageService extends Service {
         return START_STICKY;
     }
 
-    private void showMessage() {
+    private synchronized void showMessage() {
         boolean flagShow = false;
         downloadProgressBar.setVisibility(View.GONE);
         labelDownload.setVisibility(View.GONE);
@@ -503,9 +540,9 @@ public class MessageService extends Service {
                         flag2G = false;
                         btnRead.setText("Xem GD");
                         btnClose.setText("Để sau");
-                        info.setText("Bạn có " + sender.split("►")[2] + " giao dịch chưa kết thúc!");
-                        message.setText("Thông báo giao dịch chưa kết thúc.");
-                        sendNotification("Giao dịch chưa kết thúc.", TransactionWorking);
+                        info.setText(getString(R.string.you_have) + sender.split("►")[2] + getString(R.string.transaction_none_finish));
+                        message.setText(getString(R.string.notify_transaction_not_finish));
+                        sendNotification(getString(R.string.transaction_not_finish), TransactionWorking);
                         timeOldTransaction = System.currentTimeMillis();// đặt lại thời gian nhận tin
                         break;
                     case "2G":
@@ -517,17 +554,17 @@ public class MessageService extends Service {
                         flag2G = true;
                         btnRead.setText(getString(R.string.ok));
                         btnClose.setText("");
-                        info.setText("Thông báo khu vực mạng chậm!");
-                        message.setText("Khu vực không có sóng 3G nên sẽ ảnh hưởng tới tốc độ xử lý!");
-                        sendNotification("Thông báo mạng chậm.", NetWork2G);
+                        info.setText(getString(R.string.notify_slow_network));
+                        message.setText(getString(R.string.area_not_network));
+                        sendNotification(getString(R.string.notify_slow_network), NetWork2G);
                         timeOld2G = System.currentTimeMillis();// đặt lại thời gian nhận tin
                         break;
 
                 }
             } else {
-                info.setText("Không có thông tin");
-                message.setText("Không có nội dung");
-                sendNotification("Không có nội dung", TRANSACTION);
+                info.setText(getString(R.string.no_info));
+                message.setText(getString(R.string.no_content));
+                sendNotification(getString(R.string.no_content), TRANSACTION);
             }
             if (main.getWindowToken() == null && flagShow) {
                 params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;

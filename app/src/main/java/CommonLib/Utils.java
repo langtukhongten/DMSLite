@@ -191,7 +191,8 @@ public class Utils {
         }
     }
 
-    public static String statusTransaction(int status) {
+    public static String statusTransaction(int status, int id_employee) {
+
         switch (status) {
             case 0:
                 return "Chưa GD";
@@ -201,8 +202,16 @@ public class Utils {
                 return "Có ĐH";
             case 3:
                 return "Không ĐH";
+            case 5:
+                return "Đã kết thúc";
+            case 15:
+                return "Đang GD";
+            case 99:
+                return "Đã kết thúc";
+            case 7://ghi chu
+                return id_employee == 0 ? "Chưa có người nhận" : "Đã có người nhận";
             default:
-                return "Chưa xác định";
+                return "Chưa xác định : " + status;
         }
     }
 

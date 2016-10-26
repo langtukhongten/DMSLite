@@ -1351,7 +1351,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         transactionLineArrayList.clear();
         adapterTransaction.notifyDataSetChanged();
         MyMethod.isLoadTransactionByID = false;
-        MyMethod.isLoadTransactionByIDInMessage = false;
+        MyMethod.isLoadTransactionInMessage = false;
         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
         Home.swipeTransaction.setRefreshing(false);
     }
@@ -1868,7 +1868,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private void loadMoreTransaction() {
         MyMethod.isLoadTransactionByID = false;
         adapterTransaction.notifyDataSetChanged();
-        MyMethod.isLoadTransactionByIDInMessage = false;
+        MyMethod.isLoadTransactionInMessage = false;
         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastRowIdTransaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
         Home.swipeTransactionBottom.setRefreshing(false);
     }
@@ -3262,7 +3262,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 transactionArrayList.clear();
                 transactionLineArrayList.clear();
                 MyMethod.isLoadTransactionByID = false;
-                MyMethod.isLoadTransactionByIDInMessage = false;
+                MyMethod.isLoadTransactionInMessage = false;
                 EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, nowTransactionStatus));
                 break;
             case R.id.btn_update_location_customer:
@@ -3709,6 +3709,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.nowTransactionLine.id_transaction = nowTransaction.rowId;
             Home.nowTransactionLine.userid = nowTransaction.userid;
             Home.nowTransactionLine.id_employee = nowTransaction.id_employee;
+            Home.nowTransactionLine.create_date = Model.getServerTime();
+            Home.nowTransactionLine.modified_date = Model.getServerTime();
             showLayout(Layouts.TransactionDetail, context);
             EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
         }
@@ -3971,7 +3973,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 builder.setMessage(getString(R.string.confirm_cancel) + nowTransaction.description);
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView,getString(R.string.rejecting),30);
+                                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, getString(R.string.rejecting), 30);
                                         EventPool.control().enQueue(new EventType.EventRejectWorkRequest(nowTransaction.rowId));
                                         dialog.dismiss();
                                     }
@@ -4702,7 +4704,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             showLayout(Layouts.TransactionDetail, context);
             LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView, context.getString(R.string.load_transaction_line), 30);
             MyMethod.isLoadTransactionByID = true;
-            MyMethod.isLoadTransactionByIDInMessage = false;
+            MyMethod.isLoadTransactionInMessage = false;
             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(Home.timelinesArrayList.get(position).id_transaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, true, nowTransactionStatus));
             EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(Home.timelinesArrayList.get(position).id_transaction));
         } else if (MyMethod.isVisible(Home.bindingRight.approvalAppLock.linearAppprovalAppLock)) {
@@ -4722,7 +4724,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         //Chi tiết giao dịch
         Home.bindingRight.transactionDetail.refTransactionNameNo.setText(transaction.description + " - " + transaction.no_);
         txtTransactionHeaderTime.setText(Utils.long2String(transaction.createdate));
-        txtTransactionHeaderStatus.setText(Utils.statusTransaction(transaction.status));
+        txtTransactionHeaderStatus.setText(Utils.statusTransaction(transaction.status, transaction.id_employee));
         txtTransactionHeaderPhone.setText(transaction.phone_no_);
         txtTransactionHeaderAddress.setText(transaction.trans_address);
         txtTransactionHeaderNote.setText(transaction.note);
@@ -5186,7 +5188,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         updateValueTransaction(nowTransaction);
                     } else {
                         lastRowIdTransaction = transactionsResult.arrTransactions.get(transactionsResult.arrTransactions.size() - 1).rowId;
-                        if (MyMethod.isLoadTransactionByIDInMessage) {
+                        if (MyMethod.isLoadTransactionInMessage) {
                             //Nếu load theo id từ tin nhắn thì xóa trắng
                             transactionArrayList.clear();
                         }
@@ -6292,7 +6294,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.bindingHome.btnComeBack.performClick();
 
                 } else {
-                        MyMethod.showToast(context, eventRejectWorkResult.message);
+                    MyMethod.showToast(context, eventRejectWorkResult.message);
 
 
                 }
@@ -7003,7 +7005,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             transactionArrayList.clear();
                             transactionLineArrayList.clear();
                             MyMethod.isLoadTransactionByID = false;
-                            MyMethod.isLoadTransactionByIDInMessage = false;
+                            MyMethod.isLoadTransactionInMessage = false;
                             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastRowIdTransaction, fromDateTransaction, nowIdEmployeeTransaction, filterTransaction, false, Const.TransactionStatus.All.getValue()));
                         }
                         break;

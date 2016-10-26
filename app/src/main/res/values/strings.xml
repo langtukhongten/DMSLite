@@ -494,4 +494,13 @@
     <string name="transaction_cancel">Hủy bỏ giao dịch</string>
     <string name="confirm_cancel">Xác nhận hủy bỏ giao dịch : \n</string>
     <string name="rejecting">Đang hủy bỏ ...</string>
+    <string name="notify_slow_network">Thông báo khu vực mạng chậm!</string>
+    <string name="area_not_network">Khu vực không có sóng 3G nên sẽ ảnh hưởng tới tốc độ xử lý!</string>
+    <string name="no_info">Không có thông tin</string>
+    <string name="no_content">Không có nội dung</string>
+    <string name="you_have">Bạn có :&#160;</string>
+    <string name="transaction_none_finish">&#160; giao dịch chưa kết thúc!</string>
+    <string name="notify_transaction_not_finish">Thông báo giao dịch chưa kết thúc.</string>
+    <string name="transaction_not_finish">Giao dịch chưa kết thúc.</string>
+    <string name="notice_from_dms">Thông báo từ eDMS</string>
 </resources>

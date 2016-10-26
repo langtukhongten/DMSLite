@@ -149,7 +149,7 @@ public class MyMethod {
     public static boolean isFirstOff = true; // lan dau vao receiver tat mang
     public static boolean selectRouteInCreateCustomer;//Chon tuyen trong tao khach hangf / cap nhat kh
     public static boolean UpdateCustomerRoute; // cap nhat tuyen kh
-    public static boolean isLoadTransactionByIDInMessage;//Load theo id trong message
+    public static boolean isLoadTransactionInMessage;//Load giao dich trong message
 
 
     /**
