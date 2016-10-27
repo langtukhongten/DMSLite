@@ -503,4 +503,8 @@
     <string name="notify_transaction_not_finish">Thông báo giao dịch chưa kết thúc.</string>
     <string name="transaction_not_finish">Giao dịch chưa kết thúc.</string>
     <string name="notice_from_dms">Thông báo từ eDMS</string>
+    <string name="send_transaction">Gửi giao dịch</string>
+    <string name="content_transaction">Nội dung giao dịch :</string>
+    <string name="input_phone">Nhập số điện thoại</string>
+    <string name="input_customer">Nhập tên khách hàng</string>
 </resources>

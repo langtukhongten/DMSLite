@@ -345,6 +345,9 @@ public class ControlThread extends Thread {
                 EventType.EventLoadCustomersRequest eventLoadCustomersRequest = (EventType.EventLoadCustomersRequest) event;
                 NetworkTransaction.inst(context).loadCustomers(eventLoadCustomersRequest.routeId, eventLoadCustomersRequest.filter, eventLoadCustomersRequest.lastId, eventLoadCustomersRequest.id_employee_viewed);
                 break;
+            case LoadAllCustomers:
+                NetworkTransaction.inst(context).loadAllCustomers();
+                break;
             case UpdateCustomer:
                 EventType.EventUpdateCustomerRequest eventUpdateCustomerRequest = (EventType.EventUpdateCustomerRequest) event;
                 NetworkTransaction.inst(context).updateCustomer(eventUpdateCustomerRequest.customer);
@@ -570,6 +573,12 @@ public class ControlThread extends Thread {
             case ListApps: {
                 EventType.EventListAppRequest eventListAppRequest = (EventType.EventListAppRequest) event;
                 EventPool.view().enQueue(new EventType.EventListAppResult(AppManager.inst().getListPackages(eventListAppRequest.recentApps), eventListAppRequest.recentApps));
+            }
+            break;
+            case SendTransactionMessage:{
+                EventType.EventSendTransactionMessageRequest eventSendTransactionMessageRequest = (EventType.EventSendTransactionMessageRequest) event;
+                NetworkTransaction.inst(context).sendTransactionMessage(eventSendTransactionMessageRequest.type,eventSendTransactionMessageRequest.id_customer,eventSendTransactionMessageRequest.id_employee,eventSendTransactionMessageRequest.content,eventSendTransactionMessageRequest.note,eventSendTransactionMessageRequest.phone);
+
             }
             break;
             default:

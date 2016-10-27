@@ -218,7 +218,8 @@ public class MyMethod {
                 return ContextCompat.getDrawable(context, R.drawable.report_transaction_employee);
             case "Giao dịch tổng hợp":
                 return ContextCompat.getDrawable(context, R.drawable.report_transaction_general);
-
+            case "Gửi giao dịch":
+                return ContextCompat.getDrawable(context, R.drawable.send_btn);
             default:
                 return ContextCompat.getDrawable(context, R.mipmap.android);
         }

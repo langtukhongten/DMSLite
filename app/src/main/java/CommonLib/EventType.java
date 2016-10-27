@@ -70,7 +70,9 @@ public abstract class EventType {
         UpdateData,
         BranchGroup,
         AcceptWork,
-        RejectWork
+        RejectWork,
+        LoadAllCustomers,
+        SendTransactionMessage
     }
 
     public static class EventBase {
@@ -102,10 +104,11 @@ public abstract class EventType {
     }
 
     public static class EventBranchGroupRequest extends EventBase {
-        public EventBranchGroupRequest(){
+        public EventBranchGroupRequest() {
             super(Type.BranchGroup);
         }
     }
+
     public static class EventReportRequest extends EventBase {
         public final Const.LocationVisitedType visitedType;
         public final String visitedId;
@@ -230,6 +233,26 @@ public abstract class EventType {
         public final int id;
     }
 
+    public static class EventSendTransactionMessageRequest extends EventBase {
+        public EventSendTransactionMessageRequest(int type, int id_customer, int id_employee,String content, String note, String phone) {
+            super(Type.SendTransactionMessage);
+            this.type = type;
+            this.id_customer = id_customer;
+            this.id_employee = id_employee;
+            this.content = content;
+            this.note = note;
+            this.phone = phone;
+        }
+
+        public final int type;
+        public final int id_customer;
+        public final int id_employee;
+        public final String content;
+        public final String note;
+        public final String phone;
+
+    }
+
     public static class EventUpdateDataRequest extends EventBase {
         public EventUpdateDataRequest(ArrayList<Object> arrData, int type) {
             super(Type.UpdateData);
@@ -328,6 +351,7 @@ public abstract class EventType {
         public final int id_employee_viewed;
     }
 
+
     public static class EventLoadCustomersRequest extends EventBase {
         public EventLoadCustomersRequest(int routeId, String filter, int lastId, int id_employee_viewed) {
             super(Type.LoadCustomers);
@@ -341,6 +365,12 @@ public abstract class EventType {
         public final String filter;
         public final int lastId;
         public final int id_employee_viewed;
+    }
+
+    public static class EventLoadAllCustomersRequest extends EventBase {
+        public EventLoadAllCustomersRequest() {
+            super(Type.LoadAllCustomers);
+        }
     }
 
     public static class EventUpdateCustomerRequest extends EventBase {
@@ -392,18 +422,20 @@ public abstract class EventType {
     }
 
     public static class EventRejectWorkRequest extends EventBase {
-        public EventRejectWorkRequest(int id){
+        public EventRejectWorkRequest(int id) {
             super(Type.RejectWork);
             this.id = id;
         }
+
         public final int id;
     }
 
     public static class EventAcceptWorkRequest extends EventBase {
-        public EventAcceptWorkRequest(int id){
+        public EventAcceptWorkRequest(int id) {
             super(Type.AcceptWork);
             this.id = id;
         }
+
         public final int id;
     }
 
@@ -518,7 +550,7 @@ public abstract class EventType {
     public static class EventSendTransactionRequest extends EventBase {
         public EventSendTransactionRequest(TransactionLine transactionLine) {
             super(Type.SendTransaction);
-            if(transactionLine.create_date==0){
+            if (transactionLine.create_date == 0) {
                 transactionLine.create_date = Model.getServerTime();
                 transactionLine.modified_date = Model.getServerTime();
             }
@@ -674,10 +706,22 @@ public abstract class EventType {
     }
 
 
+    public static class EventSendTransactionResult extends EventBase {
+        public final boolean success;
+        public final String message;
+
+        public EventSendTransactionResult(boolean success, String message) {
+            super(Type.SendTransaction);
+            this.success = success;
+            this.message = message;
+        }
+    }
+
     public static class EventRejectWorkResult extends EventBase {
         public final boolean success;
-        public final String message ;
-        public EventRejectWorkResult(boolean success,String message) {
+        public final String message;
+
+        public EventRejectWorkResult(boolean success, String message) {
             super(Type.RejectWork);
             this.success = success;
             this.message = message;
@@ -689,7 +733,8 @@ public abstract class EventType {
         public final String message;
         public final int result;
         public final int id;
-        public EventAcceptWorkResult(boolean success,String message,int result,int id) {
+
+        public EventAcceptWorkResult(boolean success, String message, int result, int id) {
             super(Type.AcceptWork);
             this.success = success;
             this.message = message;
@@ -761,7 +806,8 @@ public abstract class EventType {
         public final String meassage;
         public final ArrayList<Status> listBranch;
         public final ArrayList<IdStatus> listGroup;
-        public EventBranchGroupResult(boolean success,String message,ArrayList<Status> listBranch,ArrayList<IdStatus> listGroup) {
+
+        public EventBranchGroupResult(boolean success, String message, ArrayList<Status> listBranch, ArrayList<IdStatus> listGroup) {
             super(Type.BranchGroup);
             this.success = success;
             this.meassage = message;
@@ -801,7 +847,7 @@ public abstract class EventType {
         public final ArrayList<TransactionLine> arrTransactionLine;
         public final int permission;//0 chi doc, 1 chap nhan giao dich, 2 hien chuc nang
 
-        public EventLoadTransactionLinesResult(boolean success, String message, ArrayList<TransactionLine> arrTransactionLine,int permission) {
+        public EventLoadTransactionLinesResult(boolean success, String message, ArrayList<TransactionLine> arrTransactionLine, int permission) {
             super(Type.LoadTransactionLines);
             this.success = success;
             this.message = message;
@@ -884,7 +930,7 @@ public abstract class EventType {
         public final String message;
         public final int type;
 
-        public EventUpdateDataResult(boolean success, String message,int type) {
+        public EventUpdateDataResult(boolean success, String message, int type) {
             super(Type.UpdateData);
             this.success = success;
             this.message = message;
@@ -999,6 +1045,19 @@ public abstract class EventType {
 
         public EventLoadCustomersResult(boolean success, String message, ArrayList<Customer> arrCustomer) {
             super(Type.LoadCustomers);
+            this.success = success;
+            this.message = message;
+            this.arrCustomer = arrCustomer;
+        }
+    }
+
+    public static class EventLoadAllCustomersResult extends EventBase {
+        public final boolean success;
+        public final String message;
+        public final ArrayList<Status> arrCustomer;
+
+        public EventLoadAllCustomersResult(boolean success, String message, ArrayList<Status> arrCustomer) {
+            super(Type.LoadAllCustomers);
             this.success = success;
             this.message = message;
             this.arrCustomer = arrCustomer;
@@ -1185,12 +1244,12 @@ public abstract class EventType {
         }
     }
 
-    public static class EventSendTransactionResult extends EventBase {
+    public static class EventSendTransactionMessageResult extends EventBase {
         public final boolean success;
         public final String message;
 
-        public EventSendTransactionResult(boolean success, String message) {
-            super(Type.SendTransaction);
+        public EventSendTransactionMessageResult(boolean success, String message) {
+            super(Type.SendTransactionMessage);
             this.success = success;
             this.message = message;
         }

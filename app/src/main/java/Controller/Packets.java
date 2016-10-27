@@ -453,6 +453,27 @@ abstract class Packets {
             public final Customer customer = new Customer();
         }
 
+        public static class PacketLoadAllCustomers extends Packet {
+            public PacketLoadAllCustomers(byte[] data) throws Exception {
+                super(data);
+                message = readString();
+                int len = readInt();
+                arrayCustomers = new ArrayList<>(len);
+                for (int i = 0; i < len; i++) {
+                    Status customer = new Status();
+                    customer.id = readInt();
+                    customer.name = readString();
+
+                    arrayCustomers.add(customer);
+                }
+                inflater.end();
+            }
+
+            public final String message;
+            public final ArrayList<Status> arrayCustomers;
+
+        }
+
         public static class PacketLoadCustomers extends Packet {
             public PacketLoadCustomers(byte[] data) throws Exception {
                 super(data);
@@ -1306,6 +1327,16 @@ abstract class Packets {
             public final ArrayList<City> arrCitys;
         }
 
+        public static class PacketSendTransactionMessage extends  Packet {
+            public PacketSendTransactionMessage(byte[] data) throws Exception {
+                super(data);
+                success = readBool();
+                message = readString();
+            }
+            public final boolean success;
+            public final String message;
+        }
+
         public static class PacketLoadCountys extends Packet {
             public PacketLoadCountys(byte[] data) throws Exception {
                 super(data);
@@ -1461,7 +1492,9 @@ abstract class Packets {
             UpdateData(50),
             BranchGroup(51),
             AcceptWork(52),
-            RejectWork(53);
+            RejectWork(53),
+            LoadAllCustomer(54),
+            SendTransactionMessage(55);
             private final int id;
 
             PacketType(int id) {
@@ -1751,6 +1784,11 @@ abstract class Packets {
                 write(filter);
                 write(lastId);
                 write(id_employee_viewed);
+            }
+        }
+        public static class PacketLoadAllCustomers extends  Packet {
+            public PacketLoadAllCustomers() throws IOException {
+                super(PacketType.LoadAllCustomer);
             }
         }
 
@@ -2163,6 +2201,18 @@ abstract class Packets {
                 super(PacketType.LoadCountys);
                 write(id_city);
 
+            }
+        }
+
+        public static class PacketSendTransactionMessage extends Packet {
+            public PacketSendTransactionMessage(int type,int id_customer,int id_employee,String content,String note,String phone) throws IOException {
+                super(PacketType.SendTransactionMessage);
+                write(type);
+                write(id_customer);
+                write(id_employee);
+                write(content);
+                write(note);
+                write(phone);
             }
         }
 

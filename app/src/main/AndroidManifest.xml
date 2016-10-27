@@ -94,8 +94,6 @@
             <intent-filter>
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".LockView"
@@ -276,8 +274,6 @@
             <intent-filter>
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".Forms.ReportTransactionEmployee"
@@ -286,8 +282,6 @@
             <intent-filter>
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".Forms.ReportTransactionGeneral"
@@ -296,9 +290,14 @@
             <intent-filter>
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
-
-
         </activity>
+        <activity android:name=".Forms.SendTransaction"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="Forms.OnEvent" />
+            </intent-filter>
+            </activity>
     </application>
 
 </manifest>

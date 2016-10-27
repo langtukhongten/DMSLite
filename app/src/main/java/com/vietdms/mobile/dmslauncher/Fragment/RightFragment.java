@@ -106,6 +106,7 @@ import com.vietdms.mobile.dmslauncher.Forms.MapsActivity;
 import com.vietdms.mobile.dmslauncher.Forms.ReportRoute;
 import com.vietdms.mobile.dmslauncher.Forms.ReportTransactionEmployee;
 import com.vietdms.mobile.dmslauncher.Forms.ReportTransactionGeneral;
+import com.vietdms.mobile.dmslauncher.Forms.SendTransaction;
 import com.vietdms.mobile.dmslauncher.Forms.SurveyActivity;
 import com.vietdms.mobile.dmslauncher.Forms.SurveyQAActivity;
 import com.vietdms.mobile.dmslauncher.Forms.WebReport_Overview;
@@ -473,6 +474,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             appManager.add(context.getString(R.string.inventory_input));
         if (Model.inst().isMenuShow(Const.Menu.ApproVal))
             appManager.add(context.getString(R.string.approval));
+        if (Model.inst().isMenuShow(Const.Menu.SendTransaction))
+            appManager.add(context.getString(R.string.send_transaction));
         if (Model.inst().isMenuShow(Const.Menu.InventoryEmployee))
             appMenu.add(context.getString(R.string.inventory_employee));
         if (Model.inst().isMenuShow(Const.Menu.InventoryBill))
@@ -1380,7 +1383,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
                 EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
                 MyMethod.isSyncDating = true;
-
             }
             Home.swipeCustomer.setRefreshing(false);
         } catch (Exception e) {
@@ -7154,6 +7156,39 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             lastRowIdApproval = -1;
                             LayoutLoadingManager.Show_OnLoading(Home.loadingApprovalAppLock, context.getString(R.string.load_approval), 30);
                             EventPool.control().enQueue(new EventType.EventLoadRequestGrantRequest(lastRowIdApproval, nowIdApproval, Home.bindingRight.approvalAppLock.spApprovalStatus.getSelectedItemPosition(), filtersvApproval));
+                        }
+                        break;
+                    case "Gửi giao dịch":
+                        if (PhoneState.inst().isWifi() != 1 && PhoneState.inst().is3G() != 1) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage(context.getString(R.string.please_open_network))
+                                    .setCancelable(true)
+                                    .setPositiveButton(context.getString(R.string.wifi), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Home.isAppLockStop = true;
+                                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                            dialog.dismiss();
+                                        }
+                                    }).setNegativeButton(context.getString(R.string.threeG), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Home.isAppLockStop = true;
+                                    try {
+                                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                                        intent.setComponent(new ComponentName("com.android.settings",
+                                                "com.android.settings.Settings$DataUsageSummaryActivity"));
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivityForResult(intent, OPEN3G);
+                                    } catch (ActivityNotFoundException e) {
+                                        startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), OPEN3G);
+                                    }
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        } else {
+                            startActivity(new Intent(context, SendTransaction.class));
                         }
                         break;
                     default:

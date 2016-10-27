@@ -474,6 +474,34 @@ public class NetworkTransaction {
         }
     }
 
+
+    public synchronized boolean loadAllCustomers() {
+        try {
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadAllCustomers().getData(), true);
+            if (result != null) {
+                Log.i("loadAllCustomers", "success");
+                Packets.FromServer.PacketLoadAllCustomers packetLoadAllCustomers = new Packets.FromServer.PacketLoadAllCustomers(result);
+
+                if (packetLoadAllCustomers.arrayCustomers.size() != 0) {
+                    EventPool.view().enQueue(new EventType.EventLoadAllCustomersResult(true, packetLoadAllCustomers.message, packetLoadAllCustomers.arrayCustomers));
+                } else {
+                    EventPool.view().enQueue(new EventType.EventLoadAllCustomersResult(false, packetLoadAllCustomers.message, null));
+                }
+                return true;
+            } else {
+                Log.w("loadAllCustomers", "fail");
+                EventPool.view().enQueue(new EventType.EventLoadAllCustomersResult(false, "Không thể kết nối đến máy chủ", null));
+                return false;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventLoadAllCustomersResult(false, "Lỗi không xác định", null));
+            SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
+            return false;
+        }
+    }
+
+
     public synchronized boolean updateCustomer(Customer customer) {
         try {
             Packets.ToServer.PacketUpdateCustomer packetUpdateCustomer = new Packets.ToServer.PacketUpdateCustomer(customer);
@@ -1497,6 +1525,26 @@ public class NetworkTransaction {
         } catch (Exception ex) {
             ex.printStackTrace();
             EventPool.view().enQueue(new EventType.EventLoadCountysResult(false, "Lỗi không xác định", null));
+            SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
+            return false;
+        }
+    }
+    public synchronized boolean sendTransactionMessage(int type,int id_customer, int id_employee, String content, String note,String phone) {
+        try {
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketSendTransactionMessage(type,id_customer,id_employee,content,note,phone).getData(), true);
+            if (result != null) {
+                Log.i("loadCountys", "success");
+                Packets.FromServer.PacketSendTransactionMessage packetSendTransactionMessage = new Packets.FromServer.PacketSendTransactionMessage(result);
+                EventPool.view().enQueue(new EventType.EventSendTransactionMessageResult(packetSendTransactionMessage.success, packetSendTransactionMessage.message));
+                return true;
+            } else {
+                Log.w("loadCountys", "fail");
+                EventPool.view().enQueue(new EventType.EventSendTransactionMessageResult(false, "Không thể kết nối đến máy chủ"));
+                return false;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventSendTransactionMessageResult(false, "Lỗi không xác định"));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }
