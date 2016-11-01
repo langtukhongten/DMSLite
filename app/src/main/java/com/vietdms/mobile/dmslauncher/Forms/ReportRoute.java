@@ -82,7 +82,7 @@ public class ReportRoute extends AppCompatActivity implements View.OnClickListen
                 EventType.EventGetUsersResult eventGetUsersResult = (EventType.EventGetUsersResult) event;
                 arrayStaff.clear();
                 if (eventGetUsersResult.arrayUsers == null || eventGetUsersResult.arrayUsers.length <= 0) {
-                    MyMethod.showToast(context, context.getString(R.string.none_staff));
+                   MyMethod.showToast(binding,context, context.getString(R.string.none_staff));
                 } else {
                     Collections.addAll(arrayStaff, eventGetUsersResult.arrayUsers);
 

@@ -59,7 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     binding.content.txtAccuracy.setText(this.getString(R.string.accuracy) + location.getAccuracy() + " m");
                     binding.fab.setEnabled(true);
                 } else {
-                    MyMethod.showToast(this, this.getString(R.string.location_none));
+                    MyMethod.showToast(binding,this, this.getString(R.string.location_none));
                 }
                 break;
             default:
@@ -150,7 +150,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         } else {
-            MyMethod.showToast(this, this.getString(R.string.location_wait));
+            MyMethod.showToast(binding,this, this.getString(R.string.location_wait));
             LocationDetector.inst().setHighPrecision(true);
         }
         // Request map update location
@@ -172,7 +172,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     finish();
                 } else {
                     MyMethod.refreshMap(this, googleMap);
-                    MyMethod.showToast(this, this.getString(R.string.location_wait));
+                    MyMethod.showToast(binding,this, this.getString(R.string.location_wait));
                     LocationDetector.inst().setHighPrecision(true);
                 }
 
@@ -181,7 +181,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 finish();
                 break;
             case R.id.fabGetAgain:
-                MyMethod.showToast(this, this.getString(R.string.location_wait));
+                MyMethod.showToast(binding,this, this.getString(R.string.location_wait));
                 LocationDetector.inst().setHighPrecision(true);
                 break;
             default:

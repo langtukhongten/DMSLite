@@ -507,4 +507,7 @@
     <string name="content_transaction">Nội dung giao dịch :</string>
     <string name="input_phone">Nhập số điện thoại</string>
     <string name="input_customer">Nhập tên khách hàng</string>
+    <string name="select_customer">Chọn khách hàng</string>
+    <string name="promotion">Danh sách khuyến mãi</string>
+    <string name="promotion_no">Mã khuyến mãi</string>
 </resources>

@@ -346,7 +346,8 @@ public class ControlThread extends Thread {
                 NetworkTransaction.inst(context).loadCustomers(eventLoadCustomersRequest.routeId, eventLoadCustomersRequest.filter, eventLoadCustomersRequest.lastId, eventLoadCustomersRequest.id_employee_viewed);
                 break;
             case LoadAllCustomers:
-                NetworkTransaction.inst(context).loadAllCustomers();
+                EventType.EventLoadAllCustomersRequest eventLoadAllCustomersRequest = (EventType.EventLoadAllCustomersRequest) event;
+                NetworkTransaction.inst(context).loadAllCustomers(eventLoadAllCustomersRequest.filter,eventLoadAllCustomersRequest.lastID);
                 break;
             case UpdateCustomer:
                 EventType.EventUpdateCustomerRequest eventUpdateCustomerRequest = (EventType.EventUpdateCustomerRequest) event;

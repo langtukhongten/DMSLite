@@ -134,7 +134,7 @@ public class SurveyQAActivity extends AppCompatActivity {
                 Home.nowTransactionLine.id_ExtNo_ = campaign.id;
                 Home.nowTransactionLine.id_transaction_define = Const.TransactionType.Survey.getValue();
                 if (eventSendSurveyDataResult.success) {
-                    MyMethod.showToast(this, getString(R.string.send_survey_success));
+                    MyMethod.showToast(binding,this, getString(R.string.send_survey_success));
                     for (SurveyResult result : getResultData()) {
                         LocalDB.inst().addResult(result, 1);
                     }
@@ -147,7 +147,7 @@ public class SurveyQAActivity extends AppCompatActivity {
                 } else {
                     //lay du lieu trong local
                     Home.nowTransactionLine.note = getString(R.string.survey) + "@" + nowRootCustomer + "@" + nowIdCustomer;
-                    MyMethod.showToast(this, getString(R.string.no_connect_saved_local));
+                    MyMethod.showToast(binding,this, getString(R.string.no_connect_saved_local));
                     for (SurveyResult result : getResultData()) {
                         LocalDB.inst().addResult(result, 0);
                     }
@@ -242,7 +242,7 @@ public class SurveyQAActivity extends AppCompatActivity {
                     LayoutLoadingManager.Show_OnLoading(binding.loading, getString(R.string.sending), 30);
                     EventPool.control().enQueue(new EventType.EventSendSurveyDataRequest(results, nowRootCustomer));
                 } else {
-                    MyMethod.showToast(getApplicationContext(), getString(R.string.result_null));
+                    MyMethod.showToast(binding,getApplicationContext(), getString(R.string.result_null));
                 }
             }
         });

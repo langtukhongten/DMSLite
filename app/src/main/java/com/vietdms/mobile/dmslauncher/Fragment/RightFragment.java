@@ -92,6 +92,7 @@ import com.vietdms.mobile.dmslauncher.BuildConfig;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.ArrayUserAdapter;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.CustomAdapterGripView;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.CustomAdapterMenu;
+import com.vietdms.mobile.dmslauncher.CustomAdapter.CustomAdapterPromotion;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.OrderListProductAdapter;
 import com.vietdms.mobile.dmslauncher.CustomClass.LayoutLoadingManager;
 import com.vietdms.mobile.dmslauncher.CustomClass.LayoutManagerObject;
@@ -167,6 +168,9 @@ import CommonLib.OrderDetail;
 import CommonLib.PhoneState;
 import CommonLib.Product;
 import CommonLib.ProductGroup;
+import CommonLib.Promotion;
+import CommonLib.PromotionDetail;
+import CommonLib.PromotionHeader;
 import CommonLib.ReasonNotOrder;
 import CommonLib.ReportCheckIn;
 import CommonLib.Route;
@@ -201,7 +205,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private static final int OPENGPS = 1123;
     private static final String TAG = "RightFragment";
     public static PowerManager.WakeLock mWakeLock;
-    //SELECT ROUTE IN CREATE CUSTOMER
+    //SELECT ROUTE IN CREATE CUSTOMERf
     private CheckBox cns, cnc, t2s, t2c, t3s, t3c, t4s, t4c, t5s, t5c, t6s, t6c, t7s, t7c;
     private Button btn_create_customer_route;
     private int countRealTime;//Đếm số lần realtime
@@ -277,7 +281,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private Button btnFromDateTransaction;// btnToDateTransaction;//Từ ngày,đến ngày trong mục giao dịch
     private EditText editQuantity, editPrice;// Khung nhập số lượng,đơn giá
     private String nowNo_;//Mã sản phẩm nhập số lượng, đơn giá
-    private TextView txtTitleInputValueDialog, txtTitleInputNoteDialog, txtInStoreName, txtInStoreAddress, txtInStorePhone;
     private EditText edInStoreNote;
     private Marker customerMarker;
     public static LatLng latLngTransaction;
@@ -342,7 +345,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     public static Customer nowCustomer;
     private ApproVal nowApproval;
     private CustomAdapterMenu adapterGridListReport, adapterGridListMenu, adapterGridListManger;
-
+    private CustomAdapterPromotion adapterPromotion;
+    private ArrayList<Promotion> arrPromotion;
 
     public RightFragment() {
     }
@@ -546,6 +550,16 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         v.findViewById(R.id.img_pre_sale).setOnClickListener(this);
         v.findViewById(R.id.img_pre_sale_detail).setOnClickListener(this);
         v.findViewById(R.id.btn_select_day_report).setOnClickListener(this);
+        arrPromotion = new ArrayList<>();
+        Promotion p = new Promotion();
+        p.no_ = "test no";
+        p.name = "test name";
+        p.price = 30000;
+        p.quantity = 2;
+        arrPromotion.add(p);
+        adapterPromotion = new CustomAdapterPromotion(context,R.layout.list_promotion,arrPromotion);
+        Home.bindingRight.inputValue.listPromotion.setAdapter(adapterPromotion);
+        // Note: Thuong se thay the thanh bindingX.x.y.setXYZ()..
         Home.bindingRight.login.btnSignin.setOnClickListener(this);
         Home.bindingRight.setting.btnUpdateProgram.setOnClickListener(this);
         Home.bindingRight.setting.btnRestartAppSetting.setOnClickListener(this);
@@ -560,22 +574,22 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.login.btnRestartApp.setOnClickListener(this);
         Home.bindingRight.login.btnLoginRouteInLogin.setOnClickListener(this);
         Home.bindingRight.loginRoute.btnSigninRoute.setOnClickListener(this);
-        v.findViewById(R.id.btn_restart_clone).setOnClickListener(this);
-        v.findViewById(R.id.btn_restart_app_error).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_checkin).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_update).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_name_edit).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_address_edit).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_phone_edit).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_photo_edit).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_location_edit).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_update_ok).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_update_cancel).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_location_view).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_phone_call).setOnClickListener(this);
-        v.findViewById(R.id.dialog_customer_order).setOnClickListener(this);
-        v.findViewById(R.id.dialog_product_back).setOnClickListener(this);
-        v.findViewById(R.id.order_customer_save_send).setOnClickListener(this);
+        Home.bindingRight.login.btnRestartClone.setOnClickListener(this);
+        Home.bindingRight.btnRestartAppError.setOnClickListener(this);
+        Home.bindingRight.customerDetail.dialogCustomerCheckin.setOnClickListener(this);
+        Home.bindingRight.customerDetail.dialogCustomerUpdate.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerNameEdit.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerAddressEdit.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerPhoneEdit.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerPhotoEdit.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerLocationEdit.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerUpdateOk.setOnClickListener(this);
+        Home.bindingRight.customerUpdate.dialogCustomerUpdateCancel.setOnClickListener(this);
+        Home.bindingRight.customerDetail.dialogCustomerLocationView.setOnClickListener(this);
+        Home.bindingRight.customerDetail.dialogCustomerPhoneCall.setOnClickListener(this);
+        Home.bindingRight.customerDetail.dialogCustomerOrder.setOnClickListener(this);
+        Home.bindingRight.productDetail.dialogProductBack.setOnClickListener(this);
+        Home.bindingRight.order.orderCustomerSaveSend.setOnClickListener(this);
         v.findViewById(R.id.order_customer_add_product).setOnClickListener(this);
         v.findViewById(R.id.order_product_accept).setOnClickListener(this);
         v.findViewById(R.id.order_product_cancel).setOnClickListener(this);
@@ -1344,7 +1358,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private void reFreshReportCheckIn() {
         reportCheckInArrayList.clear();
         adapterReportCheckIn.notifyDataSetChanged();
-        LayoutLoadingManager.Show_OnLoading(Home.loadingReportCheckIn, context.getString(R.string.load_report_checkin), 30);
+        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.checkin.CheckInLoadingView, context.getString(R.string.load_report_checkin), 30);
         EventPool.control().enQueue(new EventType.EventLoadReportCheckInsRequest(fromDateReportCheckIn, toDateReportCheckIn, nowIdEmployeeReportCheckIn, -1));
         Home.swipeReportCheckIn.setRefreshing(false);
     }
@@ -1374,13 +1388,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 adapterCustomer.notifyDataSetChanged();
             } else if (countCustomer == 0) {
                 //load online
-                LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_customer), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_customer), 30);
                 EventPool.control().enQueue(new EventType.EventLoadCustomersRequest(Home.nowRoute, Home.filterCustomer, -1, Home.nowIdCustomer));
             } else if (countCustomer == -1) {
                 //sync data
-                MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+                MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
                 LocalDB.inst().deleteSyncData();
-                LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                 EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
                 MyMethod.isSyncDating = true;
             }
@@ -1404,9 +1418,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             EventPool.control().enQueue(new EventType.EventLoadCustomersRequest(Home.nowRoute, Home.filterCustomer, -1, Home.nowIdCustomer));
         } else if (countCustomer == -1) {
             //sync data
-            MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+            MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
             LocalDB.inst().deleteSyncData();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
             EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
             MyMethod.isSyncDating = true;
         }
@@ -1451,28 +1465,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.transaction.toolbarTransaction.setTitleTextColor(getResources().getColor(android.R.color.white));
         Home.bindingRight.reportTimeCheckIn.toolbarReportCheckIn.setTitleTextColor(getResources().getColor(android.R.color.white));
 
-        Home.loadingReportWeb = (LoadingView) v.findViewById(R.id.ReportWebLoadingView);
-        Home.loadingUpdateImage = (LoadingView) v.findViewById(R.id.UpdateImageLoadingView);
-        Home.loadingLogin = (LoadingView) v.findViewById(R.id.loginLoadingView);
-        Home.loadingMapOrder = (LoadingView) v.findViewById(R.id.MapOrderLoadingView);
-        Home.loadingListGCM = (LoadingView) v.findViewById(R.id.ListGCMLoadingView);
-        Home.loadingCheckIn = (LoadingView) v.findViewById(R.id.CheckInLoadingView);
-        Home.loadingCustomer = (LoadingView) v.findViewById(R.id.CustomerLoadingView);
-        Home.loadingProduct = (LoadingView) v.findViewById(R.id.ProductLoadingView);
-        Home.loadingOrderMain = (LoadingView) v.findViewById(R.id.OrderMainLoadingView);
-        Home.loadingTransaction = (LoadingView) v.findViewById(R.id.TransactionLoadingView);
-        Home.loadingTransactionLineInStore = (LoadingView) v.findViewById(R.id.TransactionLineInStoreLoadingView);
-        Home.loadingSendOrder = (LoadingView) v.findViewById(R.id.OrderLoadingView);
-        Home.loadingProductOfOrder = (LoadingView) v.findViewById(R.id.ProductOfOrderLoadingView);
-        Home.loadingUpdateCustomer = (LoadingView) v.findViewById(R.id.UpdateCustomerLoadingView);
-        Home.loadingMapCustomerCheckIn = (LoadingView) v.findViewById(R.id.MapCustomerCheckInLoadingView);
-        Home.loadingInStore = (LoadingView) v.findViewById(R.id.InStoreLoadingView);
-        Home.loadingCreateCustomer = (LoadingView) v.findViewById(R.id.CreateCustomerLoadingView);
-        Home.loadingOrderDetail = (LoadingView) v.findViewById(R.id.OrderDetailLoading);
-        Home.loadingHistory = (LoadingView) v.findViewById(R.id.HistoryLoadingView);
-        Home.loadingInventoryEmployee = (LoadingView) v.findViewById(R.id.InventoryEmployeeLoadingView);
-        Home.loadingApprovalAppLock = (LoadingView) v.findViewById(R.id.ApprovalAppLockLoadingView);
-        Home.loadingReportCheckIn = (LoadingView) v.findViewById(R.id.ReportCheckInLoadingView);
         Home.loadingApprovalButton = (LoadingView) v.findViewById(R.id.ApprovalButtonLoadingView);
         //ID FOR ORDER
         Home.txtOrderCustomerName = (TextView) v.findViewById(R.id.order_customer_name);
@@ -1614,11 +1606,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.swipeInventoryEmployeeBottom = (SwipeRefreshLayoutBottom) v.findViewById(R.id.load_more_inventory_employee);
         Home.swipeCustomerBottom = (SwipeRefreshLayoutBottom) v.findViewById(R.id.load_more_customer);
         Home.swipeTransactionBottom = (SwipeRefreshLayoutBottom) v.findViewById(R.id.refresh_transaction);
-        txtTitleInputValueDialog = (TextView) v.findViewById(R.id.txt_input_title);
-        txtTitleInputNoteDialog = (TextView) v.findViewById(R.id.txt_input_title_note);
-        txtInStoreName = (TextView) v.findViewById(R.id.store_name);
-        txtInStoreAddress = (TextView) v.findViewById(R.id.store_address);
-        txtInStorePhone = (TextView) v.findViewById(R.id.store_phone);
         edInStoreNote = (EditText) v.findViewById(R.id.store_note);
 
         //format input layout
@@ -1691,9 +1678,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             EventPool.control().enQueue(new EventType.EventLoadProductsRequest(Const.DocumentType.Sale.getValue(), -1, Home.filterProduct));
         } else if (countProduct == -1) {
             //sync data
-            MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+            MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
             LocalDB.inst().deleteSyncData();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
             EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
             MyMethod.isSyncDating = true;
         }
@@ -1715,9 +1702,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             EventPool.control().enQueue(new EventType.EventLoadProductsRequest(Const.DocumentType.Sale.getValue(), -1, Home.filterProduct));
         } else if (countProduct == -1) {
             //sync data
-            MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+            MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
             LocalDB.inst().deleteSyncData();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
             EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
             MyMethod.isSyncDating = true;
         }
@@ -1793,9 +1780,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             EventPool.control().enQueue(new EventType.EventLoadProductsRequest(Const.DocumentType.Sale.getValue(), lastRowIdProduct, Home.filterProduct));
         } else if (countProduct == -1) {
             //sync data
-            MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+            MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
             LocalDB.inst().deleteSyncData();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
             EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
             MyMethod.isSyncDating = true;
         }
@@ -1857,9 +1844,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             EventPool.control().enQueue(new EventType.EventLoadCustomersRequest(Home.nowRoute, Home.filterCustomer, lastRowIdCustomer, Home.nowIdCustomer));
         } else if (countCustomer == -1) {
             //sync data
-            MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+            MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
             LocalDB.inst().deleteSyncData();
-            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
             EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
             MyMethod.isSyncDating = true;
         }
@@ -2008,7 +1995,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.UpdateCustomerLocation = false;
                         MyMethod.UpdateCustomerImage = true;
                         MyMethod.UpdateCustomerRoute = false;
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingUpdateImage, context.getString(R.string.update_image), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.updateImageCustomer.UpdateImageLoadingView, context.getString(R.string.update_image), 30);
                         EventPool.control().enQueue(new EventType.EventUpdateCustomerRequest(nowCustomer));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -2053,23 +2040,23 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 }
                 break;
                 case REQUEST_ENABLE_BT: {
-                    MyMethod.showToast(context, context.getString(R.string.open_bth_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.open_bth_success));
                     Intent serverIntent = new Intent(context, DeviceBluetooth.class);
                     startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
                 }
                 break;
                 case OPENWIFI: {
-                    MyMethod.showToast(context, context.getString(R.string.open_wifi_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.open_wifi_success));
                     Home.isAppLockStop = false;
                 }
                 break;
                 case OPEN3G: {
-                    MyMethod.showToast(context, context.getString(R.string.open_3g_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.open_3g_success));
                     Home.isAppLockStop = false;
                 }
                 break;
                 case OPENGPS: {
-                    MyMethod.showToast(context, context.getString(R.string.open_gps_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.open_gps_success));
                     Home.isAppLockStop = false;
                 }
                 break;
@@ -2270,11 +2257,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     //endregion
     private boolean isDateOK() {
         if (from == null) {
-            MyMethod.showToast(context, context.getString(R.string.please_select_from_date));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_select_from_date));
             return false;
         }
         if (to == null) {
-            MyMethod.showToast(context, context.getString(R.string.please_select_to_date));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_select_to_date));
             return false;
         }
         return true;
@@ -2350,7 +2337,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                     }
                 } else {
-                    MyMethod.showToast(context, getString(R.string.please_choice_reason));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.please_choice_reason));
                 }
 
                 break;
@@ -2375,7 +2362,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 }
                 break;
             case R.id.update_again:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingUpdateImage, context.getString(R.string.update_image), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.updateImageCustomer.UpdateImageLoadingView, context.getString(R.string.update_image), 30);
                 EventPool.control().enQueue(new EventType.EventUpdateCustomerRequest(nowCustomer));
                 //gửi lại hình khi lỗi
                 break;
@@ -2418,8 +2405,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case R.id.btn_transaction_Note:
                 Home.bindingRight.note.edTransactionNote.setText("");
                 if (nowTransaction.description == null)
-                    txtTitleInputNoteDialog.setText(context.getString(R.string.input_note));
-                else txtTitleInputNoteDialog.setText(nowTransaction.description);
+                    Home.bindingRight.note.txtInputTitleNote.setText(context.getString(R.string.input_note));
+                else Home.bindingRight.note.txtInputTitleNote.setText(nowTransaction.description);
                 Home.LayoutMyManager.ShowDialog(Layouts.InputNote);
                 break;
             case R.id.btn_transaction_check_in:
@@ -2456,7 +2443,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.LayoutMyManager.ShowLayout(Layouts.MapUpdate);
                 Home.mapUpdateFragment.getMapAsync(this);
                 MyMethod.refreshMap(context, googleMap);
-                MyMethod.showToast(context, context.getString(R.string.location_wait));
+                MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                 LocationDetector.inst().setHighPrecision(true);
                 break;
             case R.id.btn_accept_select_route:
@@ -2473,7 +2460,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     MyMethod.UpdateCustomerLocation = false;
                     MyMethod.UpdateCustomerImage = false;
                     MyMethod.UpdateCustomerRoute = true;
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingUpdateCustomer, context.getString(R.string.update_route), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customerUpdate.UpdateCustomerLoadingView, context.getString(R.string.update_route), 30);
 
                     EventPool.control().enQueue(new EventType.EventUpdateCustomerRequest(nowCustomer));
                 }
@@ -2545,7 +2532,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                     nowCustomer.longitude = Home.location.getLongitude();
                                     nowCustomer.imageThumb = null;
                                     nowCustomer.imageUrl = null;
-                                    LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.update), 30);
+                                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.update), 30);
                                     Home.isUpdateCustomerInMap = true;
                                     MyMethod.UpdateCustomerLocation = true;
                                     MyMethod.UpdateCustomerImage = false;
@@ -2558,7 +2545,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     alert.show();
                 } else {
                     MyMethod.refreshMap(context, googleMap);
-                    MyMethod.showToast(context, context.getString(R.string.location_wait));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                     LocationDetector.inst().setHighPrecision(true);
                 }
 
@@ -2586,12 +2573,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.isTransactionMapView = true;
                         latLngTransaction = new LatLng(nowTransaction.latitude, nowTransaction.longtitude);
                         showLayout(Layouts.MapCustomerView, context);
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.load_map), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.load_map), 30);
                         EventPool.control().enQueue(new EventType.EventLoadLocationVisitedRequest(Home.nowTransactionLine.location_ref_id, Home.nowTransactionLine.id_employee));
 
-                    } else MyMethod.showToast(context, context.getString(R.string.location_none));
+                    } else
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_none));
                 } catch (Exception e) {
-                    MyMethod.showToast(context, context.getString(R.string.location_none));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_none));
                 }
                 break;
             case R.id.btn_out_store:
@@ -2638,7 +2626,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 } else {
                                     showLayout(Layouts.Customer, context);
                                 }
-                                LayoutLoadingManager.Show_OnLoading(Home.loadingInStore, context.getString(R.string.out_storing), 30);
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.inStore.InStoreLoadingView, context.getString(R.string.out_storing), 30);
                                 EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
                             } else {
                                 if (MyMethod.isCheckInCustomerTransactionDetail) {
@@ -2837,7 +2825,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                 break;
             case R.id.fabGetAgainCheckInOrder:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.get_location), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.get_location), 30);
                 LocationDetector.inst().setHighPrecision(true);
                 break;
             case R.id.btn_checkin_order:
@@ -2896,9 +2884,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             Home.nowTransactionLine.refNo_ = Utils.createRefNo_(20);
                         }
                         showLayout(Layouts.GoStore, context);
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.go_store), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.go_store), 30);
                         EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingTransactionLineInStore, context.getString(R.string.load_transaction_history), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.inStore.TransactionLineInStoreLoadingView, context.getString(R.string.load_transaction_history), 30);
                         EventPool.control().enQueue(new EventType.EventLoadTransactionLinesInStoreRequest(nowCustomer.id, -1));
                         break;
                     case "Đặt hàng qua điện thoại":
@@ -2952,7 +2940,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     adapterProduct.setItems(productArrayList);
                     adapterProduct.notifyDataSetChanged();
                 } else if (countProduct == 0) {
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingProductOfOrder, context.getString(R.string.load_product), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderProduct.ProductOfOrderLoadingView, context.getString(R.string.load_product), 30);
                     EventPool.control().enQueue(new EventType.EventLoadProductsRequest(Const.DocumentType.Sale.getValue(), -1, Home.filterProduct));
                 }
                 //XU LI THEM HANG TRONG ORDER DETAIL
@@ -2963,7 +2951,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     nowOrder.note = Home.edOrderDetailNote.getText().toString();
                     nowOrder.amount = Home.nowAmount;// loại bỏ E khi convert sang chuỗi (big decimal)
                     EventPool.control().enQueue(new EventType.EventUpdateOrderRequest(nowOrder, Home.orderDetailArrayList));
-                } else MyMethod.showToast(context, context.getString(R.string.please_order));
+                } else
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
             case R.id.dialog_customer_name_edit:
                 openEdit(TYPE.NAME);
@@ -3053,7 +3042,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     adapterProductOfOrder.setItems(productArrayList);
                     adapterProductOfOrder.notifyDataSetChanged();
                 } else if (countP == 0) {
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingProductOfOrder, context.getString(R.string.load_product), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderProduct.ProductOfOrderLoadingView, context.getString(R.string.load_product), 30);
                     if (MyMethod.isOrder) { //Đặt hàng
                         if (Model.inst().getConfigValue(Const.ConfigKeys.PreSale) == null) {//Nếu null thì Sale
                             EventPool.control().enQueue(new EventType.EventLoadProductsRequest(Const.DocumentType.Sale.getValue(), -1, Home.filterProduct));
@@ -3075,7 +3064,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case R.id.order_customer_save_send:
                 //XU LI SAVE SEND
                 if (Home.orderDetailArrayList.size() > 0) {
-
                     nowOrder.status = 0;
                     nowOrder.note = Home.edOrderNote.getText().toString();
                     nowOrder.amount = Home.nowAmount;// loại bỏ E khi convert sang chuỗi (big decimal)
@@ -3102,9 +3090,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         nowOrder.id_customer = nowCustomer.id;
                         nowOrder.document_type = 5;
                     }
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingSendOrder, context.getString(R.string.sending), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
                     EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList));
-                } else MyMethod.showToast(context, context.getString(R.string.please_order));
+                } else
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
             case R.id.order_product_accept:
                 acceptOrder();
@@ -3149,7 +3138,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 toReportCheckIn.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
             case R.id.report_time_load:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingReportCheckIn, context.getString(R.string.load_report_checkin), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.reportTimeCheckIn.ReportCheckInLoadingView, context.getString(R.string.load_report_checkin), 30);
                 reportCheckInArrayList.clear();
                 adapterReportCheckIn.notifyDataSetChanged();
                 EventPool.control().enQueue(new EventType.EventLoadReportCheckInsRequest(fromDateReportCheckIn, toDateReportCheckIn, nowIdEmployeeReportCheckIn, -1));
@@ -3175,13 +3164,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     adapterCustomer.notifyDataSetChanged();
                 } else if (countCustomer == 0) {
                     //load online
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_customer), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_customer), 30);
                     EventPool.control().enQueue(new EventType.EventLoadCustomersRequest(Home.nowRoute, Home.filterCustomer, -1, Home.nowIdCustomer));
                 } else if (countCustomer == -1) {
                     //sync data
-                    MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+                    MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
                     LocalDB.inst().deleteSyncData();
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                     EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
                     MyMethod.isSyncDating = true;
                 }
@@ -3195,19 +3184,19 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 } else {
                     Home.bindingRight.reportWeb.webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 }
-                LayoutLoadingManager.Show_OnLoading(Home.loadingReportWeb, context.getString(R.string.load_report_web), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.reportWeb.ReportWebLoadingView, context.getString(R.string.load_report_web), 30);
                 String url = Const.HttpReportEmployeeWork + Model.inst().getConfigValue(Const.ConfigKeys.ID_Device, 0) + Const.DateParameter + toDateReportWeb;
                 Home.bindingRight.reportWeb.webview.loadUrl(url);
                 Home.bindingRight.reportWeb.webview.setWebViewClient(new WebViewClient() {
 
                     public void onPageFinished(WebView view, String url) {
                         // do your stuff here
-                        LayoutLoadingManager.Show_OffLoading(Home.loadingReportWeb);
+                        LayoutLoadingManager.Show_OffLoading(Home.bindingRight.reportWeb.ReportWebLoadingView);
                     }
                 });
                 break;
             case R.id.order_main_load:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingOrderMain, context.getString(R.string.loading), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderMain.OrderMainLoadingView, context.getString(R.string.loading), 30);
 
                 if (MyMethod.isInventory) {
                     ordersArrayList.clear();
@@ -3229,12 +3218,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                 break;
             case R.id.inventory_employee_load:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingInventoryEmployee, context.getString(R.string.load_inventory_employee), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.inventoryEmployee.InventoryEmployeeLoadingView, context.getString(R.string.load_inventory_employee), 30);
                 inventoryEmployeesArrayList.clear();
                 EventPool.control().enQueue(new EventType.EventLoadInventoryEmployeesRequest(-1, toDatenventoryEmployee, nowIdInventoryEmployee, nowInventoryGroup, Home.bindingRight.inventoryEmployee.spInventoryStock.getSelectedItemPosition(), filterInventoryEmployee));
                 break;
             case R.id.approval_load:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingApprovalAppLock, context.getString(R.string.load_approval), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.approvalAppLock.ApprovalAppLockLoadingView, context.getString(R.string.load_approval), 30);
                 approvalArrayList.clear();
                 adapterApproval.notifyDataSetChanged();
                 EventPool.control().enQueue(new EventType.EventLoadRequestGrantRequest(-1, nowIdApproval, Home.bindingRight.approvalAppLock.spApprovalStatus.getSelectedItemPosition(), filtersvApproval));
@@ -3260,7 +3249,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 toTransaction.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
             case R.id.transaction_load:
-                LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                 transactionArrayList.clear();
                 transactionLineArrayList.clear();
                 MyMethod.isLoadTransactionByID = false;
@@ -3297,7 +3286,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                     } else {
                         MyMethod.refreshMap(context, googleMap);
-                        MyMethod.showToast(context, context.getString(R.string.location_wait));
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                         LocationDetector.inst().setHighPrecision(true);
                     }
                 } else {
@@ -3325,7 +3314,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         alert.show();
                     } else {
                         MyMethod.refreshMap(context, googleMap);
-                        MyMethod.showToast(context, context.getString(R.string.location_wait));
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                         LocationDetector.inst().setHighPrecision(true);
                     }
                 }
@@ -3423,7 +3412,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 //                    arrData.addAll(dataOrder);
 //                    EventPool.control().enQueue(new EventType.EventUpdateDataRequest(arrData, 2));
                 } else {
-                    MyMethod.showToast(context, getString(R.string.none_data_need_update));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.none_data_need_update));
                     Home.bindingRight.setting.btnUpdateData.setState(AnimDownloadProgressButton.NORMAL);
                 }
                 break;
@@ -3436,18 +3425,18 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 break;
             case R.id.fabGetAgainOrder:
                 MyMethod.refreshMap(context, googleMap);
-                MyMethod.showToast(context, context.getString(R.string.location_wait));
+                MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                 LocationDetector.inst().setHighPrecision(true);
                 break;
             case R.id.fabOk:
                 if (editNoteOrder.getText().toString().isEmpty()) {
-                    MyMethod.showToast(context, context.getString(R.string.input_note));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.input_note));
                 } else if (Home.location != null) {
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingMapOrder, "", 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapOrder.MapOrderLoadingView, "", 30);
                     EventPool.control().enQueue(new EventType.EventSetOrderDeliveryStatusRequest(Home.bindingRight.mapOrder.content.txtOrderNo.getText().toString(), Const.OrderDeliveryStatus.Completed, editNoteOrder.getText().toString(), 0));
                 } else {
                     MyMethod.refreshMap(context, googleMap);
-                    MyMethod.showToast(context, context.getString(R.string.location_wait));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                     LocationDetector.inst().setHighPrecision(true);
                 }
                 break;
@@ -3492,12 +3481,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     //SAVE AND SEND CHECK IN DATA
                     if (MyMethod.CheckInCustomer) {
                         Home.txtAddressIn.setText(context.getString(R.string.location_none));
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingCheckIn, context.getString(R.string.sending), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.checkin.CheckInLoadingView, context.getString(R.string.sending), 30);
                         EventPool.control().enQueue(new EventType.EventReportRequest(Const.LocationVisitedType.CheckInCustomer, nowCustomer.no_, imagePath, Home.location, Home.editCheckIn.getText().toString(), Home.bitmapImage));
                         Home.bitmapImage = null;
                     } else {
                         Home.txtAddressIn.setText(context.getString(R.string.location_none));
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingCheckIn, context.getString(R.string.sending), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.checkin.CheckInLoadingView, context.getString(R.string.sending), 30);
                         EventPool.control().enQueue(new EventType.EventReportRequest(Const.LocationVisitedType.Unknown, "", imagePath, Home.location, Home.editCheckIn.getText().toString(), Home.bitmapImage));
                         Home.bitmapImage = null;
                     }
@@ -3512,11 +3501,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private boolean isDataLoginRouteOK() {
         if (Home.bindingRight.loginRoute.edUserRoute.getText().toString().isEmpty()) {
-            MyMethod.showToast(context, getString(R.string.hint_username));
+            MyMethod.showToast(Home.bindingRight, context, getString(R.string.hint_username));
             return false;
         }
         if (Home.bindingRight.loginRoute.edPassRoute.getText().toString().isEmpty()) {
-            MyMethod.showToast(context, getString(R.string.hint_password));
+            MyMethod.showToast(Home.bindingRight, context, getString(R.string.hint_password));
             return false;
         }
         return true;
@@ -3586,7 +3575,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             String acceptCustomer = "           XAC NHAN KHACH HANG \n            DA NHAN DU HANG\n \n";
             Home.mService.sendMessage(acceptCustomer, "");
         } else {
-            MyMethod.showToast(context, context.getString(R.string.please_connect_printer));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_connect_printer));
         }
 
     }
@@ -3699,7 +3688,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private void inputNoteAccept() {
         if (Home.bindingRight.note.edTransactionNote.getText().toString().isEmpty()) {
-            MyMethod.showToast(context, context.getString(R.string.please_input_note));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_input_note));
         } else {
             Home.nowTransactionLine.id_customer = nowTransaction.id_customer;
             Home.nowTransactionLine.status = 0;
@@ -3843,7 +3832,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         nowCustomer.city = Home.nowCity;
         nowCustomer.county = Home.nowCounty;
         nowCustomer.workingtime = Home.nowWorkingTime;
-        LayoutLoadingManager.Show_OnLoading(Home.loadingCreateCustomer, context.getString(R.string.creating_customer), 30);
+        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.createCustomer.CreateCustomerLoadingView, context.getString(R.string.creating_customer), 30);
         EventPool.control().enQueue(new EventType.EventAddCustomerRequest(nowCustomer));
     }
 
@@ -4102,7 +4091,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.timelinesArrayList.clear();
         Home.adapterTimeLine.notifyDataSetChanged();
         int positionStaff = Home.bindingRight.history.spSelectStaff.getSelectedItemPosition() - 1;
-        LayoutLoadingManager.Show_OnLoading(Home.loadingHistory, context.getString(R.string.load_timeline), 30);
+        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.history.HistoryLoadingView, context.getString(R.string.load_timeline), 30);
         if (positionStaff >= 0)
             EventPool.control().enQueue(new EventType.EventLoadTimeLinesRequest(Home.arrStaff.get(positionStaff).id_employee, Home.bindingRight.history.spStyleView.getSelectedItemPosition(), -1));
         else
@@ -4113,7 +4102,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private void reFreshInventoryEmployee() {
         inventoryEmployeesArrayList.clear();
         adapterInventoryEmployee.notifyDataSetChanged();
-        LayoutLoadingManager.Show_OnLoading(Home.loadingInventoryEmployee, context.getString(R.string.load_inventory_employee), 30);
+        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.inventoryEmployee.InventoryEmployeeLoadingView, context.getString(R.string.load_inventory_employee), 30);
         EventPool.control().enQueue(new EventType.EventLoadInventoryEmployeesRequest(-1, toDatenventoryEmployee, nowIdInventoryEmployee, nowInventoryGroup, Home.bindingRight.inventoryEmployee.spInventoryStock.getSelectedItemPosition(), filterInventoryEmployee));
         Home.swipeInventoryEmployee.setRefreshing(false);
     }
@@ -4474,7 +4463,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private void updateCustomer() {
         if (isDataCustomer()) {
-            LayoutLoadingManager.Show_OnLoading(Home.loadingUpdateCustomer, context.getString(R.string.updating), 30);
+            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customerUpdate.UpdateCustomerLoadingView, context.getString(R.string.updating), 30);
             Home.isUpdateCustomerInMap = false;
             EventPool.control().enQueue(new EventType.EventUpdateCustomerRequest(nowCustomer));
         }
@@ -4483,19 +4472,19 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private boolean isDataCustomer() {
         if (Home.bindingRight.customerUpdate.dialogCustomerName.getText().toString().isEmpty()) {
-            MyMethod.showToast(context, context.getString(R.string.customer_name_empty));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.customer_name_empty));
             return false;
         }
         if (Home.bindingRight.customerUpdate.dialogCustomerAddress.getText().toString().isEmpty()) {
-            MyMethod.showToast(context, context.getString(R.string.customer_address_empty));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.customer_address_empty));
             return false;
         }
         if (((BitmapDrawable) Home.bindingRight.customerUpdate.dialogCustomerPhoto.getDrawable()).getBitmap() == null) {
-            MyMethod.showToast(context, context.getString(R.string.customer_photo_empty));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.customer_photo_empty));
             return false;
         }
         if (Home.bindingRight.customerUpdate.dialogCustomerLocation.getText().toString().contains("0.0,0.0")) {
-            MyMethod.showToast(context, context.getString(R.string.customer_location_empty));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.customer_location_empty));
             return false;
         }
         return true;
@@ -4671,19 +4660,19 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.LayoutMyManager.ShowLayout(Layouts.OrderDetail);
             if (MyMethod.isInventory) {
                 updateInventoryDetailView(context);
-                LayoutLoadingManager.Show_OnLoading(Home.loadingOrderDetail, context.getString(R.string.load_inventory), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_inventory), 30);
 
             } else if (MyMethod.isLoadOrder) {
                 updateOrderDetailView(context);
-                LayoutLoadingManager.Show_OnLoading(Home.loadingOrderDetail, context.getString(R.string.load_order_detail), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
 
             } else if (MyMethod.isInventoryEmployee) {
                 updateInventoryEmployeeDetailView(context);
-                LayoutLoadingManager.Show_OnLoading(Home.loadingOrderDetail, context.getString(R.string.load_inventory_employee), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_inventory_employee), 30);
 
             } else if (MyMethod.isInventoryBill) {
                 updateInventoryBillDetailView(context);
-                LayoutLoadingManager.Show_OnLoading(Home.loadingOrderDetail, context.getString(R.string.load_inventory_bill), 30);
+                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_inventory_bill), 30);
             }
             Home.orderDetailArrayList.clear();//Xóa dữ liệu cũ trước khi load
             Home.orderListProductAdapter.notifyDataSetChanged();
@@ -4730,17 +4719,22 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         txtTransactionHeaderPhone.setText(transaction.phone_no_);
         txtTransactionHeaderAddress.setText(transaction.trans_address);
         txtTransactionHeaderNote.setText(transaction.note);
-
     }
 
     private void updateInputValueProduct(String no_, String name, float price) {
-        txtTitleInputValueDialog.setText(no_ + " - " + name);
+        Home.bindingRight.inputValue.txtInputTitle.setText(no_ + " - " + name);
+        Home.bindingRight.inputValue.txtInputProductNo.setText(no_);
+        Home.bindingRight.inputValue.txtInputProductName.setText(name);
         if (Home.hashListQuantity.get(nowNo_) != null)
             editQuantity.setText(Home.hashListQuantity.get(nowNo_) + "");
         else editQuantity.setText("");
         if (Home.hashListPrice.get(nowNo_) != null)
             editPrice.setText(Utils.formatLocale(Home.hashListPrice.get(nowNo_)));
         else editPrice.setText(Utils.formatLocale(price));
+
+        //Load promotion
+        arrPromotion = LocalDB.inst().getPromotion(no_);
+        adapterPromotion.notifyDataSetChanged();
 
     }
 
@@ -4825,7 +4819,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         if (!validatePassword()) {
             return;
         }
-        LayoutLoadingManager.Show_OnLoading(Home.loadingLogin, context.getString(R.string.log_in), 30);
+        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.login.loginLoadingView, context.getString(R.string.log_in), 30);
         EventPool.control().enQueue(new EventType.EventLoginRequest(editName.getText().toString(), editPass.getText().toString(), editNote.getText().toString()));
         MyMethod.closeFocus(v);
 
@@ -4851,13 +4845,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.bindingHome.txtTile.setText(context.getString(R.string.transaction));
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
             case Customer:
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.txtTile.setText(context.getString(R.string.customer));
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
             case CustomerDetail:
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
@@ -4903,40 +4895,32 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.txtTile.setText(context.getString(R.string.setting));
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
             case LogIn:
                 //show hide layouts....
-                LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.txtTile.setText(context.getString(R.string.log_in));
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
-
             case MapUpdate:
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
             case MapCustomerView:
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
-
                 break;
             case ListGCM:
                 //
                 Home.bindingHome.txtTile.setText(context.getString(R.string.list_gcm));
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
-
                 break;
             case Main:
-
                 loadMenu(context);
                 MyMethod.hideKeyboardAll((Activity) context);
-                LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                 Home.bindingHome.btnComeBack.setVisibility(View.GONE);
                 Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
                 Home.bindingHome.txtTile.setText(context.getString(R.string.main));
@@ -5038,7 +5022,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private boolean validateCustomerLocation() {
         if (Home.bindingRight.createCustomer.btnCustomerGetLocation.getText().toString().contains(context.getString(R.string.get_location))) {
-            MyMethod.showToast(context, context.getString(R.string.please_get_location));
+            MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_get_location));
             return false;
         }
         return true;
@@ -5091,13 +5075,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 EventType.EventLogInRouteResult logInRouteResult = (EventType.EventLogInRouteResult) event;
                 if (logInRouteResult.success) {
                     if (!MyMethod.logInRouteInSetting) {
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingLogin, context.getString(R.string.log_in), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.login.loginLoadingView, context.getString(R.string.log_in), 30);
                         EventPool.control().enQueue(new EventType.EventLoginRequest(editName.getText().toString(), editPass.getText().toString(), editNote.getText().toString()));
                     } else
                         Home.LayoutMyManager.ShowLayout(Layouts.Main);
                     Home.bindingRight.setting.txtRouteNow.setText(logInRouteResult.routeName);
                 } else {
-                    MyMethod.showToast(context, logInRouteResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, logInRouteResult.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(Home.bindingRight.loginRoute.LogInRouteLoading);
                 break;
@@ -5110,7 +5094,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
                 }
                 if (logoutResult.message != null && !logoutResult.message.isEmpty()) {
-                    MyMethod.showToast(context, logoutResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, logoutResult.message);
                 }
                 break;
             case Login:
@@ -5118,14 +5102,14 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 switch (loginResult.result) {
                     case 0:
                         if (Model.inst().getStatusWorking() == Const.StatusWorking.Stopped) {
-                            MyMethod.showToast(getContext(), getString(R.string.sign_in_fail) + " : " + loginResult.message);
-                            LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                            MyMethod.showToast(Home.bindingRight, getContext(), getString(R.string.sign_in_fail) + " : " + loginResult.message);
+                            LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                             showLayout(Layouts.LogIn, context);
                         }
                         break;
                     case 1:
                         if (Model.inst().getStatusWorking() == Const.StatusWorking.Pending) {
-                            LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                            LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                             MyMethod.setVisible(Home.bindingRight.login.linearRestart);
                             MyMethod.setGone(Home.bindingRight.login.linearSignIn);
                             Home.bindingRight.login.txtMessageLogin.setText(loginResult.message);
@@ -5133,8 +5117,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         break;
                     case 2:
                         if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking) {
-                            MyMethod.showToast(getContext(), getString(R.string.sign_in_success));
-                            LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                            MyMethod.showToast(Home.bindingRight, getContext(), getString(R.string.sign_in_success));
+                            LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
 
                             showLayout(Layouts.Main, context);
                             //Home.LayoutMyManager.ShowLayout(Layouts.Main);
@@ -5151,12 +5135,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case ChangePass:
                 EventType.EventChangeResult changeResult = (EventType.EventChangeResult) event;
                 if (changeResult.success) {
-                    MyMethod.showToast(getContext(), getString(R.string.change_pass_success));
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                    MyMethod.showToast(Home.bindingRight, getContext(), getString(R.string.change_pass_success));
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                     showLayout(Layouts.LogIn, context);
                 } else {
-                    MyMethod.showToast(getContext(), getString(R.string.change_pass_fail));
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingLogin);
+                    MyMethod.showToast(Home.bindingRight, getContext(), getString(R.string.change_pass_fail));
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.login.loginLoadingView);
                     showLayout(Layouts.Setting, context);
                 }
                 break;
@@ -5164,9 +5148,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 arrGCM.clear();
                 EventType.EventLoadGCMResult loadGCMResult = (EventType.EventLoadGCMResult) event;
                 if (loadGCMResult.arrGCM == null) {
-                    MyMethod.showToast(context, context.getString(R.string.error_connect));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.error_connect));
                 } else if (loadGCMResult.arrGCM.size() == 0) {
-                    MyMethod.showToast(context, context.getString(R.string.error_connect));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.error_connect));
                 } else {
                     showLayout(Layouts.ListGCM, context);
                     for (int i = 0; i < loadGCMResult.arrGCM.size(); i++) {
@@ -5179,7 +5163,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
                     adapterGCM.notifyDataSetChanged();
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingListGCM);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.gcm.ListGCMLoadingView);
 
                 break;
             case LoadTransactions:
@@ -5197,9 +5181,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         transactionArrayList.addAll(transactionsResult.arrTransactions);
                     }
                 } else {
-                    MyMethod.showToast(context, transactionsResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, transactionsResult.message);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingTransaction);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.transaction.TransactionLoadingView);
                 Collections.sort(transactionArrayList, new Comparator<Transaction>() {
                     @Override
                     public int compare(Transaction lhs, Transaction rhs) {
@@ -5231,7 +5215,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         e.printStackTrace();
                     }
                 } else {
-                    MyMethod.showToast(context, getString(R.string.dont_have_transaction_line));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.dont_have_transaction_line));
                     LayoutLoadingManager.Show_OffLoading(Home.bindingRight.transactionDetail.TransactionLineLoadingView);
                 }
                 Collections.sort(transactionLineArrayList, new Comparator<TransactionLine>() {
@@ -5261,7 +5245,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     transactionLineInStoreArrayList.clear();
                     transactionLineInStoreArrayList = transactionLinesInStoreResult.arrTransactionLine;
                 } else {
-                    MyMethod.showToast(context, getString(R.string.no_connect_load_local));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.no_connect_load_local));
                     transactionLineInStoreArrayList.clear();
                     transactionLineInStoreArrayList = LocalDB.inst().loadTransactionLine(nowCustomer.id);
                 }
@@ -5281,7 +5265,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 });
                 adapterTransactionLineInStore.setItems(transactionLineInStoreArrayList);
                 adapterTransactionLineInStore.notifyDataSetChanged();
-                LayoutLoadingManager.Show_OffLoading(Home.loadingTransactionLineInStore);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.inStore.TransactionLineInStoreLoadingView);
                 break;
             case LoadReasonNotOrder:
                 EventType.EventLoadReasonNotOrdersResult reasonNotOrdersResult = (EventType.EventLoadReasonNotOrdersResult) event;
@@ -5289,7 +5273,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     reasonArrayList.clear();
                     reasonArrayList = reasonNotOrdersResult.arrReasonNotOrder;
                 } else {
-                    MyMethod.showToast(context, reasonNotOrdersResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, reasonNotOrdersResult.message);
                 }
                 adapterReasonNotOrder.setItems(reasonArrayList);
                 adapterReasonNotOrder.notifyDataSetChanged();
@@ -5302,7 +5286,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     lastRowIdCustomer = customersResult.arrCustomer.get(customersResult.arrCustomer.size() - 1).id;
 
                 } else {
-                    MyMethod.showToast(context, customersResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, customersResult.message);
 
                 }
 
@@ -5323,7 +5307,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                 adapterCustomer.setItems(customerArrayList);
                 adapterCustomer.notifyDataSetChanged();
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customer.CustomerLoadingView);
 //                if (!Home.bindingRight.svCustomer.getQuery().toString().isEmpty()) {
 //                    adapterCustomer.getFilter().filter(Home.bindingRight.svCustomer.getQuery());
 //                }
@@ -5334,10 +5318,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     productArrayList.addAll(productsResult.arrProduct);
                     lastRowIdProduct = productsResult.arrProduct.get(productsResult.arrProduct.size() - 1).id;
                 } else {
-                    MyMethod.showToast(context, productsResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, productsResult.message);
                 }
                 if (MyMethod.isProductOfOrder) {
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingProductOfOrder);
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderProduct.ProductOfOrderLoadingView);
                     adapterProductOfOrder.setItems(productArrayList);
                     adapterProductOfOrder.notifyDataSetChanged();
                     if (!Home.bindingRight.orderProduct.svProductOfOrder.getQuery().toString().isEmpty()) {
@@ -5346,7 +5330,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.txtOrderProductAmountItem.setText(Html.fromHtml("Tổng số " + "<font color=red>" + productArrayList.size() + " " + "</font>"
                             + "mặt hàng"));
                 } else {
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingProduct);
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.product.ProductLoadingView);
                     // load lai theo loai san pham
                     onItemSelected(Home.bindingRight.product.spProductGroup, null, Home.bindingRight.product.spProductGroup.getSelectedItemPosition(), 0);
 
@@ -5368,13 +5352,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     ordersArrayList.addAll(orderMainsResult.arrOrders);
 
                 } else {
-                    MyMethod.showToast(context, orderMainsResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, orderMainsResult.message);
                     //load offline
 //                    ordersArrayList.addAll(LocalDB.inst().loadOrder(lastRowIdOrder, filterOrderMain));
 //                    lastRowIdOrder = ordersArrayList.get(ordersArrayList.size() - 1).rowId;
 
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingOrderMain);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderMain.OrderMainLoadingView);
                 adapterOrder.setItems(ordersArrayList);
                 adapterOrder.notifyDataSetChanged();
                 if (!Home.bindingRight.orderMain.svOrderMain.getQuery().toString().isEmpty()) {
@@ -5392,9 +5376,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.orderDetailArrayList = orderDetailsResult.arrOrderDetails;
                     updateValueOrderDetail(Home.orderDetailArrayList, MyMethod.isOrderInTransactionLine);
                 } else {
-                    MyMethod.showToast(context, orderDetailsResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, orderDetailsResult.message);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingOrderDetail);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderDetail.OrderDetailLoading);
                 break;
             case LoadProductGroups:
                 EventType.EventLoadProductGroupsResult productGroupsResult = (EventType.EventLoadProductGroupsResult) event;
@@ -5405,8 +5389,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     for (ProductGroup group : arrSpProductGroup)
                         arrSpProductGroupName.add(group.name);
                 } else
-                    MyMethod.showToast(context, productGroupsResult.message);
-                LayoutLoadingManager.Show_OffLoading(Home.loadingProduct);
+                    MyMethod.showToast(Home.bindingRight, context, productGroupsResult.message);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.product.ProductLoadingView);
                 adapterSpProductGroup.notifyDataSetChanged();
                 break;
 
@@ -5422,7 +5406,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     } else {
                         Home.mapCustomerCheckinFragment.getMapAsync(this);
                     }
-                } else MyMethod.showToast(context, locationVisitedResult.message);
+                } else
+                    MyMethod.showToast(Home.bindingRight, context, locationVisitedResult.message);
                 break;
             case LoadCitys:
                 EventType.EventLoadCitysResult citysResult = (EventType.EventLoadCitysResult) event;
@@ -5433,7 +5418,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     for (City city : arrCitys)
                         arrSpCityName.add(city.name);
 
-                } else MyMethod.showToast(context, citysResult.message);
+                } else MyMethod.showToast(Home.bindingRight, context, citysResult.message);
                 adapterSpCity.notifyDataSetChanged();
                 onItemSelected(Home.bindingRight.createCustomer.spCustomerCity, null, Home.bindingRight.createCustomer.spCustomerCity.getSelectedItemPosition(), 0);
                 break;
@@ -5446,7 +5431,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     for (County county : arrCountys)
                         arrSpCountyName.add(county.name);
 
-                } else MyMethod.showToast(context, countysResult.message);
+                } else MyMethod.showToast(Home.bindingRight, context, countysResult.message);
                 adapterSpCounty.notifyDataSetChanged();
                 onItemSelected(Home.bindingRight.createCustomer.spCustomerCounty, null, Home.bindingRight.createCustomer.spCustomerCounty.getSelectedItemPosition(), 0);
                 break;
@@ -5464,10 +5449,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     arrSpRoute.clear();
                     arrSpRouteName.clear();
                     Home.bindingRight.customer.txtCustomerCount.setText(routesResult.message);
-                    MyMethod.showToast(context, routesResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, routesResult.message);
 
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customer.CustomerLoadingView);
                 adapterSpCustomer.notifyDataSetChanged();
                 break;
             case LocationUpdate:
@@ -5535,9 +5520,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
 
                 } else {
-                    MyMethod.showToast(context, context.getString(R.string.location_none));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_none));
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingMapCustomerCheckIn);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView);
 
                 break;
             case GCMMessage:
@@ -5556,12 +5541,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 EventType.EventGetUsersResult eventGetUsersResult = (EventType.EventGetUsersResult) event;
                 Home.arrStaff.clear();
                 if (eventGetUsersResult.arrayUsers == null || eventGetUsersResult.arrayUsers.length <= 0) {
-                    MyMethod.showToast(context, context.getString(R.string.none_staff));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.none_staff));
                 } else {
                     Collections.addAll(Home.arrStaff, eventGetUsersResult.arrayUsers);
 
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customer.CustomerLoadingView);
                 if (!MyMethod.isUpdateLocation) {
                     Home.adapterStaff.notifyDataSetChanged();
                 }
@@ -5579,7 +5564,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case Report:
                 EventType.EventReportResult eventReportResult = (EventType.EventReportResult) event;
                 if (eventReportResult.success) {
-                    MyMethod.showToast(context, context.getString(R.string.send_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_success));
                     Home.nowTransactionLine.create_date = Model.getServerTime();
                     Home.nowTransactionLine.modified_date = Model.getServerTime();
                     if (MyMethod.isReportStore) {
@@ -5643,10 +5628,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
 
                 } else {
-                    MyMethod.showToast(context, eventReportResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, eventReportResult.message);
 
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCheckIn);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.checkin.CheckInLoadingView);
 
                 break;
             case ListApps:
@@ -5724,7 +5709,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                         Home.LayoutMyManager.ShowLayout(Layouts.MapCustomerCheckIn);
                     }
-                    MyMethod.showToast(context, context.getString(R.string.update_customer_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.update_customer_success));
                     //Cập nhật giao dịch
                     Home.nowTransactionLine.create_date = Model.getServerTime();
                     Home.nowTransactionLine.modified_date = Model.getServerTime();
@@ -5739,15 +5724,15 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     customerArrayList.get(Home.positionCustomer).imageUrl = nowCustomer.imageUrl;
                     customerArrayList.get(Home.positionCustomer).imageThumb = nowCustomer.imageThumb;
                     adapterCustomer.notifyDataSetChanged();
-                    MyMethod.showToast(context, getString(R.string.no_connect_saved_local));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.no_connect_saved_local));
                     Home.nowTransactionLine.create_date = Model.getServerTime();
                     Home.nowTransactionLine.modified_date = Model.getServerTime();
                     LocalDB.inst().addTransactionLine(Home.nowTransactionLine, 0);
                     Home.LayoutMyManager.ShowLayout(Layouts.MapCustomerCheckIn);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingUpdateImage);
-                LayoutLoadingManager.Show_OffLoading(Home.loadingMapCustomerCheckIn);
-                LayoutLoadingManager.Show_OffLoading(Home.loadingUpdateCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.updateImageCustomer.UpdateImageLoadingView);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customerUpdate.UpdateCustomerLoadingView);
                 break;
 
             case AddCustomer:
@@ -5759,13 +5744,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     clearDataCreateCustomer();
                     Home.bindingHome.btnComeBack.setText(context.getString(R.string.customer));
                     Home.LayoutMyManager.ShowLayout(Layouts.Customer);
-                    MyMethod.showToast(context, context.getString(R.string.add_customer_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.add_customer_success));
                     reFreshCustomer();
                 } else {
                     LocalDB.inst().addCustomer(nowCustomer, 0);
-                    MyMethod.showToast(context, getString(R.string.no_connect_saved_local));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.no_connect_saved_local));
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCreateCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.createCustomer.CreateCustomerLoadingView);
                 break;
 
             case SendOrder:
@@ -5773,7 +5758,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 if (orderResult.success) {
                     flagOutStore = false;
                     Home.nowIdExtNo = Integer.parseInt(orderResult.message);
-                    MyMethod.showToast(context, context.getString(R.string.send_order_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_order_success));
                     if (nowCustomer != null) {
                         LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
                     }
@@ -5839,29 +5824,29 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
                     EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
                 } else {
-                    //Chuyển thành đã có đơn hàng
-                    MyMethod.isHasOrder = true;
-                    MyMethod.showToast(context, getString(R.string.no_connect_saved_local));
+//                    //Chuyển thành đã có đơn hàng
+//                    MyMethod.isHasOrder = true;
+                    MyMethod.showToast(Home.bindingRight, context, orderResult.message);
 //                    LocalDB.inst().addOrder(nowOrder, 0);
 //                    LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList);
-                    updateMenu();
-                    Home.nowTransactionLine.note = "Đặt hàng";
-                    Home.nowTransactionLine.id_customer = nowCustomer.id;
-                    Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakeOrder.getValue();
-                    Home.nowTransactionLine.status = 0;
-                    EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
-                    showLayout(Layouts.GoStore, context);
+//                    updateMenu();
+//                    Home.nowTransactionLine.note = "Đặt hàng";
+//                    Home.nowTransactionLine.id_customer = nowCustomer.id;
+//                    Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakeOrder.getValue();
+//                    Home.nowTransactionLine.status = 0;
+//                    EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
+//                    showLayout(Layouts.GoStore, context);
 
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingSendOrder);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.order.OrderLoadingView);
                 break;
             case UpdateOrder:
                 EventType.EventUpdateOrderResult updateOrderResult = (EventType.EventUpdateOrderResult) event;
                 if (updateOrderResult.success) {
-                    MyMethod.showToast(context, context.getString(R.string.update_order_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.update_order_success));
                     Home.LayoutMyManager.ShowLayout(Layouts.OrderList);
                 } else
-                    MyMethod.showToast(context, updateOrderResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, updateOrderResult.message);
                 break;
             case UpdateData:
                 EventType.EventUpdateDataResult eventUpdateDataResult = (EventType.EventUpdateDataResult) event;
@@ -5924,7 +5909,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 arrData.addAll(dataOrder);
                                 EventPool.control().enQueue(new EventType.EventUpdateDataRequest(arrData, 2));
                             }
-                            MyMethod.showToast(context, getString(R.string.update_data_success));
+                            MyMethod.showToast(Home.bindingRight, context, getString(R.string.update_data_success));
                             break;
                         default:
                             break;
@@ -5939,7 +5924,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     }
 
                 } else {
-                    MyMethod.showToast(context, eventUpdateDataResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, eventUpdateDataResult.message);
                 }
                 Home.bindingRight.setting.btnUpdateData.setState(AnimDownloadProgressButton.NORMAL);
                 break;
@@ -5949,7 +5934,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.nowTransactionLine.create_date = Model.getServerTime();
                     Home.nowTransactionLine.modified_date = Model.getServerTime();
                     LocalDB.inst().addTransactionLine(Home.nowTransactionLine, 1);
-                    MyMethod.showToast(context, context.getString(R.string.send_transaction_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_transaction_success));
                     nowOrder.id_parent = Integer.parseInt(transactionResult.message);
                     Home.nowTransactionLine.id_transaction = Integer.parseInt(transactionResult.message);
                     //    destroyTransaction();
@@ -5958,18 +5943,18 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         flagOutStore = false;
 
                     } else if (MyMethod.isVisible(Home.bindingRight.customer.linearCustomer)) {
-                        LayoutLoadingManager.Show_OffLoading(Home.loadingSendOrder);
+                        LayoutLoadingManager.Show_OffLoading(Home.bindingRight.order.OrderLoadingView);
                     } else if (MyMethod.isVisible(Home.bindingRight.inStore.linearInStore)) {//Nếu đang ở trong màn hình cửa hàng
                         if (flagOutStore || MyMethod.isOrderPhone) {
                             MyMethod.isInStore = false;
                             flagOutStore = false;
                         } else {
-                            MyMethod.showToast(context, "Vào cửa hàng");
+                            MyMethod.showToast(Home.bindingRight, context, "Vào cửa hàng");
                             LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 0);//Cập nhật thời gian ghé thăm
                         }
-                        Home.loadingInStore.setLoading(false);
+                        Home.bindingRight.inStore.InStoreLoadingView.setLoading(false);
                     } else if (MyMethod.isVisible(Home.bindingRight.order.linearOrder)) {
-                        Home.loadingSendOrder.setLoading(false);
+                        Home.bindingRight.order.OrderLoadingView.setLoading(false);
                     } else if (MyMethod.isVisible(Home.bindingRight.transactionDetail.relaTransactionDetail)) {
                         transactionLineArrayList.clear();
                         adapterTransactionLine.notifyDataSetChanged();
@@ -5986,7 +5971,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         Home.nowTransactionLine.modified_date = Model.getServerTime();
 
                     LocalDB.inst().addTransactionLine(Home.nowTransactionLine, 0);
-                    MyMethod.showToast(context, getString(R.string.no_connect_saved_local));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.no_connect_saved_local));
                 }
                 //Nếu là rời cửa hàng thì set refNo = rỗng
                 if (Home.nowTransactionLine.id_transaction_define == Const.TransactionType.CheckOut.getValue()) {
@@ -5995,7 +5980,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 if (MyMethod.isVisible(Home.bindingRight.note.linearInputNote))
                     MyMethod.setGone(Home.bindingRight.note.linearInputNote);
                 //Lưu database
-                LayoutLoadingManager.Show_OffLoading(Home.loadingMapCustomerCheckIn);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView);
 
                 break;
             case BI_DailyReport: {
@@ -6004,7 +5989,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     LeftFragment.UpdateVisitedView(BIResult.arrData);
 
                 } else
-                    MyMethod.showToast(context, BIResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, BIResult.message);
 
             }
             break;
@@ -6030,14 +6015,14 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         }
                     });
                 } else {
-                    MyMethod.showToast(context, timeLinesResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, timeLinesResult.message);
                 }
                 Home.adapterTimeLine.setItems(Home.timelinesArrayList);
                 Home.adapterTimeLine.notifyDataSetChanged();
                 if (!Home.bindingRight.history.svTimeLine.getQuery().toString().isEmpty()) {
                     Home.adapterTimeLine.getFilter().filter(Home.bindingRight.history.svTimeLine.getQuery());
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingHistory);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.history.HistoryLoadingView);
                 break;
             case LoadInventoryEmployees:
                 EventType.EventLoadInventoryEmployeesResult inventoryEmployeesResult = (EventType.EventLoadInventoryEmployeesResult) event;
@@ -6048,9 +6033,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     inventoryEmployeesArrayList.addAll(inventoryEmployeesResult.arrInventoryEmployees);
 
                 } else {
-                    MyMethod.showToast(context, inventoryEmployeesResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, inventoryEmployeesResult.message);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingInventoryEmployee);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.inventoryEmployee.InventoryEmployeeLoadingView);
                 adapterInventoryEmployee.setItems(inventoryEmployeesArrayList);
                 adapterInventoryEmployee.notifyDataSetChanged();
                 //load lại theo loại đơn hàng
@@ -6059,9 +6044,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case SendRequestGrant:
                 EventType.EventSendRequestGrantResult sendRequestGrantResult = (EventType.EventSendRequestGrantResult) event;
                 if (sendRequestGrantResult != null && sendRequestGrantResult.success) {
-                    MyMethod.showToast(context, context.getString(R.string.send_request_success));
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_request_success));
                 } else {
-                    MyMethod.showToast(context, sendRequestGrantResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, sendRequestGrantResult.message);
                 }
                 break;
             case LoadRequestGrants:
@@ -6070,20 +6055,20 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     approvalArrayList = loadRequestGrantResult.arrApprovals;
                     lastRowIdApproval = approvalArrayList.get(approvalArrayList.size() - 1).id_request;
                 } else {
-                    MyMethod.showToast(context, loadRequestGrantResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, loadRequestGrantResult.message);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingApprovalAppLock);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.approvalAppLock.ApprovalAppLockLoadingView);
                 adapterApproval.setItems(approvalArrayList);
                 adapterApproval.notifyDataSetChanged();
                 break;
             case ApprovalApplock:
                 EventType.EventApprovalApplockResult approvalApplockResult = (EventType.EventApprovalApplockResult) event;
                 if (approvalApplockResult != null && approvalApplockResult.success) {
-                    MyMethod.showToast(context, context.getString(R.string.approval_success));
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingApprovalAppLock, context.getString(R.string.load_approval), 30);
+                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.approval_success));
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.approvalAppLock.ApprovalAppLockLoadingView, context.getString(R.string.load_approval), 30);
                     EventPool.control().enQueue(new EventType.EventLoadRequestGrantRequest(-1, nowIdApproval, Home.bindingRight.approvalAppLock.spApprovalStatus.getSelectedItemPosition(), filtersvApproval));
                 } else {
-                    MyMethod.showToast(context, approvalApplockResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, approvalApplockResult.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(Home.loadingApprovalButton);
                 Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
@@ -6095,7 +6080,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     MyMethod.isRealTime = true;
                 } else {
                     MyMethod.isRealTime = false;
-                    MyMethod.showToast(context, realTimeTrackingResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, realTimeTrackingResult.message);
                 }
                 break;
             case LoadReportCheckIn:
@@ -6119,9 +6104,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     });
                     lastRowIdReportCheckIn = arrTemp.get(arrTemp.size() - 1).id;
                 } else {
-                    MyMethod.showToast(context, loadReportCheckInsResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, loadReportCheckInsResult.message);
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingReportCheckIn);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.reportTimeCheckIn.ReportCheckInLoadingView);
                 Home.visibleTitleRC = 0;
                 adapterReportCheckIn.setItems(reportCheckInArrayList);
                 adapterReportCheckIn.notifyDataSetChanged();
@@ -6196,7 +6181,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 LocalDB.inst().addReason(reasonNotOrder);
 
                             }
-                            //EventPool.control().enQueue(new EventType.EventSyncDataRequest(4, -1));
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(5, -1));//load khuyen mai
                             MyMethod.isSyncDating = false;//dong bo thanh cong
                             break;
                         case 4://Order
@@ -6213,7 +6198,33 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 MyMethod.isSyncDating = false;//dong bo thanh cong
                             }
                             break;
-
+                        case 5://Promotion Header
+                            for (int i = 0; i < arrData.size(); i++) {
+                                PromotionHeader header = (PromotionHeader) arrData.get(i);
+                                LocalDB.inst().addPromotionHeader(header);
+                                Home.bindingRight.setting.btnSyncData.setProgressText("Khuyến mãi", LocalDB.inst().countPromotionHeader(-1) * 100 / countData);
+                            }
+                            lastRowIdSyncData = ((PromotionHeader) arrData.get(arrData.size() - 1)).id;
+                            if (lastRowIdSyncData > lastId) {//Nếu chưa hết thì mần tiếp
+                                EventPool.control().enQueue(new EventType.EventSyncDataRequest(5, lastRowIdSyncData));
+                            } else {
+                                EventPool.control().enQueue(new EventType.EventSyncDataRequest(6, -1));//load khuyen mai
+                                MyMethod.isSyncDating = false;//dong bo thanh cong
+                            }
+                            break;
+                        case 6://Promotion Detail
+                            for (int i = 0; i < arrData.size(); i++) {
+                                PromotionDetail detail = (PromotionDetail) arrData.get(i);
+                                LocalDB.inst().addPromotionDetail(detail);
+                                Home.bindingRight.setting.btnSyncData.setProgressText("Khuyến mãi", LocalDB.inst().countPromotionDetail(-1) * 100 / countData);
+                            }
+                            lastRowIdSyncData = ((PromotionDetail) arrData.get(arrData.size() - 1)).id;
+                            if (lastRowIdSyncData > lastId) {//Nếu chưa hết thì mần tiếp
+                                EventPool.control().enQueue(new EventType.EventSyncDataRequest(6, lastRowIdSyncData));
+                            } else {
+                                MyMethod.isSyncDating = false;//dong bo thanh cong
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -6223,10 +6234,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     if (syncDataResult.type == 0) {//Nếu ko load được sp thì load khách hàng
                         EventPool.control().enQueue(new EventType.EventSyncDataRequest(1, -1));
                     } else {
-                        MyMethod.showToast(context, syncDataResult.message);
+                        MyMethod.showToast(Home.bindingRight, context, syncDataResult.message);
                     }
                 }
-                LayoutLoadingManager.Show_OffLoading(Home.loadingCustomer);
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customer.CustomerLoadingView);
                 if (Home.bindingRight.setting.btnSyncData.getProgress() >= 100 && syncDataResult.type == 3) {
                     Home.bindingRight.setting.btnSyncData.setState(AnimDownloadProgressButton.INSTALLING);
                     Home.bindingRight.setting.btnSyncData.setCurrentText("Đang lưu ");
@@ -6254,7 +6265,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     intent.putExtra("RootIDCustomer", Root_Customer);
                     startActivity(intent);
                 } else {
-                    MyMethod.showToast(context, getString(R.string.no_connect_load_local));
+                    MyMethod.showToast(Home.bindingRight, context, getString(R.string.no_connect_load_local));
                     SurveyCampaign selectedSurvey = LocalDB.inst().getListCampaigns(MyMethod.idCampaign);
                     ArrayList<SurveyHeader> arrSurveyHeaders = LocalDB.inst().loadSurveyHeader(selectedSurvey.id);
                     List<Integer> idHeaders = MyMethod.getListIDHeader(arrSurveyHeaders);
@@ -6275,14 +6286,14 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 EventType.EventAcceptWorkResult eventAcceptWorkResult = (EventType.EventAcceptWorkResult) event;
                 if (eventAcceptWorkResult.success) {
                     updatePermissionLine(2);
-                    MyMethod.showToast(context, eventAcceptWorkResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, eventAcceptWorkResult.message);
                 } else {
                     if (eventAcceptWorkResult.result == 2) {//Neu cong viec da co nguoi nhan
-                        MyMethod.showToast(context, eventAcceptWorkResult.message);
+                        MyMethod.showToast(Home.bindingRight, context, eventAcceptWorkResult.message);
                         updatePermissionLine(0);
                     } else {
                         updatePermissionLine(1);
-                        MyMethod.showToast(context, eventAcceptWorkResult.message);
+                        MyMethod.showToast(Home.bindingRight, context, eventAcceptWorkResult.message);
                     }
 
                 }
@@ -6291,12 +6302,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case RejectWork:
                 EventType.EventRejectWorkResult eventRejectWorkResult = (EventType.EventRejectWorkResult) event;
                 if (eventRejectWorkResult.success) {
-                    MyMethod.showToast(context, eventRejectWorkResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, eventRejectWorkResult.message);
                     Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
                     Home.bindingHome.btnComeBack.performClick();
 
                 } else {
-                    MyMethod.showToast(context, eventRejectWorkResult.message);
+                    MyMethod.showToast(Home.bindingRight, context, eventRejectWorkResult.message);
 
 
                 }
@@ -6349,9 +6360,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     private void updateStoreValue() {
         transactionLineInStoreArrayList.clear();
         adapterTransactionLineInStore.notifyDataSetChanged();
-        txtInStoreName.setText(nowCustomer.name);
-        txtInStoreAddress.setText(nowCustomer.address);
-        txtInStorePhone.setText(nowCustomer.phoneNumber);
+        Home.bindingRight.inStore.storeName.setText(nowCustomer.name);
+        Home.bindingRight.inStore.storeAddress.setText(nowCustomer.address);
+        Home.bindingRight.inStore.storePhone.setText(nowCustomer.phoneNumber);
     }
 
     @Override
@@ -6427,7 +6438,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         });
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngTransaction, 15.5f));
                     } catch (Exception e) {
-                        MyMethod.showToast(context, context.getString(R.string.transaction_location_none));
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.transaction_location_none));
                     }
                 }
 
@@ -6516,7 +6527,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     transactionHeaderMarker.showInfoWindow();//hiện thông tin khách hàng
                     hashMarker.put(transactionLineMarker, accuracyTransactionLine);
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(line, 15.5f));
-                    LayoutLoadingManager.Show_OffLoading(Home.loadingMapCustomerCheckIn);
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView);
                     googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                         @Override
                         public void onInfoWindowClick(Marker marker) {
@@ -6562,7 +6573,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 .snippet(nowCustomer.name + "\n" + nowCustomer.phoneNumber + "\n" + nowCustomer.address)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_dms_btn)));
                     } catch (Exception e) {
-                        MyMethod.showToast(context, e.getMessage());
+                        MyMethod.showToast(Home.bindingRight, context, e.getMessage());
                     }
 
                     googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -6633,7 +6644,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         }
 
                     } else {
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.get_location), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.get_location), 30);
                         LocationDetector.inst().setHighPrecision(true);
                     }
                     // Request map update location
@@ -6648,7 +6659,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.loadMap(googleMap, lastlocation, context, true);
                         // Home.bindingRight.map.fab.setEnabled(true);
                     } else {
-                        MyMethod.showToast(context, context.getString(R.string.location_wait));
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.location_wait));
                         LocationDetector.inst().setHighPrecision(true);
                     }
                     // Request map update location
@@ -6796,13 +6807,13 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         adapterSpCustomer.notifyDataSetChanged();
                     } else if (countCustomer == 0) {
                         //load online
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                         EventPool.control().enQueue(new EventType.EventLoadRoutesRequest(Home.nowIdCustomer));
                     } else if (countCustomer == -1) {
                         //sync data
-                        MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+                        MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
                         LocalDB.inst().deleteSyncData();
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                         EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
                     }
                 }
@@ -6998,7 +7009,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         } else {
                             EventPool.control().enQueue(new EventType.EventGetUsersRequest());
                             showLayout(Layouts.Transaction, context);
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                             lastRowIdTransaction = -1;
                             fromDateTransaction = Utils.getDayEnd(Model.getServerTime());
                             //    toDateTransaction = Utils.getDayEnd(Model.getServerTime());
@@ -7154,7 +7165,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             approvalArrayList.clear();
                             Home.LayoutMyManager.ShowLayout(Layouts.Approval);
                             lastRowIdApproval = -1;
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingApprovalAppLock, context.getString(R.string.load_approval), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.approvalAppLock.ApprovalAppLockLoadingView, context.getString(R.string.load_approval), 30);
                             EventPool.control().enQueue(new EventType.EventLoadRequestGrantRequest(lastRowIdApproval, nowIdApproval, Home.bindingRight.approvalAppLock.spApprovalStatus.getSelectedItemPosition(), filtersvApproval));
                         }
                         break;
@@ -7225,24 +7236,24 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                     } else if (countCustomer == 0) {
                                         //load online
                                         if (PhoneState.inst().isWifi() != 1 && PhoneState.inst().is3G() != 1) {
-                                            MyMethod.showToast(context, getString(R.string.not_have_customer));
+                                            MyMethod.showToast(Home.bindingRight, context, getString(R.string.not_have_customer));
                                         } else {
                                             //Nếu có mạng thì load
-                                            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                                             EventPool.control().enQueue(new EventType.EventLoadRoutesRequest(Home.nowIdCustomer));
                                         }
                                     } else if (countCustomer == -1) {
                                         //sync data
-                                        MyMethod.showToast(context, "Yêu cầu đồng bộ dữ liệu");
+                                        MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ dữ liệu");
                                         LocalDB.inst().deleteSyncData();
-                                        LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                                         EventPool.control().enQueue(new EventType.EventSyncDataRequest(2, -1));
                                     }
                                 }
                             } else {//Nếu chưa có thì load nhân viên
-                                MyMethod.showToast(context, "Yêu cầu đồng bộ nhân viên");
+                                MyMethod.showToast(Home.bindingRight, context, "Yêu cầu đồng bộ nhân viên");
                                 LocalDB.inst().deleteSyncData();
-                                LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_route), 30);
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.customer.CustomerLoadingView, context.getString(R.string.load_route), 30);
                                 EventPool.control().enQueue(new EventType.EventSyncDataRequest(0, -1));
                                 MyMethod.isSyncDating = true;
 //                            LayoutLoadingManager.Show_OnLoading(Home.loadingCustomer, context.getString(R.string.load_employee), 30);
@@ -7297,9 +7308,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 alert.show();
                             } else {
                                 showLayout(Layouts.Product, context);
-                                LayoutLoadingManager.Show_OnLoading(Home.loadingProduct, context.getString(R.string.load_product_group), 30);
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.product.ProductLoadingView, context.getString(R.string.load_product_group), 30);
                                 EventPool.control().enQueue(new EventType.EventLoadProductGroupsRequest());
-                                LayoutLoadingManager.Show_OnLoading(Home.loadingProduct, context.getString(R.string.load_product), 30);
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.product.ProductLoadingView, context.getString(R.string.load_product), 30);
                                 MyMethod.isProductOfOrder = false;
                                 refreshProduct();
                             }
@@ -7357,7 +7368,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.isInventoryBill = false;
                         MyMethod.setVisible(btnToDateOrder);
                         showLayout(Layouts.OrderList, context);
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingOrderMain, context.getString(R.string.load_order), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderMain.OrderMainLoadingView, context.getString(R.string.load_order), 30);
                         lastRowIdOrder = -1;
                         toDateOrder = Utils.getDayEnd(Model.getServerTime());
                         btnToDateOrder.setText(Utils.long2DateFull(toDateOrder));
@@ -7405,7 +7416,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             MyMethod.isInventoryBill = false;
                             MyMethod.setGone(btnToDateOrder);
                             showLayout(Layouts.OrderList, context);
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingOrderMain, context.getString(R.string.load_inventory), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderMain.OrderMainLoadingView, context.getString(R.string.load_inventory), 30);
                             lastRowIdOrder = -1;
                             ordersArrayList.clear();
                             EventPool.control().enQueue(new EventType.EventLoadOrdersRequest(lastRowIdOrder, 0, 1, filterOrderMain, nowIdEmployeeOrder));
@@ -7442,7 +7453,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             alert.show();
                         } else {
                             if (arrSpProductGroup.size() == 0) {
-                                LayoutLoadingManager.Show_OnLoading(Home.loadingProduct, context.getString(R.string.load_product_group), 30);
+                                LayoutLoadingManager.Show_OnLoading(Home.bindingRight.product.ProductLoadingView, context.getString(R.string.load_product_group), 30);
                                 EventPool.control().enQueue(new EventType.EventLoadProductGroupsRequest());
                             }
                             EventPool.control().enQueue(new EventType.EventGetUsersRequest());
@@ -7455,7 +7466,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             MyMethod.isInventoryBill = false;
                             MyMethod.setVisible(btnToDateInventoryEmployee);
                             showLayout(Layouts.InventoryEmployee, context);
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingInventoryEmployee, context.getString(R.string.load_inventory_employee), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.inventoryEmployee.InventoryEmployeeLoadingView, context.getString(R.string.load_inventory_employee), 30);
                             lastRowIdInventoryEmployee = -1;
                             toDatenventoryEmployee = Utils.getDayEnd(Model.getServerTime());
                             btnToDateInventoryEmployee.setText(Utils.long2DateFull(toDatenventoryEmployee));
@@ -7473,7 +7484,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         MyMethod.setVisible(btnToDateOrder);
                         Home.LayoutMyManager.ShowLayout(Layouts.OrderList, context, R.menu.edit_delete);
                         showLayout(Layouts.OrderList, context);
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingOrderMain, context.getString(R.string.load_inventory_bill), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderMain.OrderMainLoadingView, context.getString(R.string.load_inventory_bill), 30);
                         lastRowIdOrder = -1;
                         toDateOrder = Utils.getDayEnd(Model.getServerTime());
                         btnToDateOrder.setText(Utils.long2DateFull(toDateOrder));
@@ -7626,7 +7637,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             btnFromDateReportCheckIn.setText(Utils.long2DateFull(fromDateReportCheckIn));
                             toDateReportCheckIn = Utils.getDayEnd(Model.getServerTime());
                             btnToDateReportCheckIn.setText(Utils.long2DateFull(toDateReportCheckIn));
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingReportCheckIn, context.getString(R.string.load_report_checkin), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.reportTimeCheckIn.ReportCheckInLoadingView, context.getString(R.string.load_report_checkin), 30);
                             EventPool.control().enQueue(new EventType.EventLoadReportCheckInsRequest(fromDateReportCheckIn, toDateReportCheckIn, nowIdEmployeeReportCheckIn, -1));
 
                         }

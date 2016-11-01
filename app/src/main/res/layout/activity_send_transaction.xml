@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -7,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
-
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.vietdms.mobile.dmslauncher.Forms.SendTransaction">
 
@@ -43,32 +43,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@string/customer" />
+                        android:text="@string/customer"
+                        android:textSize="14sp" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCustomer"
+                    <Button
+                        android:id="@+id/btn_select_customer"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:hint="@string/input_customer"
-                        android:completionThreshold="1"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:layout_weight="2"
-                        android:gravity="center_vertical"></AutoCompleteTextView>
+                        android:background="@drawable/button_note_drawable"
+                        android:text="@string/select_customer"
+                        android:textColor="@color/white_alpha" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -90,8 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -114,8 +116,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -130,39 +132,85 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center_vertical"
-                        android:hint="@string/input_note" />
+                        android:hint="@string/input_note_transaction" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:padding="5dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@string/select_employee" />
 
-                    <Spinner
-                        android:id="@+id/spStaff"
-                        android:layout_width="0dp"
+                    <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                        android:id="@+id/LoadingEmployee"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"></Spinner>
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/margin_top"
+                        app:lv_color="@android:color/white"
+                        app:lv_loading="false"
+                        app:lv_title="@string/load_order">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@string/select_employee" />
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:layout_height="match_parent">
+                                <Spinner
+                                    android:id="@+id/spStaff"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"></Spinner>
+
+                                <ImageButton
+                                    android:id="@+id/img_refresh_employee"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_margin="5dp"
+                                    android:background="@null"
+                                    android:src="@drawable/restart_btn" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
                 </LinearLayout>
-
+                <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
+                    android:id="@+id/SendTransactionLoading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/margin_top"
+                    app:lv_color="@android:color/white"
+                    app:lv_loading="false"
+                    app:lv_title="@string/load_order">
                 <Button
                     android:id="@+id/btn_send_transaction"
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:background="@drawable/button_note_drawable"
                     android:text="@string/send_transaction"
                     android:textColor="@color/white_alpha" />
+                </com.vietdms.mobile.dmslauncher.CustomView.LoadingView>
             </LinearLayout>
         </RelativeLayout>
 

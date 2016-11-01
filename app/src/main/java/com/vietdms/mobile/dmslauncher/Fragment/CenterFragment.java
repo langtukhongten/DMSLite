@@ -413,15 +413,15 @@ public class CenterFragment extends Fragment implements View.OnClickListener, Ad
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == OPENWIFI) {
-            MyMethod.showToast(context, context.getString(R.string.open_wifi_success));
+            MyMethod.showToast(Home.bindingCenter,context, context.getString(R.string.open_wifi_success));
             Home.isAppLockStop = false;
         }
         if (resultCode == Activity.RESULT_OK && requestCode == OPEN3G) {
-            MyMethod.showToast(context, context.getString(R.string.open_3g_success));
+            MyMethod.showToast(Home.bindingCenter,context, context.getString(R.string.open_3g_success));
             Home.isAppLockStop = false;
         }
         if (resultCode == Activity.RESULT_OK && requestCode == OPENGPS) {
-            MyMethod.showToast(context, context.getString(R.string.open_gps_success));
+            MyMethod.showToast(Home.bindingCenter,context, context.getString(R.string.open_gps_success));
             Home.isAppLockStop = false;
         }
     }

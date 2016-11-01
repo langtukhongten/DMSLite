@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vietdms.mobile.dmslauncher.CustomView.LoadingView;
+import com.vietdms.mobile.dmslauncher.Home;
 import com.vietdms.mobile.dmslauncher.MyMethod;
 import com.vietdms.mobile.dmslauncher.R;
 
@@ -254,7 +255,7 @@ public class CustomAdapterTrackingList extends
                         });
                         dlg.show();
                     } catch (Exception e) {
-                        MyMethod.showToast(context, e.getMessage());
+                        MyMethod.showToast(Home.bindingRight,context, e.getMessage());
                     }
                 }
             });

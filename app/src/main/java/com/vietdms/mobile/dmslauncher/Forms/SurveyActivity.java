@@ -126,7 +126,7 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
                             if (lastRowIdSyncSurvey > lastId) {//Nếu chưa hết thì mần tiếp
                                 EventPool.control().enQueue(new EventType.EventSyncSurveyDetailRequest(2, lastRowIdSyncSurvey, ids));
                             } else {//hết rồi thì xong
-                                MyMethod.showToast(this, getString(R.string.sync_data_finish));
+                                MyMethod.showToast(binding,this, getString(R.string.sync_data_finish));
                             }
                             break;
                         default:
@@ -140,7 +140,7 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
                     } else if (syncSurveyDetailResult.type == 1) {//Nếu ko load được line thì load result
                         EventPool.control().enQueue(new EventType.EventSyncDataRequest(2, -1));
                     } else {
-                        MyMethod.showToast(this, syncSurveyDetailResult.message);
+                        MyMethod.showToast(binding,this, syncSurveyDetailResult.message);
                     }
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.loading);
@@ -172,7 +172,7 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
 
                 } else {
 
-                    MyMethod.showToast(this, syncSurveyResult.message);
+                    MyMethod.showToast(binding,this, syncSurveyResult.message);
 
                 }
                 break;
@@ -205,12 +205,12 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
             case SendSurveyData:
                 EventType.EventSendSurveyDataResult eventSendSurveyDataResult = (EventType.EventSendSurveyDataResult) event;
                 if (eventSendSurveyDataResult.success) {
-                    MyMethod.showToast(this, getString(R.string.send_survey_success));
+                    MyMethod.showToast(binding,this, getString(R.string.send_survey_success));
                     LocalDB.inst().updateResult(1);
 
 
                 } else {
-                    MyMethod.showToast(this, eventSendSurveyDataResult.message);
+                    MyMethod.showToast(binding,this, eventSendSurveyDataResult.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.loading);
                 break;
@@ -354,7 +354,7 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
                     intent.putExtra("RootIDCustomer", Root_Customer);
                     startActivityForResult(intent,REQUESTSEND);
                 } else {
-                    MyMethod.showToast(this, getString(R.string.data_survey_empty));
+                    MyMethod.showToast(binding,this, getString(R.string.data_survey_empty));
                 }
                 //EventPool.control().enQueue(new EventType.EventLoadSurveyDataRequest(ID_Customer, Root_Customer, selectedSurvey.id));
                 break;
@@ -425,7 +425,7 @@ public class SurveyActivity extends AppCompatActivity implements AdapterView.OnI
                                         arrData.addAll(dataCustomer);
                                         EventPool.control().enQueue(new EventType.EventUpdateDataRequest(arrData, 1));
                                     } else {
-                                        MyMethod.showToast(getApplicationContext() , getString(R.string.none_data_need_update));
+                                        MyMethod.showToast(binding,getApplicationContext() , getString(R.string.none_data_need_update));
                                         Home.bindingRight.setting.btnUpdateData.setState(AnimDownloadProgressButton.NORMAL);
                                     }
 

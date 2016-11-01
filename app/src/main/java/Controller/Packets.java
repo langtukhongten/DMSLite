@@ -34,6 +34,8 @@ import CommonLib.OrderDetail;
 import CommonLib.PhoneState;
 import CommonLib.Product;
 import CommonLib.ProductGroup;
+import CommonLib.PromotionDetail;
+import CommonLib.PromotionHeader;
 import CommonLib.ReasonNotOrder;
 import CommonLib.ReportCheckIn;
 import CommonLib.Route;
@@ -460,17 +462,24 @@ abstract class Packets {
                 int len = readInt();
                 arrayCustomers = new ArrayList<>(len);
                 for (int i = 0; i < len; i++) {
-                    Status customer = new Status();
+                    Customer customer = new Customer();
                     customer.id = readInt();
+                    customer.no_ = readString();
                     customer.name = readString();
-
+                    customer.address = readString();
+                    customer.phoneNumber = readString();
+                    customer.imageUrl = readString();
+                    customer.imageThumb = Utils.decompressBitmap(readBytes());
+                    customer.longitude = readDouble();
+                    customer.latitude = readDouble();
+                    customer.distance = readInt();
                     arrayCustomers.add(customer);
                 }
                 inflater.end();
             }
 
             public final String message;
-            public final ArrayList<Status> arrayCustomers;
+            public final ArrayList<Customer> arrayCustomers;
 
         }
 
@@ -492,9 +501,6 @@ abstract class Packets {
                     customer.longitude = readDouble();
                     customer.latitude = readDouble();
                     customer.distance = readInt();
-                    customer.amount_last_month = readFloat();
-                    customer.last_order_day = readLong();
-                    customer.last_visited = readLong();
                     arrayCustomers.add(customer);
                 }
                 inflater.end();
@@ -744,6 +750,7 @@ abstract class Packets {
                 success = readBool();
                 message = readString();
             }
+
             public final boolean success;
             public final String message;
         }
@@ -755,26 +762,27 @@ abstract class Packets {
                 message = readString();
                 result = readInt();
             }
+
             public final boolean success;
             public final String message;
             public final int result;
         }
 
-        public static class PacketBranchGroups extends  Packet {
+        public static class PacketBranchGroups extends Packet {
             public PacketBranchGroups(byte[] data) throws Exception {
                 super(data);
                 message = readString();
                 int len = readInt();
                 int len2 = readInt();
                 listBranch = new ArrayList<>(len);
-                for (int i = 0 ; i <len ; i++) {
+                for (int i = 0; i < len; i++) {
                     Status st = new Status();
                     st.id = readInt();
                     st.name = readString();
                     listBranch.add(st);
                 }
                 listGroup = new ArrayList<>(len2);
-                for (int i = 0 ; i <len2 ; i++) {
+                for (int i = 0; i < len2; i++) {
                     IdStatus ist = new IdStatus();
                     ist.rootId = readInt();
                     ist.id = readInt();
@@ -783,6 +791,7 @@ abstract class Packets {
                 }
                 inflater.end();
             }
+
             public final String message;
             public final ArrayList<Status> listBranch;
             public final ArrayList<IdStatus> listGroup;
@@ -938,7 +947,7 @@ abstract class Packets {
             public final ArrayList<SurveyCampaign> arrSurveyCampaigns;
         }
 
-        public static class PacketUpdateData extends  Packet {
+        public static class PacketUpdateData extends Packet {
             public PacketUpdateData(byte[] data) throws Exception {
                 super(data);
                 success = readBool();
@@ -946,6 +955,7 @@ abstract class Packets {
                 type = readInt();// Lấy loại dữ liệu
                 inflater.end();
             }
+
             public final boolean success;
             public final String message;
             public final int type;
@@ -1051,7 +1061,7 @@ abstract class Packets {
                     case 0://Sản phẩm
                         for (int i = 0; i < len; i++) {
                             Product p = new Product();
-                            try{
+                            try {
                                 p.id = readInt();
                                 p.no_ = readString();
                                 p.name = readString();
@@ -1063,7 +1073,7 @@ abstract class Packets {
                                 p.name_ProductGroup = readString();
                                 p.inventory = readInt();
                                 arrayData.add(p);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 arrayData.add(p);
                                 e.printStackTrace();
                             }
@@ -1089,8 +1099,7 @@ abstract class Packets {
                                 c.last_visited = readLong();
                                 c.workingtime = readInt();
                                 arrayData.add(c);
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 arrayData.add(c);
                                 e.printStackTrace();
                             }
@@ -1115,7 +1124,7 @@ abstract class Packets {
                                 user.isAirplaneMode = readByte();
                                 user.batteryLevel = readInt();
                                 arrayData.add(user);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 arrayData.add(user);
                                 e.printStackTrace();
 
@@ -1156,7 +1165,7 @@ abstract class Packets {
                                 o.employeeName = readString();
                                 int lenDetail = readInt();
                                 o.orderDetails = new ArrayList<>();
-                                for(int j = 0 ;j<lenDetail;j++){
+                                for (int j = 0; j < lenDetail; j++) {
                                     OrderDetail od = new OrderDetail();
                                     od.id_item = readInt();
                                     od.itemNo_ = readString();
@@ -1171,12 +1180,35 @@ abstract class Packets {
                                     o.orderDetails.add(od);
                                 }
                                 arrayData.add(o);
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 arrayData.add(o);
                                 e.printStackTrace();
                             }
 
+                        }
+                        break;
+                    case 5://Cap nhat khuyen mai header
+                        for (int i = 0; i < len; i++) {
+                            PromotionHeader header = new PromotionHeader();
+                            header.id = readInt();
+                            header.no_ = readString();
+                            header.isGroup = readInt();
+                            header.itemNo_ = readString();
+                            header.refItem = readString();
+                            header.kyHieu = readString();
+                            header.headerNo_ = readString();
+                            header.headerName = readString();
+                            arrayData.add(header);
+                        }
+                        break;
+                    case 6://cap nhat khuyen mai detail
+                        for (int i = 0; i < len; i++) {
+                            PromotionDetail detail = new PromotionDetail();
+                            detail.id = readInt();
+                            detail.promotionNo_ = readString();
+                            detail.promotionDescription = readString();
+                            detail.isDiscountMore = readInt();
+                            arrayData.add(detail);
                         }
                         break;
                     default:
@@ -1327,12 +1359,13 @@ abstract class Packets {
             public final ArrayList<City> arrCitys;
         }
 
-        public static class PacketSendTransactionMessage extends  Packet {
+        public static class PacketSendTransactionMessage extends Packet {
             public PacketSendTransactionMessage(byte[] data) throws Exception {
                 super(data);
                 success = readBool();
                 message = readString();
             }
+
             public final boolean success;
             public final String message;
         }
@@ -1786,9 +1819,12 @@ abstract class Packets {
                 write(id_employee_viewed);
             }
         }
-        public static class PacketLoadAllCustomers extends  Packet {
-            public PacketLoadAllCustomers() throws IOException {
+
+        public static class PacketLoadAllCustomers extends Packet {
+            public PacketLoadAllCustomers(String filter, int lastID) throws IOException {
                 super(PacketType.LoadAllCustomer);
+                write(filter);
+                write(lastID);
             }
         }
 
@@ -2020,7 +2056,7 @@ abstract class Packets {
                             write(order.imageUrl);
                             write(order.employeeName);
                             write(order.orderDetails.size());
-                            for(OrderDetail detail : order.orderDetails){
+                            for (OrderDetail detail : order.orderDetails) {
                                 write(detail.id_item);
                                 write(detail.quantity);
                                 write(detail.unitprice);
@@ -2205,7 +2241,7 @@ abstract class Packets {
         }
 
         public static class PacketSendTransactionMessage extends Packet {
-            public PacketSendTransactionMessage(int type,int id_customer,int id_employee,String content,String note,String phone) throws IOException {
+            public PacketSendTransactionMessage(int type, int id_customer, int id_employee, String content, String note, String phone) throws IOException {
                 super(PacketType.SendTransactionMessage);
                 write(type);
                 write(id_customer);

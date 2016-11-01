@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
@@ -38,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
 import com.vietdms.mobile.dmslauncher.CustomClass.LayoutLoadingManager;
 import com.vietdms.mobile.dmslauncher.Fragment.RightFragment;
 import com.vietdms.mobile.dmslauncher.Home;
@@ -64,6 +66,7 @@ import CommonLib.EventType;
 import CommonLib.LocalDB;
 import CommonLib.Model;
 import CommonLib.PhoneState;
+import CommonLib.Utils;
 import Controller.ControlThread;
 
 /**
@@ -79,6 +82,7 @@ public class MessageService extends Service {
     private static final int TransactionWorking = 5;
     private static final int NetWork2G = 7;
     private static final int MESSAGE = 6;
+
     private WindowManager windowManager;
     private WindowManager.LayoutParams params;
     private Context context;
@@ -94,6 +98,11 @@ public class MessageService extends Service {
     protected long timeOld2G = 0;
     protected long timeOldTransaction = 0;
     protected long timeOldGPS = 0;
+    private static final String TIME_OLD_2G = "2G";
+    private static final String TIME_OLD_3G = "3G";
+    private static final String TIME_OLD_GPS = "GPS";
+    private static final String TIME_OLD_TRANSACTION = "Transaction";
+    private static final String TIME_OLD_MESSAGE = "Message";
     private Button btnRead, btnClose;
     private boolean flagUpdate, flagGPS, flag3G, flagTransaction, flag2G;
     private String sendby;//người gửi
@@ -104,7 +113,7 @@ public class MessageService extends Service {
     private NotificationManager notificationManager;
     public static final int NOTIFICATION_ID = 0;
     private int id_transaction_manager;
-
+    private SharedPreferences prefs = null;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -116,6 +125,8 @@ public class MessageService extends Service {
     public void onCreate() {
         super.onCreate();
         this.context = getApplicationContext();
+        prefs = getSharedPreferences("com.vietdms.mobile.dmslauncher", MODE_PRIVATE);
+        loadValue();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "wakeLock");
@@ -202,10 +213,13 @@ public class MessageService extends Service {
         LinearLayout llbutton = new LinearLayout(this);
         llbutton.setPadding(0, 20, 0, 0);
         llbutton.setOrientation(LinearLayout.HORIZONTAL);
+        llbutton.setBackgroundColor(Color.WHITE);
         btnRead = new Button(this);
         btnRead.setText(context.getString(R.string.read));
         btnRead.setBackgroundColor(Color.DKGRAY);
-        btnRead.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        LinearLayout.LayoutParams btnReadLayout = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        btnReadLayout.setMargins(2,0,2,2);
+        btnRead.setLayoutParams(btnReadLayout);
         LinearLayout line3 = new LinearLayout(this);
         LinearLayout.LayoutParams linela3 = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -214,7 +228,9 @@ public class MessageService extends Service {
         btnClose = new Button(this);
         btnClose.setText(context.getString(R.string.close));
         btnClose.setBackgroundColor(Color.DKGRAY);
-        btnClose.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        LinearLayout.LayoutParams btnCloseLayout = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        btnCloseLayout.setMargins(2,0,2,2);
+        btnClose.setLayoutParams(btnCloseLayout);
         llbutton.addView(btnRead);
         llbutton.addView(line3);
         llbutton.addView(btnClose);
@@ -289,7 +305,7 @@ public class MessageService extends Service {
                         if (Home.bindingRight != null) {
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
                         }
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                         MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(-1, Model.getServerTime(), -1, "", false, Const.TransactionStatus.Working.getValue()));
                     } else {
@@ -307,7 +323,7 @@ public class MessageService extends Service {
                     if (currentApp().contains(HOME_PACKAGE)) {
                         if (Home.bindingHome != null) Home.bindingHome.viewpager.setCurrentItem(2);
                         Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.Transaction);
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                         MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     } else {
@@ -320,7 +336,7 @@ public class MessageService extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                         MyMethod.isLoadTransactionInMessage = true;
                         EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                     }
@@ -353,8 +369,22 @@ public class MessageService extends Service {
         return TimeUnit.MILLISECONDS.toMinutes(epochMs);
     }
 
+    private void loadValue(){
+        try {
+            prefs = getSharedPreferences("com.vietdms.mobile.dmslauncher", MODE_PRIVATE);
+            timeOld2G = prefs.getLong(TIME_OLD_2G,0);
+            timeOld3G = prefs.getLong(TIME_OLD_3G,0);
+            timeOldGPS = prefs.getLong(TIME_OLD_GPS,0);
+            timeOldMessage = prefs.getLong(TIME_OLD_MESSAGE,0);
+            timeOldTransaction = prefs.getLong(TIME_OLD_TRANSACTION,0);
+            Log.w(TAG, "loadValue: 2G:" + timeOld2G +" 3G:"+timeOld3G+" GPS:"+timeOldGPS+" Message:"+timeOldMessage+" Transaction"+timeOldTransaction );
+        }catch (Exception e){
+            Log.w(TAG, "loadValue: "+e.toString() );
+        }
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         try {
             Bundle extras = intent.getExtras();
             if (extras == null) {
@@ -374,7 +404,7 @@ public class MessageService extends Service {
                         showMessage();
                     } else {//Tin nhắn cũ
                         Log.w(TAG, "onStartCommand: Tin nhắn cũ");
-                        if (long2Minute(System.currentTimeMillis() - timeOldMessage) >= 5 || sendby == 0)//Sau 5 phút hoac tin nhan gui giao dich topic lại báo
+                        if (long2Minute(System.currentTimeMillis() - timeOldMessage) >= 5 )//Sau 5 phút hoac tin nhan gui giao dich topic lại báo
                         {
                             showMessage();
                         }
@@ -478,6 +508,8 @@ public class MessageService extends Service {
                     sendNotification(content, TRANSACTION);
                 }
                 timeOldMessage = System.currentTimeMillis();// đặt lại thời gian nhận tin
+                Log.w(TAG, "showMessage: Message sẽ báo lại lúc "+ Utils.long2HourMinuteSecond(timeOldMessage));
+                prefs.edit().putLong(TIME_OLD_MESSAGE,timeOldMessage).commit();
 
             } else if (sender.contains("Þ")) {
                 String[] sendStr = sender.split("Þ");
@@ -516,6 +548,8 @@ public class MessageService extends Service {
                         message.setText("Vui lòng bật GPS.");
                         sendNotification("Vui lòng bật GPS.", GPS);
                         timeOldGPS = System.currentTimeMillis();// đặt lại thời gian nhận tin
+                        Log.w(TAG, "showMessage: GPS sẽ báo lại lúc "+ Utils.long2HourMinuteSecond(timeOldGPS));
+                        prefs.edit().putLong(TIME_OLD_GPS,timeOldGPS).commit();
                         break;
                     case "NETWORK":
                         flagShow = true;
@@ -530,6 +564,8 @@ public class MessageService extends Service {
                         message.setText("Vui lòng bật 3G.");
                         sendNotification("Vui lòng bật 3G.", ThreeG);
                         timeOld3G = System.currentTimeMillis();// đặt lại thời gian nhận tin
+                        Log.w(TAG, "showMessage: 3G sẽ báo lại lúc "+ Utils.long2HourMinuteSecond(timeOld3G));
+                        prefs.edit().putLong(TIME_OLD_3G,timeOld3G).commit();
                         break;
                     case "TRANSACTION":
                         flagShow = true;
@@ -544,6 +580,8 @@ public class MessageService extends Service {
                         message.setText(getString(R.string.notify_transaction_not_finish));
                         sendNotification(getString(R.string.transaction_not_finish), TransactionWorking);
                         timeOldTransaction = System.currentTimeMillis();// đặt lại thời gian nhận tin
+                        Log.w(TAG, "showMessage: Transaction sẽ báo lại lúc "+ Utils.long2DateFull(timeOldTransaction));
+                        prefs.edit().putLong(TIME_OLD_TRANSACTION,timeOldTransaction).commit();
                         break;
                     case "2G":
                         flagShow = true;
@@ -558,6 +596,8 @@ public class MessageService extends Service {
                         message.setText(getString(R.string.area_not_network));
                         sendNotification(getString(R.string.notify_slow_network), NetWork2G);
                         timeOld2G = System.currentTimeMillis();// đặt lại thời gian nhận tin
+                        Log.w(TAG, "showMessage: 2G sẽ báo lại lúc "+ Utils.long2HourMinuteSecond(timeOld2G));
+                        prefs.edit().putLong(TIME_OLD_2G,timeOld2G).commit();
                         break;
 
                 }

@@ -304,6 +304,8 @@ public class LocalDB {
             db.execSQL("delete from " + DbHelper.CUSTOMER_NAME);
             db.execSQL("delete from " + DbHelper.USER_NAME);
             db.execSQL("delete from " + DbHelper.REASON_NAME);
+            db.execSQL("delete from " + DbHelper.PROMOTION_HEADER_NAME);
+            db.execSQL("delete from " + DbHelper.PROMOTION_DETAIL_NAME);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -396,6 +398,36 @@ public class LocalDB {
             return 0;
         }
     }
+
+    public synchronized int countPromotionHeader(int id){
+        try{
+            String query = "SELECT Count(RowID) FROM " + DbHelper.PROMOTION_HEADER_NAME;
+            Cursor c = db.rawQuery(query,null);
+            c.moveToFirst();
+            int count = c.getInt(0);
+            c.close();
+            return count == 0 ? -1 : count;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public synchronized int countPromotionDetail(int id){
+        try{
+            String query = "SELECT Count(RowID) FROM " + DbHelper.PROMOTION_DETAIL_NAME;
+            Cursor c = db.rawQuery(query,null);
+            c.moveToFirst();
+            int count = c.getInt(0);
+            c.close();
+            return count == 0 ? -1 : count;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
     public synchronized int countCustomer(int id) {
         //-1 :  cần sync
         //0 : load online  int countCustomer = LocalDB.inst().countCustomer(Home.nowIdCustomer);
@@ -541,7 +573,15 @@ public class LocalDB {
             return 0;
         }
     }
-
+    public synchronized ArrayList<Promotion> getPromotion(String no_) {
+        ArrayList<Promotion> result = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM "+ DbHelper.
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
     public synchronized ArrayList<Product> loadProduct(int lastId, String filter) {
         ArrayList<Product> result = new ArrayList<>();
         try {
@@ -759,6 +799,29 @@ public class LocalDB {
         }
     }
 
+    public synchronized long addPromotionHeader(PromotionHeader header) {
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("RowID",header.id);
+            cv.put("No_", header.no_);
+            cv.put("IsGroup", header.isGroup);
+            cv.put("ItemNo_", header.itemNo_);
+            cv.put("Ref_Item", header.refItem);
+            cv.put("KyHieu", header.kyHieu);
+            cv.put("HeaderNo_", header.headerNo_);
+            cv.put("HeaderName", header.headerName);
+            long rowId = db.insert(DbHelper.PROMOTION_HEADER_NAME, null, cv);
+            if (rowId >= 0) {
+                Log.w(TAG, "addPromotionHeader: " + header.headerName);
+            }
+            return rowId;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+
+
     public synchronized long addLine(SurveyLine line) {
         try {
             ContentValues cv = new ContentValues();
@@ -773,6 +836,24 @@ public class LocalDB {
             long rowId = db.insert(DbHelper.LINE_NAME, null, cv);
             if (rowId >= 0) {
                 Log.w(TAG, "addLine: " + line.question);
+            }
+            return rowId;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public synchronized long addPromotionDetail(PromotionDetail line) {
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("RowID",line.id);
+            cv.put("PromotionNo_", line.promotionNo_);
+            cv.put("PromotionDescription", line.promotionDescription);
+            cv.put("IsDiscountMore", line.isDiscountMore);
+
+            long rowId = db.insert(DbHelper.PROMOTION_DETAIL_NAME, null, cv);
+            if (rowId >= 0) {
+                Log.w(TAG, "addPromotionDetail: " + line.promotionDescription);
             }
             return rowId;
         } catch (Exception e) {
@@ -1669,6 +1750,8 @@ public class LocalDB {
         public static final String CAMPAIGN_NAME = "tblCampaign";
         public static final String RESULT_NAME = "tblResult";
         public static final String SYNC_NAME = "tblSync";
+        public static final String PROMOTION_HEADER_NAME = "tblPromotionHeader";
+        public static final String PROMOTION_DETAIL_NAME = "tblPromotionDetail";
         public static final String SQL_CREATE_CUSTOMERS_EXIST = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_NAME + " ("
                 + "RowID integer primary key autoincrement"
                 + ",No_ nvarchar(30)"
@@ -1816,6 +1899,24 @@ public class LocalDB {
                 + ",Note nvarchar(500)"
                 + ",Status int"
                 + ");";
+
+        public static final String SQL_CREATE_PROMOTION_HEADER_EXIST = "CREATE TABLE IF NOT EXISTS " + PROMOTION_HEADER_NAME + " ("
+                + "RowID integer primary key"
+                + ",No_ nvarchar(50)"
+                + ",isGroup int"
+                + ",itemNo_ nvarchar(50)"
+                + ",Ref_Item nvarchar(50)"
+                + ",KyHieu nvarchar(50)"
+                + ",HeaderNo_ nvarchar(50)"
+                + ",HeaderName nvarchar(50)"
+                + ");";
+        public static final String SQL_CREATE_PROMOTION_DETAIL_EXIST = "CREATE TABLE IF NOT EXISTS " + PROMOTION_DETAIL_NAME + " ("
+                + "RowID integer primary key"
+                + ",PromotionNo_ nvarchar(50)"
+                + ",PromotionDescription nvarchar(50)"
+                + ",isDiscountMore int"
+                + ");";
+
         public static final String SQL_CREATE_SYNCS_EXIST = "CREATE TABLE IF NOT EXISTS " + SYNC_NAME + " ("
                 + "RowID integer primary key autoincrement"
                 + ",Time long"
@@ -1857,6 +1958,8 @@ public class LocalDB {
         public static final String SQL_DELETE_CUSTOMER = "drop table if exists " + CUSTOMER_NAME + ";";
         public static final String SQL_DELETE_PRODUCT = "drop table if exists " + PRODUCT_NAME + ";";
         public static final String SQL_DELETE_SYNC = "drop table if exists " + SYNC_NAME + ";";
+        public static final String SQL_DELETE_PROMOTION_HEADER = "drop table if exists " + PROMOTION_HEADER_NAME + ";";
+        public static final String SQL_DELETE_PROMOTION_DETAIL = "drop table if exists " + PROMOTION_DETAIL_NAME + ";";
 
         public DbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -1878,6 +1981,8 @@ public class LocalDB {
             db.execSQL(SQL_CREATE_RESULT_EXIST);
             db.execSQL(SQL_CREATE_ORDERS_EXIST);
             db.execSQL(SQL_CREATE_ORDER_DETAILS_EXIST);
+            db.execSQL(SQL_CREATE_PROMOTION_HEADER_EXIST);
+            db.execSQL(SQL_CREATE_PROMOTION_DETAIL_EXIST);
         }
 
         @Override
@@ -1890,6 +1995,8 @@ public class LocalDB {
             db.execSQL(SQL_DELETE_CUSTOMER);
             db.execSQL(SQL_DELETE_PRODUCT);
             db.execSQL(SQL_DELETE_SYNC);
+            db.execSQL(SQL_DELETE_PROMOTION_HEADER);
+            db.execSQL(SQL_DELETE_PROMOTION_DETAIL);
             onCreate(db);
         }
 

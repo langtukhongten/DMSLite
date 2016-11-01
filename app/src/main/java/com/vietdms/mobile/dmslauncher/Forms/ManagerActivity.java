@@ -271,7 +271,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, true));
                     } else
-                        MyMethod.showToast(this, this.getString(R.string.see_again_date_limit));
+                        MyMethod.showToast(binding,this, this.getString(R.string.see_again_date_limit));
                 }
 
                 break;
@@ -283,7 +283,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, false));
                     } else
-                        MyMethod.showToast(this, this.getString(R.string.see_all_date_limit));
+                        MyMethod.showToast(binding,this, this.getString(R.string.see_all_date_limit));
                 }
                 break;
             case R.id.btn_zoom_in_map:
@@ -447,11 +447,11 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private boolean isDateOK() {
         if (from == null) {
-            MyMethod.showToast(this, this.getString(R.string.please_select_from_date));
+            MyMethod.showToast(binding,this, this.getString(R.string.please_select_from_date));
             return false;
         }
         if (to == null) {
-            MyMethod.showToast(this, this.getString(R.string.please_select_to_date));
+            MyMethod.showToast(binding,this, this.getString(R.string.please_select_to_date));
             return false;
         }
         return true;
@@ -937,7 +937,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                 }
                 arrStaff.clear();
                 if (eventGetUsersResult.arrayUsers == null || eventGetUsersResult.arrayUsers.length <= 0) {
-                    MyMethod.showToast(this, this.getString(R.string.none_staff));
+                    MyMethod.showToast(binding,this, this.getString(R.string.none_staff));
                 } else {
                     Collections.addAll(arrStaff, eventGetUsersResult.arrayUsers);
                     if (arrStaff.size() == 1) {
@@ -961,7 +961,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     MyMethod.isRealTime = true;
                 } else {
                     MyMethod.isRealTime = false;
-                    MyMethod.showToast(this, realTimeTrackingResult.message);
+                    MyMethod.showToast(binding,this, realTimeTrackingResult.message);
                 }
                 break;
             case GetLastLocation:
@@ -984,7 +984,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
                     }
                 } else {
-                    MyMethod.showToast(this, getLastLocationResult.message);
+                    MyMethod.showToast(binding,this, getLastLocationResult.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
                 break;
@@ -1008,7 +1008,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     binding.content.linearListTracking.setVisibility(View.VISIBLE);
                 } else {
                     binding.content.linearListTracking.setVisibility(View.GONE);
-                    MyMethod.showToast(this, arrLocations.message);
+                    MyMethod.showToast(binding,this, arrLocations.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
 

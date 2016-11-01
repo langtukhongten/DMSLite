@@ -85,7 +85,7 @@ public class ReportTransactionGeneral extends AppCompatActivity  implements View
                     arrGroup.addAll(eventBranchGroupResult.listGroup);
                     adapterBranch.notifyDataSetChanged();
                 }else{
-                    MyMethod.showToast(context,getString(R.string.none_branch_group));
+                    MyMethod.showToast(binding,context,getString(R.string.none_branch_group));
                 }
                 break;
             default:

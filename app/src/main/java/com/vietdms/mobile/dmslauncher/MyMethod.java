@@ -10,6 +10,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.ViewDataBinding;
+import android.databinding.tool.Binding;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -156,10 +158,10 @@ public class MyMethod {
      * Hiển thị thông báo trong ứng dụng không bị tràn ra ngoài màn hình
      * truyền vào context và thông báo muốn hiển thị
      */
-    public static void showToast(Context context, String toast) {// show toast so cool
+    public static void showToast(ViewDataBinding binding,Context context, String toast) {// show toast so cool
         try {
             Snackbar snackbar = Snackbar
-                    .make(Home.bindingRight.getRoot(), toast, Snackbar.LENGTH_SHORT);
+                    .make(binding.getRoot(), toast, Snackbar.LENGTH_SHORT);
             View view = snackbar.getView();
             view.setBackgroundColor(Color.parseColor("#FF8C00"));
             TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -167,7 +169,18 @@ public class MyMethod {
             tv.setTextColor(Color.WHITE);
             snackbar.show();
         } catch (Exception e) {
-            Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+            try {
+                Snackbar snackbar = Snackbar
+                        .make(Home.bindingRight.getRoot(), toast, Snackbar.LENGTH_SHORT);
+                View view = snackbar.getView();
+                view.setBackgroundColor(Color.parseColor("#FF8C00"));
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
+                tv.setTextColor(Color.WHITE);
+                snackbar.show();
+            } catch (Exception ex) {
+                Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
@@ -577,7 +590,7 @@ public class MyMethod {
     public static boolean checkInputInSaveSend(Context context) {
         try {
             if (Home.editCheckIn.getText().toString().isEmpty()) {
-                MyMethod.showToast(context, context.getString(R.string.please_input_report));
+                MyMethod.showToast(Home.bindingRight,context, context.getString(R.string.please_input_report));
                 return false;
             }
             return true;

@@ -475,9 +475,9 @@ public class NetworkTransaction {
     }
 
 
-    public synchronized boolean loadAllCustomers() {
+    public synchronized boolean loadAllCustomers(String filter,int lastID) {
         try {
-            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadAllCustomers().getData(), true);
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadAllCustomers(filter,lastID).getData(), true);
             if (result != null) {
                 Log.i("loadAllCustomers", "success");
                 Packets.FromServer.PacketLoadAllCustomers packetLoadAllCustomers = new Packets.FromServer.PacketLoadAllCustomers(result);

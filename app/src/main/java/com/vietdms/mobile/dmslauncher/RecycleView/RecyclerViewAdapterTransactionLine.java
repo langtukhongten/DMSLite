@@ -182,7 +182,7 @@ public class RecyclerViewAdapterTransactionLine extends RecyclerView.Adapter<Rec
                     if (t.id_transaction_define == 6)
                         RightFragment.updateInventoryDetailView(context);
                     else RightFragment.updateOrderDetailView(context);
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingOrderDetail, context.getString(R.string.load_order_detail), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
                     EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(t.id_ExtNo_));
                     MyMethod.isOrderInTransactionLine = true;
                     if (MyMethod.isVisible(Home.bindingRight.inStore.linearInStore)) {
@@ -210,7 +210,7 @@ public class RecyclerViewAdapterTransactionLine extends RecyclerView.Adapter<Rec
                     }
                     Home.bindingHome.txtTile.setText(t.note);
                     Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.MapCustomerCheckIn);
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.load_map), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.load_map), 30);
                     EventPool.control().enQueue(new EventType.EventLoadLocationVisitedRequest(t.location_ref_id, t.id_employee));
                     Log.d("Pressed ", "transactionViewID isHasImage");
                 } else {
@@ -224,7 +224,7 @@ public class RecyclerViewAdapterTransactionLine extends RecyclerView.Adapter<Rec
                     }
                     Home.bindingHome.txtTile.setText(t.note);
                     Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.MapCustomerCheckIn);
-                    LayoutLoadingManager.Show_OnLoading(Home.loadingMapCustomerCheckIn, context.getString(R.string.load_map), 30);
+                    LayoutLoadingManager.Show_OnLoading(Home.bindingRight.mapCheckInCustomer.MapCustomerCheckInLoadingView, context.getString(R.string.load_map), 30);
                     EventPool.control().enQueue(new EventType.EventLoadLocationVisitedRequest(t.location_ref_id, t.id_employee));
                     Log.d("Pressed ", "transactionViewID isHasn'tImage");
                 }

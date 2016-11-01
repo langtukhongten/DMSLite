@@ -368,9 +368,13 @@ public abstract class EventType {
     }
 
     public static class EventLoadAllCustomersRequest extends EventBase {
-        public EventLoadAllCustomersRequest() {
+        public EventLoadAllCustomersRequest(String filter,int lastID) {
             super(Type.LoadAllCustomers);
+            this.filter = filter;
+            this.lastID = lastID;
         }
+        public final String filter;
+        public final int lastID;
     }
 
     public static class EventUpdateCustomerRequest extends EventBase {
@@ -1054,9 +1058,9 @@ public abstract class EventType {
     public static class EventLoadAllCustomersResult extends EventBase {
         public final boolean success;
         public final String message;
-        public final ArrayList<Status> arrCustomer;
+        public final ArrayList<Customer> arrCustomer;
 
-        public EventLoadAllCustomersResult(boolean success, String message, ArrayList<Status> arrCustomer) {
+        public EventLoadAllCustomersResult(boolean success, String message, ArrayList<Customer> arrCustomer) {
             super(Type.LoadAllCustomers);
             this.success = success;
             this.message = message;

@@ -291,13 +291,18 @@
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
         </activity>
-        <activity android:name=".Forms.SendTransaction"
+        <activity
+            android:name=".Forms.SendTransaction"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:allowBackup="true"
+            android:icon="@drawable/send_btn"
+            android:label="@string/send_transaction"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="Forms.OnEvent" />
             </intent-filter>
-            </activity>
+        </activity>
+        <activity android:name=".Forms.SelectCustomer"></activity>
     </application>
 
 </manifest>

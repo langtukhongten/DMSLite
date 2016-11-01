@@ -68,7 +68,7 @@ public class LibraryActivity extends AppCompatActivity implements AdapterView.On
             case GetUsers:
                 EventType.EventGetUsersResult eventGetUsersResult = (EventType.EventGetUsersResult) event;
                 if (eventGetUsersResult.arrayUsers == null || eventGetUsersResult.arrayUsers.length <= 0) {
-                    MyMethod.showToast(this, this.getString(R.string.none_staff));
+                    MyMethod.showToast(binding,this, this.getString(R.string.none_staff));
                 } else {
                     UserInfo[] temp = eventGetUsersResult.arrayUsers;
                     for (int i = 0; i < temp.length; i++) {

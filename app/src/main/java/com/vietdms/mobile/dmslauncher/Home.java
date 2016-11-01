@@ -122,6 +122,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static Runnable runnableStore;
     public static Handler handler;
 
+
     //GCM
     public static boolean isAppLockStop = false; // Dừng Applock
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -186,12 +187,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static SupportMapFragment mapUpdateFragment, mapCustomerViewFragment, mapCustomerCheckinFragment;
     public static ImageView imagePhotoIn;
     public static SupportMapFragment mapFragment, mapOrderFragment;
-    public static LoadingView loadingReportWeb, loadingUpdateImage, loadingLogin, loadingMapOrder, loadingCancelOrder,
-            loadingListGCM, loadingCheckIn, loadingTransactionLineInStore,
-            loadingCustomer, loadingProduct, loadingProductOfOrder, loadingOrderMain,
-            loadingTransaction, loadingSendOrder, loadingUpdateCustomer,
-            loadingMapCustomerCheckIn, loadingInStore, loadingCreateCustomer, loadingOrderDetail,
-            loadingHistory, loadingInventoryEmployee, loadingApprovalAppLock, loadingReportCheckIn;
+
     public static int positionGCM, positionTransaction, positionCustomer, positionProduct;
     public static Button btnOrderAddProduct, btnOrderSaveSend, btnOrderProductCancel, btnOrderProductAccept;
     public static TextView txtOrderAmountSale, txtOrderAmount, txtOrderDiscount, txtOrderCustomerName, txtOrderCustomerAddress, txtOrderProductAmountItem;
@@ -270,7 +266,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
                             Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.Transaction);
                             rightFragment.transactionArrayList.clear();
                             rightFragment.adapterTransaction.notifyDataSetChanged();
-                            LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                             MyMethod.isLoadTransactionInMessage = true;
                             EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true, Const.TransactionStatus.All.getValue()));
                             MyMethod.IDFromMessageService = lastId;
