@@ -234,7 +234,7 @@ public abstract class EventType {
     }
 
     public static class EventSendTransactionMessageRequest extends EventBase {
-        public EventSendTransactionMessageRequest(int type, int id_customer, int id_employee,String content, String note, String phone) {
+        public EventSendTransactionMessageRequest(int type, int id_customer, int id_employee, String content, String note, String phone) {
             super(Type.SendTransactionMessage);
             this.type = type;
             this.id_customer = id_customer;
@@ -368,11 +368,12 @@ public abstract class EventType {
     }
 
     public static class EventLoadAllCustomersRequest extends EventBase {
-        public EventLoadAllCustomersRequest(String filter,int lastID) {
+        public EventLoadAllCustomersRequest(String filter, int lastID) {
             super(Type.LoadAllCustomers);
             this.filter = filter;
             this.lastID = lastID;
         }
+
         public final String filter;
         public final int lastID;
     }
@@ -541,14 +542,16 @@ public abstract class EventType {
     }
 
     public static class EventSendOrderRequest extends EventBase {
-        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails) {
+        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type) {
             super(Type.SendOrder);
             this.order = order;
             this.orderDetails = orderDetails;
+            this.type = type;
         }
 
         public final Order order;
         public final ArrayList<OrderDetail> orderDetails;
+        public final int type;
     }
 
     public static class EventSendTransactionRequest extends EventBase {

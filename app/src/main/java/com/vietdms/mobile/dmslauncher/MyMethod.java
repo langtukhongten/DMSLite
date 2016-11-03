@@ -857,7 +857,7 @@ public class MyMethod {
         try {
             float result = 0;
             for (int i = 0; i < arr.size(); i++) {
-                result = result + arr.get(i).quantity * arr.get(i).unitprice;
+                result = result + ((arr.get(i).quantity * arr.get(i).unitprice)-arr.get(i).discountAmount)*((100-arr.get(i).discountPercent)/100);
             }
             return Utils.formatFloat(result);
         } catch (NullPointerException e) {

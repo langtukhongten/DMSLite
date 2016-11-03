@@ -78,4 +78,63 @@
         android:text="@string/promotion"
         android:textColor="@color/bpRed"
         android:textSize="@dimen/textFontSize" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/row_product_no"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_height="match_parent" >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/discount_percent"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/row_discount_percent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_height="match_parent" >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/discount_amount"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/row_discount_amount"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_height="match_parent" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="="
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/row_amount"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        </LinearLayout>
+
 </RelativeLayout>

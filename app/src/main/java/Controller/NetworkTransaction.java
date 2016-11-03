@@ -475,9 +475,9 @@ public class NetworkTransaction {
     }
 
 
-    public synchronized boolean loadAllCustomers(String filter,int lastID) {
+    public synchronized boolean loadAllCustomers(String filter, int lastID) {
         try {
-            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadAllCustomers(filter,lastID).getData(), true);
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadAllCustomers(filter, lastID).getData(), true);
             if (result != null) {
                 Log.i("loadAllCustomers", "success");
                 Packets.FromServer.PacketLoadAllCustomers packetLoadAllCustomers = new Packets.FromServer.PacketLoadAllCustomers(result);
@@ -558,9 +558,9 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails) {
+    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type) {
         try {
-            Packets.ToServer.PacketSendOrder packetSendOrder = new Packets.ToServer.PacketSendOrder(order, orderDetails);
+            Packets.ToServer.PacketSendOrder packetSendOrder = new Packets.ToServer.PacketSendOrder(order, orderDetails, type);
             byte[] result = sendPostRequest(defaultUrl, packetSendOrder.getData(), true);
             if (result != null) {
                 Log.i("sendOrder", "success");
@@ -569,12 +569,12 @@ public class NetworkTransaction {
                 return true;
             } else {
                 Log.w("sendOrder", "fail");
-                EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Không thể kết nối đến máy chủ",null));
+                EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Không thể kết nối đến máy chủ", null));
                 return false;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Lỗi không xác định",null));
+            EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Lỗi không xác định", null));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }
@@ -912,28 +912,28 @@ public class NetworkTransaction {
     }
 
     public synchronized boolean acceptWork(int id) {
-        try{
+        try {
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketAcceptWork(id).getData(), true);
             if (result != null) {
                 Log.i("acceptWork", "success");
                 Packets.FromServer.PacketAcceptWork packetAcceptWork = new Packets.FromServer.PacketAcceptWork(result);
-                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(packetAcceptWork.success, packetAcceptWork.message, packetAcceptWork.result,id));
+                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(packetAcceptWork.success, packetAcceptWork.message, packetAcceptWork.result, id));
 
                 return true;
             } else {
                 Log.w("acceptWork", "fail");
-                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false, "Không thể kết nối đến máy chủ", 0,id));
+                EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false, "Không thể kết nối đến máy chủ", 0, id));
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false,"Lỗi không xác định",0,id));
+            EventPool.view().enQueue(new EventType.EventAcceptWorkResult(false, "Lỗi không xác định", 0, id));
             return false;
         }
     }
 
     public synchronized boolean rejectWork(int id) {
-        try{
+        try {
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketRejectWork(id).getData(), true);
             if (result != null) {
                 Log.i("rejectWork", "success");
@@ -946,35 +946,35 @@ public class NetworkTransaction {
                 EventPool.view().enQueue(new EventType.EventRejectWorkResult(false, "Không thể kết nối đến máy chủ"));
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventRejectWorkResult(false,"Lỗi không xác định"));
+            EventPool.view().enQueue(new EventType.EventRejectWorkResult(false, "Lỗi không xác định"));
             return false;
         }
     }
 
-    public synchronized boolean loadBranchGroups(){
-        try{
+    public synchronized boolean loadBranchGroups() {
+        try {
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketBranchGroups().getData(), true);
             if (result != null) {
                 Log.i("loadBranchGroups", "success");
                 Packets.FromServer.PacketBranchGroups packetBranchGroups = new Packets.FromServer.PacketBranchGroups(result);
                 if (packetBranchGroups.listBranch.size() != 0) {
-                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(true, packetBranchGroups.message, packetBranchGroups.listBranch,packetBranchGroups.listGroup));
+                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(true, packetBranchGroups.message, packetBranchGroups.listBranch, packetBranchGroups.listGroup));
 
                 } else {
-                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không có dữ liệu", null,null));
+                    EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không có dữ liệu", null, null));
 
                 }
                 return true;
             } else {
                 Log.w("loadBranchGroups", "fail");
-                EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không thể kết nối đến máy chủ", null,null));
+                EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Không thể kết nối đến máy chủ", null, null));
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventBranchGroupResult(false,"Lỗi không xác định",null,null));
+            EventPool.view().enQueue(new EventType.EventBranchGroupResult(false, "Lỗi không xác định", null, null));
             return false;
         }
     }
@@ -989,18 +989,18 @@ public class NetworkTransaction {
                     EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(true, packetLoadTransactionLines.message, packetLoadTransactionLines.arrayTransactionLines, packetLoadTransactionLines.permission));
 
                 } else {
-                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không có dữ liệu", null,  packetLoadTransactionLines.permission));
+                    EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không có dữ liệu", null, packetLoadTransactionLines.permission));
 
                 }
                 return true;
             } else {
                 Log.w("loadTransactionLine", "fail");
-                EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không thể kết nối đến máy chủ", null,  0));
+                EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Không thể kết nối đến máy chủ", null, 0));
                 return false;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Lỗi không xác định", null,  0));
+            EventPool.view().enQueue(new EventType.EventLoadTransactionLinesResult(false, "Lỗi không xác định", null, 0));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }
@@ -1529,9 +1529,10 @@ public class NetworkTransaction {
             return false;
         }
     }
-    public synchronized boolean sendTransactionMessage(int type,int id_customer, int id_employee, String content, String note,String phone) {
+
+    public synchronized boolean sendTransactionMessage(int type, int id_customer, int id_employee, String content, String note, String phone) {
         try {
-            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketSendTransactionMessage(type,id_customer,id_employee,content,note,phone).getData(), true);
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketSendTransactionMessage(type, id_customer, id_employee, content, note, phone).getData(), true);
             if (result != null) {
                 Log.i("loadCountys", "success");
                 Packets.FromServer.PacketSendTransactionMessage packetSendTransactionMessage = new Packets.FromServer.PacketSendTransactionMessage(result);

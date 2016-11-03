@@ -404,17 +404,16 @@ abstract class Packets {
                 orderDetails = new ArrayList<>(len);
                 for (int i = 0; i < len; i++) {
                     OrderDetail item = new OrderDetail();
-                    item.no_ = readString();
+                    item.itemNo_ = readString();
                     item.id_item = readInt();
                     item.name = readString();
                     item.quantity = readInt();
                     item.unitprice = readFloat();
-                    item.status = readByte();
+                    item.status = readInt();
                     item.discountPercent = readFloat();
                     item.discountAmount = readFloat();
                     item.itemType = readInt();
                     item.note = readString();
-                    item.status = readInt();
                     item.loadNo_ = readString();
                     item.type = readInt();
                     item.promotionNo_ = readString();
@@ -1912,7 +1911,7 @@ abstract class Packets {
         }
 
         public static class PacketSendOrder extends Packet {
-            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails) throws IOException {
+            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails,int type) throws IOException {
                 super(PacketType.SendOrder);
                 write(order.id_customer);
                 write(order.status);
@@ -1920,6 +1919,7 @@ abstract class Packets {
                 write(order.amount);
                 write(order.id_parent);
                 write(order.document_type);
+                write(type);
                 write(orderDetails.size());
                 for (OrderDetail orderDetail : orderDetails
                         ) {

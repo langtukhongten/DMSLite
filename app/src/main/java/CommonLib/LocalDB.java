@@ -1279,7 +1279,7 @@ public class LocalDB {
                     order.document_type = cursor.getInt(cursor.getColumnIndex("DocumentType"));
                     order.imageUrl = cursor.getString(cursor.getColumnIndex("ImageUrl"));
                     order.employeeName = cursor.getString(cursor.getColumnIndex("EmployeeName"));
-                    order.orderDetails = loadOrderDetail(order.rowId);
+                    order.orderDetails = loadOrderDetail(order.rowId,0);
                     result.add(order);
                 } while (cursor.moveToNext());
             }
@@ -1290,11 +1290,11 @@ public class LocalDB {
         return result;
     }
 
-    public ArrayList<OrderDetail> getOrderDetails(List<Integer> idOrders) {
+    public ArrayList<OrderDetail> getOrderDetails(List<Integer> idOrders,int type) {
         ArrayList<OrderDetail> result = new ArrayList<>();
         try {
             for (int idOrder : idOrders) {
-                result.addAll(loadOrderDetail(idOrder));
+                result.addAll(loadOrderDetail(idOrder,type));
             }
 
         } catch (Exception e) {
@@ -1591,10 +1591,10 @@ public class LocalDB {
         return result;
     }
 
-    public ArrayList<OrderDetail> loadOrderDetail(int idOrder) {
+    public ArrayList<OrderDetail> loadOrderDetail(int idOrder,int type) {
         ArrayList<OrderDetail> result = new ArrayList<>();
         try {
-            String query = "SELECT * FROM " + DbHelper.ORDER_DETAIL_NAME + " WHERE IDOrder = " + idOrder;
+            String query = "SELECT * FROM " + DbHelper.ORDER_DETAIL_NAME + " WHERE IDOrder = " + idOrder + " AND Type = "+type;
             Cursor c = db.rawQuery(query, null);
             if (c.moveToFirst()) {
                 do {

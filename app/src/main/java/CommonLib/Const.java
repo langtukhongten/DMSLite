@@ -9,7 +9,7 @@ public abstract class Const {
     public static final String REPORTIMAGEDMS = "DMSData/ReportImageDMS";
     public static final String LIBRARYFOLDER = "DMSData/Library";
     public static final int UpdateVersion = 8; // Phiên bản cập nhật
-    public static final int APILevel = 27;// Thêm permission transaction line
+    public static final int APILevel = 28;// Thêm type SendOrder
     public static final int DefaultAlarmIntervalBoostedInSeconds = 1 * 60; // chu kì cập nhật location
     public static final int DefaultAlarmIntervalBoostedMultiplier = 3;
     public static final int DefaultAlarmIntervalNormalInSeconds = DefaultAlarmIntervalBoostedInSeconds * DefaultAlarmIntervalBoostedMultiplier; // chu kì cập nhật location

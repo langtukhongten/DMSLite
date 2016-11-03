@@ -359,7 +359,7 @@ public class ControlThread extends Thread {
                 break;
             case SendOrder:
                 EventType.EventSendOrderRequest eventSendOrderRequest = (EventType.EventSendOrderRequest) event;
-                NetworkTransaction.inst(context).sendOrder(eventSendOrderRequest.order, eventSendOrderRequest.orderDetails);
+                NetworkTransaction.inst(context).sendOrder(eventSendOrderRequest.order, eventSendOrderRequest.orderDetails,eventSendOrderRequest.type);
                 break;
             case UpdateOrder:
                 EventType.EventUpdateOrderRequest eventUpdateOrderRequest = (EventType.EventUpdateOrderRequest) event;

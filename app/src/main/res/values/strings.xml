@@ -512,4 +512,6 @@
     <string name="promotion_no">Mã khuyến mãi</string>
     <string name="order_not_promotion">ĐH Chưa KM</string>
     <string name="order_promotion">Đơn hàng tính khuyến mãi</string>
+    <string name="discount_percent">CK %</string>
+    <string name="discount_amount">CK tiền</string>
 </resources>

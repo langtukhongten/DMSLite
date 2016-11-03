@@ -58,6 +58,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -1595,6 +1596,24 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.swipeTransactionBottom = (SwipeRefreshLayoutBottom) v.findViewById(R.id.refresh_transaction);
         edInStoreNote = (EditText) v.findViewById(R.id.store_note);
 
+        //switch order promotion
+        Home.bindingRight.orderDetail.switchOrderPromotion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                if (isCheck == true) {//Neu dong hang co Km
+                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.rowId, 1);
+                } else {
+                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.rowId, 0);
+                }
+                //tinh lai tong tien
+                String amountMoney = MyMethod.getAmountSale(Home.orderDetailArrayList);
+                Home.bindingRight.orderDetail.orderDetailAmount.setText(amountMoney + getString(R.string.money));
+                Home.bindingRight.orderDetail.orderDetailAmountSale.setText(amountMoney + getString(R.string.money));
+                Home.orderListOrderDetailAdapter.setItems(Home.orderDetailArrayList);
+                Home.orderListOrderDetailAdapter.notifyDataSetChanged();
+            }
+        });
+
         //format input layout
         editPrice.addTextChangedListener(new NumberTextWatcher(editPrice));
 
@@ -3077,10 +3096,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         nowOrder.id_customer = nowCustomer.id;
                         nowOrder.document_type = 5;
                     }
-                    LocalDB.inst().addOrder(nowOrder, 0);
-                    LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);
+                    //Dialog
                     LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
-                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList));
+                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0));
                 } else
                     MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
@@ -3101,8 +3119,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 CalendarDatePickerDialogFragment toInventoryEmployee = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(this)
                         .setFirstDayOfWeek(Calendar.SUNDAY)
-//                        .setPreselectedDate(towDaysAgo.getYear(), towDaysAgo.getMonthOfYear() - 1, towDaysAgo.getDayOfMonth())
-//                        .setDateRange(minDate, null)
                         .setThemeDark(false);
                 toInventoryEmployee.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
@@ -3111,8 +3127,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 CalendarDatePickerDialogFragment fromReportCheckIn = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(this)
                         .setFirstDayOfWeek(Calendar.SUNDAY)
-//                        .setPreselectedDate(towDaysAgo.getYear(), towDaysAgo.getMonthOfYear() - 1, towDaysAgo.getDayOfMonth())
-//                        .setDateRange(minDate, null)
                         .setThemeDark(false);
                 fromReportCheckIn.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
@@ -3121,8 +3135,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 CalendarDatePickerDialogFragment toReportCheckIn = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(this)
                         .setFirstDayOfWeek(Calendar.SUNDAY)
-//                        .setPreselectedDate(towDaysAgo.getYear(), towDaysAgo.getMonthOfYear() - 1, towDaysAgo.getDayOfMonth())
-//                        .setDateRange(minDate, null)
                         .setThemeDark(false);
                 toReportCheckIn.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
@@ -3137,8 +3149,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 CalendarDatePickerDialogFragment toOrder = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(this)
                         .setFirstDayOfWeek(Calendar.SUNDAY)
-//                        .setPreselectedDate(towDaysAgo.getYear(), towDaysAgo.getMonthOfYear() - 1, towDaysAgo.getDayOfMonth())
-//                        .setDateRange(minDate, null)
                         .setThemeDark(false);
                 toOrder.show(getFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
@@ -4133,6 +4143,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 detail.status = 0;
                 detail.itemNo_ = p.no_;
                 detail.name = p.name;
+                detail.promotionNo_ = "_";
                 Home.orderDetailArrayList.add(detail);
                 Home.nowAmountSale += quantity * detail.unitprice;
                 Home.nowAmount = Home.nowAmountSale - Home.nowDiscount;
@@ -5861,6 +5872,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
                     }
                     //luu don hang line vao local
+                    nowOrder.rowId = Home.nowIdExtNo;
+                    LocalDB.inst().addOrder(nowOrder, 0);
+                    LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);//0 la don hang chua tinh km
                     LocalDB.inst().addOrderDetail(nowOrder.rowId, orderResult.orderDetails, 1);//1 la don hang da tinh km
                     //Chuyển thành đã có đơn hàng
                     MyMethod.isHasOrder = true;
