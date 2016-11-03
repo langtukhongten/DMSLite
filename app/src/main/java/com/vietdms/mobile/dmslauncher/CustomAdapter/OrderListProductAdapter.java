@@ -64,13 +64,13 @@ public class OrderListProductAdapter extends BaseAdapter {
         // Setting all values in listview
 
         name.setText(po.name);
-        promotion.setText(po.promotionNo_);
+        promotion.setText(po.promotionNo_+"  ");
         no.setText(po.itemNo_);
         quantity.setText(po.quantity + "");
-        price.setText(Utils.formatFloat(po.unitprice) + " VNĐ");
-        percent.setText(Utils.formatFloat(po.discountPercent)+"%");
-        dis_amount.setText(Utils.formatFloat(po.discountAmount)+" VNĐ");
-        amount.setText(Utils.formatFloat(getAmount(po))+" VNĐ");
+        price.setText(Utils.formatFloat(po.unitprice));
+        percent.setText("CK: "+ Utils.formatFloat(po.discountPercent)+"%");
+        dis_amount.setText("Tiền CK: "+ Utils.formatFloat(po.discountAmount));
+        amount.setText(Utils.formatFloat(getAmount(po)));
         int istt = position + 1;
         stt.setText(istt + ".");
         return vi;

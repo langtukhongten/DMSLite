@@ -3756,7 +3756,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     public static void updateInventoryDetailView(Context context) {//Không cho chỉnh sửa
-        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory));
+        //Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory));
         Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
@@ -3769,7 +3769,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private static void updateInventoryBillDetailView(Context context) {
-        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_bill));
+        //Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_bill));
         Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
@@ -3782,7 +3782,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private static void updateInventoryEmployeeDetailView(Context context) {
-        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_employee));
+        //Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.detail_inventory_employee));
         Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.report_day));
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
         MyMethod.setGone(Home.bindingRight.orderDetail.titleOrderAmountDetail);
@@ -3795,7 +3795,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     public static void updateOrderDetailView(Context context) {
-        Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.order_sale_title));
+        //Home.bindingRight.orderDetail.titleDetailOrderDetail.setText(context.getString(R.string.order_sale_title));
         Home.bindingRight.orderDetail.titleTransDayDetail.setText(context.getString(R.string.trans_day));
         MyMethod.setVisible(Home.bindingRight.orderDetail.titleOrderDiscountDetail);
         MyMethod.setVisible(Home.bindingRight.orderDetail.titleOrderAmountDetail);
