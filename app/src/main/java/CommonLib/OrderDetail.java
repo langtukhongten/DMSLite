@@ -15,4 +15,7 @@ public class OrderDetail {
     public int itemType;
     public String note;
     public int status;
+    public int type;
+    public String loadNo_;
+    public String promotionNo_;
 }

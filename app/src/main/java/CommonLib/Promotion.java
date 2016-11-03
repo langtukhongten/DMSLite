@@ -5,8 +5,9 @@ package CommonLib;
  */
 
 public class Promotion {
+    public String id;
     public String no_;
-    public String name;
+    public String name,description;
     public int quantity;
     public float price;
 }

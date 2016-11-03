@@ -510,4 +510,6 @@
     <string name="select_customer">Chọn khách hàng</string>
     <string name="promotion">Danh sách khuyến mãi</string>
     <string name="promotion_no">Mã khuyến mãi</string>
+    <string name="order_not_promotion">ĐH Chưa KM</string>
+    <string name="order_promotion">Đơn hàng tính khuyến mãi</string>
 </resources>

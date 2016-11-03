@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.vietdms.mobile.dmslauncher.MyMethod;
 import com.vietdms.mobile.dmslauncher.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import CommonLib.Product;
@@ -52,16 +54,34 @@ public class RecyclerViewAdapterProductOfOrder extends RecyclerView.Adapter<Recy
         contactViewHolder.productName.setText(c.name);
         contactViewHolder.productNo.setText(c.no_);
         contactViewHolder.productUnit.setText(c.unit);
-        Glide.with(context).load(MyMethod.getUrlProductImage(c.imageUrl)).error(R.drawable.product_sample_btn).override(150,150).centerCrop().into(contactViewHolder.productStt);
-        contactViewHolder.productInventory.setText(c.inventory+"");
-        if (Home.hashListQuantity.get(c.no_) != null)
-            contactViewHolder.productQuantity.setText(Home.hashListQuantity.get(c.no_) + "");
-        else
-            contactViewHolder.productQuantity.setText("0");
+        Glide.with(context).load(MyMethod.getUrlProductImage(c.imageUrl)).error(R.drawable.product_sample_btn).override(150, 150).centerCrop().into(contactViewHolder.productStt);
+        contactViewHolder.productInventory.setText(c.inventory + "");
+        if (Home.hashListQuantity.get(c.no_) != null) {
+            int quantity = Home.hashListQuantity.get(c.no_) + getQuantity(Home.hashViewPromotion.get(c.no_));
+            contactViewHolder.productQuantity.setText(quantity + "");
+        } else {
+            int quantity = getQuantity(Home.hashViewPromotion.get(c.no_));
+            contactViewHolder.productQuantity.setText(quantity + "");
+        }
+
         if (Home.hashListPrice.get(c.no_) != null)
             contactViewHolder.productPrice.setText(Home.hashListPrice.get(c.no_) + context.getString(R.string.money));
         else
             contactViewHolder.productPrice.setText(Utils.formatFloat(c.price) + context.getString(R.string.money));
+    }
+
+    private int getQuantity(ArrayList<EditText> arrView) {
+        //Lay so luong san phan nhap khuyen mai
+        if (arrView == null) return 0;
+        else {
+            int result = 0;
+            for (EditText editText : arrView) {
+                if (!editText.getText().toString().isEmpty()) {
+                    result += Integer.parseInt(editText.getText().toString());
+                }
+            }
+            return result;
+        }
     }
 
     @Override
@@ -74,7 +94,7 @@ public class RecyclerViewAdapterProductOfOrder extends RecyclerView.Adapter<Recy
 
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
-        protected TextView productName, productNo, productPrice, productUnit, productQuantity,productInventory;
+        protected TextView productName, productNo, productPrice, productUnit, productQuantity, productInventory;
         protected CircleImageView productStt;
         protected LinearLayout linearInventory;
 

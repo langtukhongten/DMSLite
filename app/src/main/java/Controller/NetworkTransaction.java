@@ -564,17 +564,17 @@ public class NetworkTransaction {
             byte[] result = sendPostRequest(defaultUrl, packetSendOrder.getData(), true);
             if (result != null) {
                 Log.i("sendOrder", "success");
-                Packets.FromServer.PacketResultWithMessage packetResultWithMessage = new Packets.FromServer.PacketResultWithMessage(result);
-                EventPool.view().enQueue(new EventType.EventSendOrderResult(packetResultWithMessage.success, packetResultWithMessage.message));
+                Packets.FromServer.PacketSendOrders packetSendOrders = new Packets.FromServer.PacketSendOrders(result);
+                EventPool.view().enQueue(new EventType.EventSendOrderResult(packetSendOrders.success, packetSendOrders.message, packetSendOrders.orderDetails));
                 return true;
             } else {
                 Log.w("sendOrder", "fail");
-                EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Không thể kết nối đến máy chủ"));
+                EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Không thể kết nối đến máy chủ",null));
                 return false;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Lỗi không xác định"));
+            EventPool.view().enQueue(new EventType.EventSendOrderResult(false, "Lỗi không xác định",null));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }

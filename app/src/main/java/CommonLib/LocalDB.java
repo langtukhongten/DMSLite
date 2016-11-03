@@ -184,7 +184,7 @@ public class LocalDB {
         }
     }
 
-    public synchronized long addOrderDetail(int idOrder, ArrayList<OrderDetail> orderDetails) {
+    public synchronized long addOrderDetail(int idOrder, ArrayList<OrderDetail> orderDetails, int type) {
         try {
             long rowId = 0;
             for (OrderDetail orderDetail : orderDetails) {
@@ -201,6 +201,9 @@ public class LocalDB {
                 cv.put("ItemType", orderDetail.itemType);
                 cv.put("Note", orderDetail.note);
                 cv.put("Status", orderDetail.status);
+                cv.put("LoadNo_", "");
+                cv.put("Type", type);//0 don hang goc ; 1 don hang khuyen mai
+                cv.put("PromotionNo_", orderDetail.promotionNo_);
 
 
                 rowId = db.insert(DbHelper.ORDER_DETAIL_NAME, null, cv);
@@ -388,40 +391,40 @@ public class LocalDB {
     public synchronized int countOrder(int id) {
         try {
             String query = "SELECT Count(RowID) FROM " + DbHelper.ORDER_NAME;
-            Cursor c = db.rawQuery(query,null);
+            Cursor c = db.rawQuery(query, null);
             c.moveToFirst();
             int count = c.getInt(0);
             c.close();
             return count == 0 ? -1 : count;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
     }
 
-    public synchronized int countPromotionHeader(int id){
-        try{
+    public synchronized int countPromotionHeader(int id) {
+        try {
             String query = "SELECT Count(RowID) FROM " + DbHelper.PROMOTION_HEADER_NAME;
-            Cursor c = db.rawQuery(query,null);
+            Cursor c = db.rawQuery(query, null);
             c.moveToFirst();
             int count = c.getInt(0);
             c.close();
             return count == 0 ? -1 : count;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
     }
 
-    public synchronized int countPromotionDetail(int id){
-        try{
+    public synchronized int countPromotionDetail(int id) {
+        try {
             String query = "SELECT Count(RowID) FROM " + DbHelper.PROMOTION_DETAIL_NAME;
-            Cursor c = db.rawQuery(query,null);
+            Cursor c = db.rawQuery(query, null);
             c.moveToFirst();
             int count = c.getInt(0);
             c.close();
             return count == 0 ? -1 : count;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -573,15 +576,31 @@ public class LocalDB {
             return 0;
         }
     }
-    public synchronized ArrayList<Promotion> getPromotion(String no_) {
+
+    public synchronized ArrayList<Promotion> getPromotion(int id_item, float price, int quantity) {
         ArrayList<Promotion> result = new ArrayList<>();
         try {
-            String query = "SELECT * FROM "+ DbHelper.
-        } catch (Exception e){
+            String query = "SELECT H.*,D.* FROM " + DbHelper.PROMOTION_HEADER_NAME + " as H JOIN " + DbHelper.PROMOTION_DETAIL_NAME + " as D ON H.No_ = D.PromotionNo_ WHERE H.Ref_Item = " + id_item;
+            Cursor c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                do {
+                    Promotion promotion = new Promotion();
+                    promotion.id = c.getString(c.getColumnIndex("RowID"));
+                    promotion.no_ = c.getString(c.getColumnIndex("No_"));
+                    promotion.name = c.getString(c.getColumnIndex("HeaderName"));
+                    promotion.description = c.getString(c.getColumnIndex("PromotionDescription"));
+                    promotion.price = price;
+                    promotion.quantity = quantity;
+                    result.add(promotion);
+                } while (c.moveToNext());
+            }
+            c.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
+
     public synchronized ArrayList<Product> loadProduct(int lastId, String filter) {
         ArrayList<Product> result = new ArrayList<>();
         try {
@@ -802,7 +821,7 @@ public class LocalDB {
     public synchronized long addPromotionHeader(PromotionHeader header) {
         try {
             ContentValues cv = new ContentValues();
-            cv.put("RowID",header.id);
+            cv.put("RowID", header.id);
             cv.put("No_", header.no_);
             cv.put("IsGroup", header.isGroup);
             cv.put("ItemNo_", header.itemNo_);
@@ -819,7 +838,6 @@ public class LocalDB {
             return -1;
         }
     }
-
 
 
     public synchronized long addLine(SurveyLine line) {
@@ -846,7 +864,7 @@ public class LocalDB {
     public synchronized long addPromotionDetail(PromotionDetail line) {
         try {
             ContentValues cv = new ContentValues();
-            cv.put("RowID",line.id);
+            cv.put("RowID", line.id);
             cv.put("PromotionNo_", line.promotionNo_);
             cv.put("PromotionDescription", line.promotionDescription);
             cv.put("IsDiscountMore", line.isDiscountMore);
@@ -977,6 +995,7 @@ public class LocalDB {
         cv.put("IsSend", isSend);
         return db.update(DbHelper.CUSTOMER_NAME, cv, null, null);  //
     }
+
     public synchronized long updateSyncOrder(int isSend) {
         ContentValues cv = new ContentValues();
         cv.put("IsSend", isSend);
@@ -1164,7 +1183,7 @@ public class LocalDB {
             cv.put("ImageUrl", customer.imageUrl);
             cv.put("Longitude", customer.longitude);
             cv.put("Latitude", customer.latitude);
-            cv.put("Working_Time",customer.workingtime);
+            cv.put("Working_Time", customer.workingtime);
             cv.put("IsSend", isSend);
             db.update(DbHelper.CUSTOMER_NAME, cv, "RowID=" + id, null);
         } catch (Exception e) {
@@ -1274,8 +1293,7 @@ public class LocalDB {
     public ArrayList<OrderDetail> getOrderDetails(List<Integer> idOrders) {
         ArrayList<OrderDetail> result = new ArrayList<>();
         try {
-            for(int idOrder : idOrders)
-            {
+            for (int idOrder : idOrders) {
                 result.addAll(loadOrderDetail(idOrder));
             }
 
@@ -1475,7 +1493,7 @@ public class LocalDB {
         Customer customer = new Customer();
 
         try {
-            Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.CUSTOMER_NAME + " WHERE RowID = "+id_customer, null);
+            Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.CUSTOMER_NAME + " WHERE RowID = " + id_customer, null);
             if (c.moveToFirst()) {
                 do {
                     customer.id = c.getInt(c.getColumnIndex("RowID"));
@@ -1502,6 +1520,7 @@ public class LocalDB {
         }
         return customer;
     }
+
     public ArrayList<Customer> getCustomerUnsent() {
         ArrayList<Customer> result = new ArrayList<>();
         try {
@@ -1591,6 +1610,9 @@ public class LocalDB {
                     orderDetail.itemType = c.getInt(c.getColumnIndex("ItemType"));
                     orderDetail.note = c.getString(c.getColumnIndex("Note"));
                     orderDetail.status = c.getInt(c.getColumnIndex("Status"));
+                    orderDetail.type = c.getInt(c.getColumnIndex("Type"));
+                    orderDetail.loadNo_ = c.getString(c.getColumnIndex("LoadNo_"));
+                    orderDetail.promotionNo_ = c.getString(c.getColumnIndex("PromotionNo_"));
                     result.add(orderDetail);
                 } while (c.moveToNext());
 
@@ -1728,8 +1750,6 @@ public class LocalDB {
             e.printStackTrace();
         }
     }
-
-
 
 
     private class DbHelper extends SQLiteOpenHelper {
@@ -1898,6 +1918,9 @@ public class LocalDB {
                 + ",ItemType int"
                 + ",Note nvarchar(500)"
                 + ",Status int"
+                + ",LoadNo_ nvarchar(50)"
+                + ",Type int"
+                + ",PromotionNo_ nvarchar(50)"
                 + ");";
 
         public static final String SQL_CREATE_PROMOTION_HEADER_EXIST = "CREATE TABLE IF NOT EXISTS " + PROMOTION_HEADER_NAME + " ("

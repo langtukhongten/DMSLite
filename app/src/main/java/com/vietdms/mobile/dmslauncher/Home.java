@@ -196,6 +196,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static CheckBox cbOrderPreSale;
     public static ListView lstOrderProduct;
     public static HashMap<String, Integer> hashListQuantity = new HashMap<>();
+    public static HashMap<String, ArrayList<EditText>> hashViewPromotion = new HashMap<>();
     public static HashMap<String, Float> hashListPrice = new HashMap<>();
     public static ArrayList<OrderDetail> orderDetailArrayList = new ArrayList<>();
     public static OrderListProductAdapter orderListProductAdapter, orderListOrderDetailAdapter;
@@ -1223,6 +1224,9 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
                             Home.bindingHome.txtTile.setText(context.getString(R.string.log_in));
                             LayoutMyManager.ShowLayout(RightFragment.Layouts.LogIn);
                         }
+                    } else if (MyMethod.isVisible(bindingRight.inputValue.linearInputValue)) {
+                        MyMethod.setGone(bindingRight.inputValue.linearInputValue);
+                        LayoutMyManager.ShowLayout(RightFragment.Layouts.ProductOfOrder);
                     } else {
                         bindingHome.viewpager.setCurrentItem(0);
                     }
@@ -1239,7 +1243,6 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     private void confirmOrder() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(context.getString(R.string.confirm_order_cancel));
-
         alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int arg1) {

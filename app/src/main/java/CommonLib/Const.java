@@ -68,7 +68,7 @@ public abstract class Const {
     public static final String LinkItemImage = "http://192.168.1.200:1012//ItemImages/";
     public static final String LinkSurveyImage = "http://192.168.1.200:1012//SurveyImages/";
 
-//        public static final String HttpEndpoint = "http://192.168.1.213:82/HttpService.aspx";
+    //        public static final String HttpEndpoint = "http://192.168.1.213:82/HttpService.aspx";
 //        public static final String LinkReportImage = "http://192.168.1.213:82/ReportImages/";
 //        public static final String LinkCustomerImage = "http://192.168.1.213:82/CustomerImages/";
 //        public static final String LinkItemImage = "http://192.168.1.213:82/ItemImages/";
@@ -85,6 +85,7 @@ public abstract class Const {
         Product(1), // Sản phẩm
         User(2);
         private final int id;
+
         SyncKeys(int id) {
             this.id = id;
         }

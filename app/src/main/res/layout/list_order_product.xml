@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip" >
+    android:padding="5dip">
 
     <!--  ListRow Left sied Thumbnail image -->
 
@@ -12,13 +12,13 @@
         android:id="@+id/row_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/row_product_txtSTT"
+        android:layout_toRightOf="@+id/row_product_txtSTT"
         android:text="Rihanna Love the way lie"
-        android:typeface="sans"
         android:textSize="@dimen/textFontSize3"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/row_product_txtSTT"
-        android:layout_toEndOf="@+id/row_product_txtSTT" />
+        android:typeface="sans" />
 
     <!-- Artist Name -->
     <TextView
@@ -26,9 +26,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/row_product_name"
-        android:textSize="@dimen/textFontSize3"
         android:layout_marginTop="1dip"
-        android:text="Just gona stand there and ..." />
+        android:text="Just gona stand there and ..."
+        android:textSize="@dimen/textFontSize3" />
 
     <!-- Rightend Duration -->
     <TextView
@@ -37,34 +37,45 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/row_product_name"
+        android:layout_marginRight="5dip"
         android:gravity="right"
         android:text="5:45"
-        android:layout_marginRight="5dip"
         android:textSize="@dimen/textFontSize3"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/row_product_price"
-        android:layout_alignTop="@id/row_product_no"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dip"
-        android:textSize="@dimen/textFontSize3"
-        android:textStyle="bold"
-        android:text="100000 VND"
-        android:layout_below="@+id/row_product_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/row_product_no"
+        android:layout_below="@+id/row_product_quantity"
+        android:layout_marginRight="5dip"
+        android:text="100000 VND"
+        android:textSize="@dimen/textFontSize3"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/row_product_txtSTT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:typeface="sans"
+        android:layout_above="@+id/row_product_price"
         android:layout_alignParentTop="true"
         android:text="1."
-        android:textStyle="bold"
         android:textSize="@dimen/textFontSize3"
-        android:id="@+id/row_product_txtSTT"
-        android:layout_above="@+id/row_product_price" />
+        android:textStyle="bold"
+        android:typeface="sans" />
 
-
+    <TextView
+        android:id="@+id/row_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/row_product_name"
+        android:layout_alignBottom="@+id/row_product_name"
+        android:layout_toEndOf="@+id/row_product_name"
+        android:layout_toRightOf="@+id/row_product_name"
+        android:paddingLeft="10dp"
+        android:text="@string/promotion"
+        android:textColor="@color/bpRed"
+        android:textSize="@dimen/textFontSize" />
 </RelativeLayout>

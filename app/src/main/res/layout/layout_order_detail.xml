@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:id="@+id/linear_order_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
+
         <com.vietdms.mobile.dmslauncher.CustomView.LoadingView
             android:id="@+id/OrderDetailLoading"
             android:layout_width="match_parent"
@@ -18,9 +21,11 @@
             app:lv_color="@color/text_blue_blur"
             app:lv_loading="false"
             app:lv_title="@string/load_order">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -63,16 +68,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:textSize="@dimen/textFontSize3"
                             android:text="@string/trans_day"
+                            android:textSize="@dimen/textFontSize3"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/order_detail_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/textFontSize3"
                             android:text="10/12/1994"
+                            android:textSize="@dimen/textFontSize3"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -93,6 +98,14 @@
                             android:text="@string/order_sale_title"
                             android:textSize="@dimen/textFontSize3"
                             android:textStyle="bold" />
+                        <Switch
+                            android:id="@+id/switch_order_promotion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/order_promotion"
+                            android:textColor="@android:color/white"
+                            android:background="@drawable/button_note_drawable"
+                            tools:ignore="NewApi" />
 
                         <ListView
                             android:id="@+id/order_detail_list"
@@ -115,10 +128,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_alignParentRight="true"
-                            android:textSize="@dimen/textFontSize3"
                             android:layout_margin="5dp"
                             android:background="@drawable/custom_button_order"
                             android:text="@string/add_product"
+                            android:textSize="@dimen/textFontSize3"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -130,20 +143,22 @@
                         android:background="@drawable/custom_bolder_order">
 
                         <LinearLayout
+                            android:id="@+id/linear_sale"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/linear_sale"
                             android:layout_alignParentRight="true"
                             android:gravity="right"
                             android:orientation="horizontal">
+
                             <ImageView
                                 android:id="@+id/img_pre_sale_detail"
                                 android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="5dp"
-                                android:src="@drawable/pre_sale_btn"
                                 android:background="@null"
-                                android:layout_height="wrap_content" />
+                                android:src="@drawable/pre_sale_btn" />
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -158,20 +173,20 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:padding="2dp"
-                                        android:textSize="@dimen/textFontSize3"
                                         android:text="@string/plus_amount_sale"
+                                        android:textSize="@dimen/textFontSize3"
                                         android:textStyle="bold" />
 
                                     <TextView
                                         android:id="@+id/order_detail_amount_sale"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="0 VND"
-                                        android:textSize="@dimen/textFontSize3"
-                                        android:textColor="@color/bpRed"
-                                        android:textStyle="bold"
+                                        android:gravity="right"
                                         android:minWidth="180sp"
-                                        android:gravity="right" />
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize3"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -184,20 +199,20 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:padding="2dp"
-                                        android:textSize="@dimen/textFontSize3"
                                         android:text="@string/discount"
+                                        android:textSize="@dimen/textFontSize3"
                                         android:textStyle="bold" />
 
                                     <TextView
                                         android:id="@+id/order_detail_discount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="0 VND"
-                                        android:textSize="@dimen/textFontSize3"
-                                        android:textColor="@color/bpRed"
-                                        android:textStyle="bold"
+                                        android:gravity="right"
                                         android:minWidth="180sp"
-                                        android:gravity="right" />
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize3"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -210,20 +225,20 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:padding="2dp"
-                                        android:textSize="@dimen/textFontSize3"
                                         android:text="@string/amount"
+                                        android:textSize="@dimen/textFontSize3"
                                         android:textStyle="bold" />
 
                                     <TextView
                                         android:id="@+id/order_detail_amount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="0 VND"
-                                        android:textSize="@dimen/textFontSize3"
-                                        android:textColor="@color/bpRed"
-                                        android:textStyle="bold"
+                                        android:gravity="right"
                                         android:minWidth="180sp"
-                                        android:gravity="right" />
+                                        android:text="0 VND"
+                                        android:textColor="@color/bpRed"
+                                        android:textSize="@dimen/textFontSize3"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -240,17 +255,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:textSize="@dimen/textFontSize3"
                                 android:text="@string/note"
+                                android:textSize="@dimen/textFontSize3"
                                 android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/order_detail_note"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/textFontSize3"
                                 android:background="@drawable/custom_bolder_order"
-                                android:enabled="false" />
+                                android:enabled="false"
+                                android:textSize="@dimen/textFontSize3" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -265,8 +280,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_weight="1"
-                                android:textSize="@dimen/textFontSize3"
                                 android:text="@string/presale_order"
+                                android:textSize="@dimen/textFontSize3"
                                 android:visibility="invisible" />
 
                             <RelativeLayout

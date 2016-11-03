@@ -11,7 +11,7 @@ public class Order {
     public String name;
     public long time;
     public int id_customer;
-    public int status;
+    public int status;//0 - moi 1 - da duyet 2 - mo lai 4 - tu choi 9 - huy
     public String note;
     public float amount;
     public int id_company;

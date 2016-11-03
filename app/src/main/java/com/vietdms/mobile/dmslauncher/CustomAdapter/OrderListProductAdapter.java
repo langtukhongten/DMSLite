@@ -53,12 +53,15 @@ public class OrderListProductAdapter extends BaseAdapter {
         TextView stt = (TextView)vi.findViewById(R.id.row_product_txtSTT); // artist name
         TextView quantity = (TextView)vi.findViewById(R.id.row_product_quantity); // duration
         TextView price=(TextView) vi.findViewById(R.id.row_product_price); // thumb image
+        TextView promotion = (TextView) vi.findViewById(R.id.row_promotion);// promotion
 
       OrderDetail po;
         po = OrderDetails.get(position);
 
         // Setting all values in listview
+
         name.setText(po.name);
+        promotion.setText(po.promotionNo_);
         no.setText(po.itemNo_);
         quantity.setText(po.quantity+"");
         price.setText(Utils.formatFloat(po.unitprice)+" VNĐ");

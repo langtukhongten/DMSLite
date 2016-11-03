@@ -395,6 +395,39 @@ abstract class Packets {
             public boolean success;
             public String message;
         }
+        public static class PacketSendOrders extends Packet {
+            public PacketSendOrders(byte[] data) throws Exception {
+                super(data);
+                success = readBool();
+                message = readString();
+                int len = readInt();
+                orderDetails = new ArrayList<>(len);
+                for (int i = 0; i < len; i++) {
+                    OrderDetail item = new OrderDetail();
+                    item.no_ = readString();
+                    item.id_item = readInt();
+                    item.name = readString();
+                    item.quantity = readInt();
+                    item.unitprice = readFloat();
+                    item.status = readByte();
+                    item.discountPercent = readFloat();
+                    item.discountAmount = readFloat();
+                    item.itemType = readInt();
+                    item.note = readString();
+                    item.status = readInt();
+                    item.loadNo_ = readString();
+                    item.type = readInt();
+                    item.promotionNo_ = readString();
+                    orderDetails.add(item);
+                }
+                inflater.end();
+            }
+
+            public boolean success;
+            public String message;
+            public ArrayList<OrderDetail> orderDetails;
+        }
+
 
         public static class PacketAddCustomer extends Packet {
             public PacketAddCustomer(byte[] data) throws Exception {
@@ -1898,6 +1931,7 @@ abstract class Packets {
                     write(orderDetail.itemType);
                     write(orderDetail.note);
                     write(orderDetail.status);
+                    write(orderDetail.promotionNo_);
                 }
 
             }

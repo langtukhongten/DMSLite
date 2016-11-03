@@ -1229,11 +1229,13 @@ public abstract class EventType {
     public static class EventSendOrderResult extends EventBase {
         public final boolean success;
         public final String message;
+        public final ArrayList<OrderDetail> orderDetails;
 
-        public EventSendOrderResult(boolean success, String message) {
+        public EventSendOrderResult(boolean success, String message, ArrayList<OrderDetail> orderDetails) {
             super(Type.SendOrder);
             this.success = success;
             this.message = message;
+            this.orderDetails = orderDetails;
         }
     }
 

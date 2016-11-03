@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/bgblack60">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,15 +52,6 @@
                     android:layout_margin="5dp"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txt_input_product_no"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="2dp"
-                        android:text="@string/product_no"
-                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_input_product_name"
@@ -78,8 +68,8 @@
                         android:id="@+id/product_input_price"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:enabled="false"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:gravity="center|left"
                         android:hint="@string/product_price"
                         android:inputType="number"
@@ -92,8 +82,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center|left"
                         android:hint="@string/quantity"
                         android:inputType="number"
@@ -110,16 +98,27 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
                     android:text="@string/promotion"
                     android:textColor="@color/colorBlueDark" />
 
-                <ListView
-                    android:id="@+id/list_promotion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="100dp" />
+                <ScrollView
 
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:descendantFocusability="afterDescendants"
+                    android:minHeight="100dp">
+
+                    <LinearLayout
+                        android:id="@+id/list_promotion"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </ScrollView>
 
                 <Button
                     android:id="@+id/btn_accept_input"
@@ -128,8 +127,9 @@
                     android:background="@drawable/button_note_drawable"
                     android:text="@string/accept"
                     android:textColor="@color/white_alpha" />
-
             </LinearLayout>
+
+
         </RelativeLayout>
 
 
