@@ -53,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -158,7 +159,7 @@ public class MyMethod {
      * Hiển thị thông báo trong ứng dụng không bị tràn ra ngoài màn hình
      * truyền vào context và thông báo muốn hiển thị
      */
-    public static void showToast(ViewDataBinding binding,Context context, String toast) {// show toast so cool
+    public static void showToast(ViewDataBinding binding, Context context, String toast) {// show toast so cool
         try {
             Snackbar snackbar = Snackbar
                     .make(binding.getRoot(), toast, Snackbar.LENGTH_SHORT);
@@ -590,7 +591,7 @@ public class MyMethod {
     public static boolean checkInputInSaveSend(Context context) {
         try {
             if (Home.editCheckIn.getText().toString().isEmpty()) {
-                MyMethod.showToast(Home.bindingRight,context, context.getString(R.string.please_input_report));
+                MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_input_report));
                 return false;
             }
             return true;
@@ -853,12 +854,26 @@ public class MyMethod {
         }
     }
 
+    public static String getDiscount(ArrayList<OrderDetail> arr) {
+        try {
+            float result = 0;
+            for (int i = 0; i < arr.size(); i++) {
+                result = result + (arr.get(i).quantity * arr.get(i).unitprice) * (arr.get(i).discountPercent / 100) + arr.get(i).discountAmount;
+            }
+            return Utils.formatFloat(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0";
+        }
+    }
+
     public static String getAmountSale(ArrayList<OrderDetail> arr) {
         try {
             float result = 0;
             for (int i = 0; i < arr.size(); i++) {
-                result = result + ((arr.get(i).quantity * arr.get(i).unitprice)-arr.get(i).discountAmount)*((100-arr.get(i).discountPercent)/100);
+                result = result + arr.get(i).quantity * arr.get(i).unitprice;
             }
+
             return Utils.formatFloat(result);
         } catch (NullPointerException e) {
             e.printStackTrace();

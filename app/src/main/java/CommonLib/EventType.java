@@ -542,16 +542,19 @@ public abstract class EventType {
     }
 
     public static class EventSendOrderRequest extends EventBase {
-        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type) {
+        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type,double ref_id) {
             super(Type.SendOrder);
             this.order = order;
             this.orderDetails = orderDetails;
             this.type = type;
+            this.ref_id = ref_id;
+
         }
 
         public final Order order;
         public final ArrayList<OrderDetail> orderDetails;
         public final int type;
+        public final double ref_id;
     }
 
     public static class EventSendTransactionRequest extends EventBase {

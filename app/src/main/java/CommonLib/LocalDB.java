@@ -218,9 +218,10 @@ public class LocalDB {
         }
     }
 
-    public synchronized long addOrder(Order order, int IsSend) {
+    public synchronized long addOrder(Order order, int IsSend ) {
         try {
             ContentValues cv = new ContentValues();
+            cv.put("RowID",order.rowId);
             cv.put("No_", order.no_);
             cv.put("Name", order.name);
             cv.put("Time", order.time);
@@ -1264,6 +1265,7 @@ public class LocalDB {
             if (cursor.moveToFirst()) {
                 do {
                     Order order = new Order();
+                    order.rowId = cursor.getInt(cursor.getColumnIndex("RowID"));
                     order.no_ = cursor.getString(cursor.getColumnIndex("No_"));
                     order.name = cursor.getString(cursor.getColumnIndex("Name"));
                     order.time = cursor.getLong(cursor.getColumnIndex("Time"));
@@ -1564,6 +1566,7 @@ public class LocalDB {
             if (cursor.moveToFirst()) {
                 do {
                     Order order = new Order();
+                    order.rowId = cursor.getInt(cursor.getColumnIndex("RowID"));
                     order.no_ = cursor.getString(cursor.getColumnIndex("No_"));
                     order.name = cursor.getString(cursor.getColumnIndex("Name"));
                     order.time = cursor.getLong(cursor.getColumnIndex("Time"));
@@ -1579,7 +1582,6 @@ public class LocalDB {
                     order.document_type = cursor.getInt(cursor.getColumnIndex("DocumentType"));
                     order.imageUrl = cursor.getString(cursor.getColumnIndex("ImageUrl"));
                     order.employeeName = cursor.getString(cursor.getColumnIndex("Employee"));
-
                     result.add(order);
                 } while (cursor.moveToNext());
 
@@ -1808,7 +1810,7 @@ public class LocalDB {
                 + ",IDExtNo int"
                 + ",IDTransactionDefine int"
                 + ",NameEmployee nvarchar(500)"
-                + ",RefNo_ nvarchar(100)"
+                + ",Ref_ID nvarchar(100)"
                 + ",IsSend int"
                 + ");";
         public static final String SQL_CREATE_REASON_EXIST = "CREATE TABLE IF NOT EXISTS " + REASON_NAME + " ("
@@ -1830,7 +1832,7 @@ public class LocalDB {
         public static final String SQL_CREATE_LINE_EXIST = "create table if not exists " + LINE_NAME + " ("
                 + "RowID integer primary key autoincrement"
                 + ",ID_Survey integer"
-                + ",RefNo_ nvarchar(50)"
+                + ",Ref_ID nvarchar(50)"
                 + ",Sort integer"
                 + ",Question nvarchar(50)"
                 + ",Type integer"
@@ -1885,7 +1887,7 @@ public class LocalDB {
                 + ",SearchField nvarchar(50)"
                 + ");";
         public static final String SQL_CREATE_ORDERS_EXIST = "CREATE TABLE IF NOT EXISTS " + ORDER_NAME + " ("
-                + "RowID integer primary key autoincrement"
+                + "RowID integer primary key "
                 + ",No_ nvarchar(30)"
                 + ",Name nvarchar(500)"
                 + ",Time long"

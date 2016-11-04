@@ -67,6 +67,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1606,9 +1607,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.rowId, 0);
                 }
                 //tinh lai tong tien
-                String amountMoney = MyMethod.getAmountSale(Home.orderDetailArrayList);
+                String amountMoneySale = MyMethod.getAmountSale(Home.orderDetailArrayList);
+                String amountMoney = MyMethod.getAmount(Home.orderDetailArrayList);
+                String discountMoney = MyMethod.getDiscount(Home.orderDetailArrayList);
                 Home.bindingRight.orderDetail.orderDetailAmount.setText(amountMoney + getString(R.string.money));
-                Home.bindingRight.orderDetail.orderDetailAmountSale.setText(amountMoney + getString(R.string.money));
+                Home.bindingRight.orderDetail.orderDetailDiscount.setText(discountMoney + getString(R.string.money));
+                Home.bindingRight.orderDetail.orderDetailAmountSale.setText(amountMoneySale + getString(R.string.money));
                 Home.orderListOrderDetailAdapter.setItems(Home.orderDetailArrayList);
                 Home.orderListOrderDetailAdapter.notifyDataSetChanged();
             }
@@ -3097,8 +3101,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         nowOrder.document_type = 5;
                     }
                     //Dialog
+                    double ref_id = Utils.createRefID_();
                     LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
-                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0));
+                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0,ref_id));
                 } else
                     MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
@@ -4852,6 +4857,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.txtOrderDetailNoName.setText(Home.bindingRight.transactionDetail.refTransactionNameNo.getText().toString());
             Home.txtOrderDetailAmount.setText(MyMethod.getAmount(orderDetailArrayList) + context.getString(R.string.money));
             Home.txtOrderDetailTime.setText(txtTransactionHeaderTime.getText().toString());
+            Home.txtOrderDetailDiscount.setText(MyMethod.getDiscount(orderDetailArrayList) + getString(R.string.money));
             Home.txtOrderDetailAmountSale.setText(MyMethod.getAmountSale(orderDetailArrayList) + context.getString(R.string.money));
             Home.edOrderDetailNote.setText("");//Chưa hiện ghi chú đặt hàng do chưa load order
         } else {
@@ -6439,16 +6445,59 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         }
     }
 
-    private void showDialogReviewOrder(int id_order, ArrayList<OrderDetail> orderDetails) {
+    private void showDialogReviewOrder(int id_order, final ArrayList<OrderDetail> orderDetails) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = this.getLayoutInflater(getArguments());
         View dialogView = inflater.inflate(R.layout.review_order, null);
+        ListView list_order_review = (ListView) dialogView.findViewById(R.id.list_order_review);
+        Switch switch_order_review = (Switch) dialogView.findViewById(R.id.switch_order_review);
+        final TextView orderReviewAmount = (TextView) dialogView.findViewById(R.id.order_review_amount);
+        final TextView orderReviewAmountSale = (TextView) dialogView.findViewById(R.id.order_review_amount_sale);
+        final TextView orderReviewDiscount = (TextView) dialogView.findViewById(R.id.order_review_discount);
+        final OrderListProductAdapter adapter_order_review = new OrderListProductAdapter(getActivity(), orderDetails);
+        list_order_review.setAdapter(adapter_order_review);
+        adapter_order_review.notifyDataSetChanged();
+        String amountMoney = MyMethod.getAmount(orderDetails);
+        String amountMoneySale = MyMethod.getAmountSale(orderDetails);
+        String discount = MyMethod.getDiscount(orderDetails);
+        orderReviewAmount.setText(amountMoney + getString(R.string.money));
+        orderReviewDiscount.setText(discount + getString(R.string.money));
+        orderReviewAmountSale.setText(amountMoneySale + getString(R.string.money));
+        switch_order_review.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                if (isCheck == true) {//Neu dong hang co Km
+                    //tinh lai tong tien
+                    String amountMoneySale = MyMethod.getAmountSale(orderDetails);
+                    String amountMoney = MyMethod.getAmount(orderDetails);
+                    String discount = MyMethod.getDiscount(orderDetails);
+                    orderReviewAmount.setText(amountMoney + getString(R.string.money));
+                    orderReviewDiscount.setText(discount+ getString(R.string.money));
+                    orderReviewAmountSale.setText(amountMoneySale + getString(R.string.money));
+                    adapter_order_review.setItems(orderDetails);
+                } else {
+                    //tinh lai tong tien
+                    String amountMoney = MyMethod.getAmount(Home.orderDetailArrayList);
+                    String amountMoneySale = MyMethod.getAmountSale(Home.orderDetailArrayList);
+                    String discount = MyMethod.getDiscount(Home.orderDetailArrayList);
+                    orderReviewAmount.setText(amountMoney + getString(R.string.money));
+                    orderReviewDiscount.setText(discount + getString(R.string.money));
+                    orderReviewAmountSale.setText(amountMoneySale + getString(R.string.money));
+                    adapter_order_review.setItems(Home.orderDetailArrayList);
+
+                }
+                adapter_order_review.notifyDataSetChanged();
+
+            }
+        });
         builder.setView(dialogView);
         builder.setMessage(context.getString(R.string.accept_order))
                 .setCancelable(false)
                 .setPositiveButton(context.getString(R.string.accept), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
+                        EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 1,Home.nowIdExtNo));
                         dialog.dismiss();
                     }
                 })

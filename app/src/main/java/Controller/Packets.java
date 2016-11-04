@@ -1911,7 +1911,7 @@ abstract class Packets {
         }
 
         public static class PacketSendOrder extends Packet {
-            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails,int type) throws IOException {
+            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails,int type,double ref_id) throws IOException {
                 super(PacketType.SendOrder);
                 write(order.id_customer);
                 write(order.status);
@@ -1920,6 +1920,7 @@ abstract class Packets {
                 write(order.id_parent);
                 write(order.document_type);
                 write(type);
+                write(ref_id);
                 write(orderDetails.size());
                 for (OrderDetail orderDetail : orderDetails
                         ) {
