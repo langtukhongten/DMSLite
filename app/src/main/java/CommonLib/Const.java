@@ -62,11 +62,17 @@ public abstract class Const {
 //    public static final String LinkSurveyImage = "http://v3.dinhvidienthoai.com//SurveyImages/";
 
 
-    public static final String HttpEndpoint = "http://192.168.1.200:1012//HttpService.aspx";
-    public static final String LinkReportImage = "http://192.168.1.200:1012/ReportImages/";
-    public static final String LinkCustomerImage = "http://192.168.1.200:1012//CustomerImages/";
-    public static final String LinkItemImage = "http://192.168.1.200:1012//ItemImages/";
-    public static final String LinkSurveyImage = "http://192.168.1.200:1012//SurveyImages/";
+//    public static final String HttpEndpoint = "http://192.168.1.200:1012//HttpService.aspx";
+//    public static final String LinkReportImage = "http://192.168.1.200:1012/ReportImages/";
+//    public static final String LinkCustomerImage = "http://192.168.1.200:1012//CustomerImages/";
+//    public static final String LinkItemImage = "http://192.168.1.200:1012//ItemImages/";
+//    public static final String LinkSurveyImage = "http://192.168.1.200:1012//SurveyImages/";
+
+    public static final String HttpEndpoint = "http://203.162.53.101:1012//HttpService.aspx";
+    public static final String LinkReportImage = "http://203.162.53.101:1012//ReportImages/";
+    public static final String LinkCustomerImage = "http://203.162.53.101:1012//CustomerImages/";
+    public static final String LinkItemImage = "http://203.162.53.101:1012//ItemImages/";
+    public static final String LinkSurveyImage = "http://203.162.53.101:1012//SurveyImages/";
 
     //        public static final String HttpEndpoint = "http://192.168.1.213:82/HttpService.aspx";
 //        public static final String LinkReportImage = "http://192.168.1.213:82/ReportImages/";

@@ -5865,75 +5865,82 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             case SendOrder:
                 EventType.EventSendOrderResult orderResult = (EventType.EventSendOrderResult) event;
                 if (orderResult.success) {
-                    flagOutStore = false;
-                    Home.nowIdExtNo = Integer.parseInt(orderResult.message);
-                    MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_order_success));
-                    if (nowCustomer != null) {
-                        LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
-                    }
-                    //luu don hang line vao local
-                    nowOrder.rowId = Home.nowIdExtNo;
-                    LocalDB.inst().addOrder(nowOrder, 0);
-                    LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);//0 la don hang chua tinh km
-                    LocalDB.inst().addOrderDetail(nowOrder.rowId, orderResult.orderDetails, 1);//1 la don hang da tinh km
-                    //Chuyển thành đã có đơn hàng
-                    MyMethod.isHasOrder = true;
-                    destroyOrder();
-                    if (MyMethod.isInventoryReport) {
-                        showLayout(Layouts.GoStore, context);
-                        Home.nowTransactionLine.note = "Báo cáo tồn kho";
-                        Home.nowTransactionLine.id_customer = nowCustomer.id;
-                        Home.nowTransactionLine.id_transaction_define = Const.TransactionType.CheckInventory.getValue();
-                    } else if (MyMethod.isOrder) {
-                        showLayout(Layouts.GoStore, context);
-                        Home.nowTransactionLine.id_customer = nowCustomer.id;
-                        if (MyMethod.isOrderPhone) {
-                            MyMethod.isInStore = false;
-                            if (MyMethod.isCheckInCustomerTransactionDetail) {
-                                showLayout(Layouts.TransactionDetail, context);
-                                EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
-                            } else {
-                                showLayout(Layouts.Customer, context);
-                            }
-                            Home.nowTransactionLine.note = "Đặt hàng qua điện thoại";
-                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakerOrderByPhone.getValue();
-                        } else {
-                            Home.nowTransactionLine.note = "Đặt hàng";
-                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakeOrder.getValue();
+                    //Neu gui review thi hien dialog
+                    if (orderResult.orderDetails.size() > 0) {
+                        //hien dialog
+                        showDialogReviewOrder(Integer.parseInt(orderResult.message), orderResult.orderDetails);
+                    } else {
+                        //Neu gui xac nhan
+                        flagOutStore = false;
+                        Home.nowIdExtNo = Integer.parseInt(orderResult.message);
+                        MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_order_success));
+                        if (nowCustomer != null) {
+                            LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
                         }
-                    } else if (MyMethod.isInventoryInput) {
-                        showLayout(Layouts.Main, context);
-                        Home.nowTransactionLine.note = "Nhập tồn kho";
-                        Home.nowTransactionLine.id_customer = 0;
-                        Home.nowTransactionLine.id_transaction_define = Const.TransactionType.InventoryInput.getValue();
-                    } else if (MyMethod.isProductSample) {
-                        showLayout(Layouts.GoStore, context);
-                        Home.nowTransactionLine.note = "Hàng mẫu";
-                        Home.nowTransactionLine.id_customer = nowCustomer.id;
-                        Home.nowTransactionLine.id_transaction_define = Const.TransactionType.ProductSample.getValue();
-                    } else if (MyMethod.isProductDisplay) {
-                        showLayout(Layouts.GoStore, context);
-                        Home.nowTransactionLine.note = "Hàng trưng bày";
-                        Home.nowTransactionLine.id_customer = nowCustomer.id;
-                        Home.nowTransactionLine.id_transaction_define = Const.TransactionType.ProductDisplay.getValue();
+                        //luu don hang line vao local
+                        nowOrder.rowId = Home.nowIdExtNo;
+                        LocalDB.inst().addOrder(nowOrder, 0);
+                        LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);//0 la don hang chua tinh km
+                        LocalDB.inst().addOrderDetail(nowOrder.rowId, orderResult.orderDetails, 1);//1 la don hang da tinh km
+                        //Chuyển thành đã có đơn hàng
+                        MyMethod.isHasOrder = true;
+                        destroyOrder();
+                        if (MyMethod.isInventoryReport) {
+                            showLayout(Layouts.GoStore, context);
+                            Home.nowTransactionLine.note = "Báo cáo tồn kho";
+                            Home.nowTransactionLine.id_customer = nowCustomer.id;
+                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.CheckInventory.getValue();
+                        } else if (MyMethod.isOrder) {
+                            showLayout(Layouts.GoStore, context);
+                            Home.nowTransactionLine.id_customer = nowCustomer.id;
+                            if (MyMethod.isOrderPhone) {
+                                MyMethod.isInStore = false;
+                                if (MyMethod.isCheckInCustomerTransactionDetail) {
+                                    showLayout(Layouts.TransactionDetail, context);
+                                    EventPool.control().enQueue(new EventType.EventLoadTransactionLinesRequest(nowTransaction.rowId));
+                                } else {
+                                    showLayout(Layouts.Customer, context);
+                                }
+                                Home.nowTransactionLine.note = "Đặt hàng qua điện thoại";
+                                Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakerOrderByPhone.getValue();
+                            } else {
+                                Home.nowTransactionLine.note = "Đặt hàng";
+                                Home.nowTransactionLine.id_transaction_define = Const.TransactionType.MakeOrder.getValue();
+                            }
+                        } else if (MyMethod.isInventoryInput) {
+                            showLayout(Layouts.Main, context);
+                            Home.nowTransactionLine.note = "Nhập tồn kho";
+                            Home.nowTransactionLine.id_customer = 0;
+                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.InventoryInput.getValue();
+                        } else if (MyMethod.isProductSample) {
+                            showLayout(Layouts.GoStore, context);
+                            Home.nowTransactionLine.note = "Hàng mẫu";
+                            Home.nowTransactionLine.id_customer = nowCustomer.id;
+                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.ProductSample.getValue();
+                        } else if (MyMethod.isProductDisplay) {
+                            showLayout(Layouts.GoStore, context);
+                            Home.nowTransactionLine.note = "Hàng trưng bày";
+                            Home.nowTransactionLine.id_customer = nowCustomer.id;
+                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.ProductDisplay.getValue();
 
-                    } else if (MyMethod.isOrderIncurred) {
-                        showLayout(Layouts.GoStore, context);
-                        //btnIncurredOrder.setEnabled(false);
-                        Home.nowTransactionLine.note = "Phát sinh đơn hàng";
-                        Home.nowTransactionLine.id_transaction_define = Const.TransactionType.OrderIncurred.getValue();
-                    }
-                    Home.nowTransactionLine.status = 0;
+                        } else if (MyMethod.isOrderIncurred) {
+                            showLayout(Layouts.GoStore, context);
+                            //btnIncurredOrder.setEnabled(false);
+                            Home.nowTransactionLine.note = "Phát sinh đơn hàng";
+                            Home.nowTransactionLine.id_transaction_define = Const.TransactionType.OrderIncurred.getValue();
+                        }
+                        Home.nowTransactionLine.status = 0;
 
-                    Home.nowTransactionLine.id_ExtNo_ = Home.nowIdExtNo;
-                    if (!MyMethod.isReportStore) {
-                        Home.nowTransactionLine.location_ref_id = (int) LocalDB.inst().addTracking(new TrackingItem(Home.location, (byte) 2));
+                        Home.nowTransactionLine.id_ExtNo_ = Home.nowIdExtNo;
+                        if (!MyMethod.isReportStore) {
+                            Home.nowTransactionLine.location_ref_id = (int) LocalDB.inst().addTracking(new TrackingItem(Home.location, (byte) 2));
+                        }
+                        if (Home.location != null) {
+                            Home.nowTransactionLine.latitude = Home.location.getLatitude();
+                            Home.nowTransactionLine.longitude = Home.location.getLongitude();
+                        }
+                        EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
                     }
-                    if (Home.location != null) {
-                        Home.nowTransactionLine.latitude = Home.location.getLatitude();
-                        Home.nowTransactionLine.longitude = Home.location.getLongitude();
-                    }
-                    EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
                 } else {
 //                    //Chuyển thành đã có đơn hàng
 //                    MyMethod.isHasOrder = true;
@@ -5950,6 +5957,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
                 }
                 LayoutLoadingManager.Show_OffLoading(Home.bindingRight.order.OrderLoadingView);
+
+
                 break;
             case UpdateOrder:
                 EventType.EventUpdateOrderResult updateOrderResult = (EventType.EventUpdateOrderResult) event;
@@ -6428,6 +6437,30 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Log.w(TAG, "unhandled " + event.type);
                 break;
         }
+    }
+
+    private void showDialogReviewOrder(int id_order, ArrayList<OrderDetail> orderDetails) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = this.getLayoutInflater(getArguments());
+        View dialogView = inflater.inflate(R.layout.review_order, null);
+        builder.setView(dialogView);
+        builder.setMessage(context.getString(R.string.accept_order))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.accept), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     private void updatePermissionLine(int permission) {

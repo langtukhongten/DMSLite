@@ -514,4 +514,5 @@
     <string name="order_promotion">Đơn hàng tính khuyến mãi</string>
     <string name="discount_percent">%CK: </string>
     <string name="discount_amount">CK tiền: </string>
+    <string name="accept_order">Xác nhận đơn hàng</string>
 </resources>
