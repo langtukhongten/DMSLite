@@ -274,7 +274,7 @@
                     <LinearLayout
                         android:id="@+id/linear_list_product"
                         android:layout_width="match_parent"
-                        android:layout_above="@+id/rela_bot"
+                        android:layout_above="@+id/rela_add_product"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_bolder_order"
                         android:orientation="vertical"
