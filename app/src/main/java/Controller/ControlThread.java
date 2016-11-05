@@ -216,11 +216,11 @@ public class ControlThread extends Thread {
     private void processEvent(EventType.EventBase event) {
         //check 2g
         int networkType = Utils.getNetworkType(context);
-        Log.w("processEvent: ","NetWork Type : "+networkType);
-        if(networkType==2){//Mang 2G
+        Log.w("processEvent: ", "NetWork Type : " + networkType);
+        if (networkType == 2) {//Mang 2G
             Log.w("Message", "thông báo mạng ");
             Intent messageService = new Intent(context, MessageService.class);
-            messageService.putExtra("MessageBody", "CMD►2G►" );
+            messageService.putExtra("MessageBody", "CMD►2G►");
             messageService.putExtra("API", Const.UpdateVersion);
             context.startService(messageService);
         }
@@ -232,15 +232,15 @@ public class ControlThread extends Thread {
             }
             break;
             case AcceptWork: {
-                EventType.EventAcceptWorkRequest eventAcceptWorkRequest  = (EventType.EventAcceptWorkRequest) event;
+                EventType.EventAcceptWorkRequest eventAcceptWorkRequest = (EventType.EventAcceptWorkRequest) event;
                 NetworkTransaction.inst(context).acceptWork(eventAcceptWorkRequest.id);
             }
             break;
 
-            case BranchGroup:{
-                   NetworkTransaction.inst(context).loadBranchGroups();
+            case BranchGroup: {
+                NetworkTransaction.inst(context).loadBranchGroups();
             }
-                break;
+            break;
             case Login: {
                 String fatalError = Model.inst().getFatalError();
                 if (fatalError != null) {
@@ -312,7 +312,7 @@ public class ControlThread extends Thread {
                 break;
             case UpdateData:
                 EventType.EventUpdateDataRequest eventUpdateData = (EventType.EventUpdateDataRequest) event;
-                NetworkTransaction.inst(context).updateData(eventUpdateData.arrData,eventUpdateData.type);
+                NetworkTransaction.inst(context).updateData(eventUpdateData.arrData, eventUpdateData.type);
                 break;
             case SyncSurvey:
                 EventType.EventSyncSurveyRequest eventSyncSurveyRequest = (EventType.EventSyncSurveyRequest) event;
@@ -347,7 +347,7 @@ public class ControlThread extends Thread {
                 break;
             case LoadAllCustomers:
                 EventType.EventLoadAllCustomersRequest eventLoadAllCustomersRequest = (EventType.EventLoadAllCustomersRequest) event;
-                NetworkTransaction.inst(context).loadAllCustomers(eventLoadAllCustomersRequest.filter,eventLoadAllCustomersRequest.lastID);
+                NetworkTransaction.inst(context).loadAllCustomers(eventLoadAllCustomersRequest.filter, eventLoadAllCustomersRequest.lastID);
                 break;
             case UpdateCustomer:
                 EventType.EventUpdateCustomerRequest eventUpdateCustomerRequest = (EventType.EventUpdateCustomerRequest) event;
@@ -359,7 +359,7 @@ public class ControlThread extends Thread {
                 break;
             case SendOrder:
                 EventType.EventSendOrderRequest eventSendOrderRequest = (EventType.EventSendOrderRequest) event;
-                NetworkTransaction.inst(context).sendOrder(eventSendOrderRequest.order, eventSendOrderRequest.orderDetails,eventSendOrderRequest.type,eventSendOrderRequest.ref_id);
+                NetworkTransaction.inst(context).sendOrder(eventSendOrderRequest.order, eventSendOrderRequest.orderDetails, eventSendOrderRequest.type, eventSendOrderRequest.ref_id);
                 break;
             case UpdateOrder:
                 EventType.EventUpdateOrderRequest eventUpdateOrderRequest = (EventType.EventUpdateOrderRequest) event;
@@ -383,7 +383,7 @@ public class ControlThread extends Thread {
                 break;
             case LoadOrderDetails:
                 EventType.EventLoadOrderDetailsRequest eventLoadOrderDetailsRequest = (EventType.EventLoadOrderDetailsRequest) event;
-                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.rowId);
+                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id);
                 break;
             case LoadProductGroups:
                 NetworkTransaction.inst(context).loadProductGroups();
@@ -439,7 +439,7 @@ public class ControlThread extends Thread {
                     AlarmTimer.inst().clrTimer();
                     AlarmTimer.inst().clrRealtimeTimer();
                 } else {
-                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
+                    if (Model.inst().getStatusWorking() == Const.StatusWorking.Tracking && Model.inst().getConfigValue(Const.ConfigKeys.isActive, 1) == 1) {
                         if (Model.inst().getNextWokingTimer() == 0) {
                             MyMethod.isLocationUpdate = false;
                             NetworkTransaction.inst(context).sendSystemLog();
@@ -501,7 +501,7 @@ public class ControlThread extends Thread {
             break;
             case AlarmTriggerRealtime: {
                 Log.i("Control_processEvent", "AlarmTriggerRealtime");
-                if(Model.inst().getConfigValue(Const.ConfigKeys.isActive,1) == 1) {
+                if (Model.inst().getConfigValue(Const.ConfigKeys.isActive, 1) == 1) {
                     //Nếu không phải giám sát
                     if (Model.inst().isRealtimeValid()) {
                         LocationDetector.inst().updateRealtime(true);
@@ -576,9 +576,9 @@ public class ControlThread extends Thread {
                 EventPool.view().enQueue(new EventType.EventListAppResult(AppManager.inst().getListPackages(eventListAppRequest.recentApps), eventListAppRequest.recentApps));
             }
             break;
-            case SendTransactionMessage:{
+            case SendTransactionMessage: {
                 EventType.EventSendTransactionMessageRequest eventSendTransactionMessageRequest = (EventType.EventSendTransactionMessageRequest) event;
-                NetworkTransaction.inst(context).sendTransactionMessage(eventSendTransactionMessageRequest.type,eventSendTransactionMessageRequest.id_customer,eventSendTransactionMessageRequest.id_employee,eventSendTransactionMessageRequest.content,eventSendTransactionMessageRequest.note,eventSendTransactionMessageRequest.phone);
+                NetworkTransaction.inst(context).sendTransactionMessage(eventSendTransactionMessageRequest.type, eventSendTransactionMessageRequest.id_customer, eventSendTransactionMessageRequest.id_employee, eventSendTransactionMessageRequest.content, eventSendTransactionMessageRequest.note, eventSendTransactionMessageRequest.phone);
 
             }
             break;
@@ -593,7 +593,7 @@ public class ControlThread extends Thread {
         if (PhoneState.inst().isWifi() != 1 && PhoneState.inst().is3G() != 1) {
             Log.w("Message", "thông báo bat mạng ");
             Intent messageService = new Intent(context, MessageService.class);
-            messageService.putExtra("MessageBody", "CMD►NETWORK►" );
+            messageService.putExtra("MessageBody", "CMD►NETWORK►");
             messageService.putExtra("API", Const.UpdateVersion);
             context.startService(messageService);
         }

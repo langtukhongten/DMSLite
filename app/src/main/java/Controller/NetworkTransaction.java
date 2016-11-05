@@ -816,7 +816,7 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean loadOrderDetail(int rowId) {
+    public synchronized boolean loadOrderDetail(double rowId) {
         try {
             byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderDetails(rowId).getData(), true);
             if (result != null) {

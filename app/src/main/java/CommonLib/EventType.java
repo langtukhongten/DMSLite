@@ -465,12 +465,12 @@ public abstract class EventType {
 
 
     public static class EventLoadOrderDetailsRequest extends EventBase {
-        public EventLoadOrderDetailsRequest(int rowId) {
+        public EventLoadOrderDetailsRequest(double ref_id) {
             super(Type.LoadOrderDetails);
-            this.rowId = rowId;
+            this.ref_id = ref_id;
         }
 
-        public final int rowId;
+        public final double ref_id;
 
     }
 

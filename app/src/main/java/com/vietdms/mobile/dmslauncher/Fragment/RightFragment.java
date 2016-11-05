@@ -137,6 +137,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -1602,9 +1603,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 if (isCheck == true) {//Neu dong hang co Km
-                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.rowId, 1);
+                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.ref_id, 1);
                 } else {
-                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.rowId, 0);
+                    Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.ref_id, 0);
                 }
                 //tinh lai tong tien
                 String amountMoneySale = MyMethod.getAmountSale(Home.orderDetailArrayList);
@@ -3103,7 +3104,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     //Dialog
                     double ref_id = Utils.createRefID_();
                     LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
-                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0,ref_id));
+                    EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0, ref_id));
                 } else
                     MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
@@ -4724,7 +4725,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             }
             Home.orderDetailArrayList.clear();//Xóa dữ liệu cũ trước khi load
             Home.orderListProductAdapter.notifyDataSetChanged();
-            EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.rowId));
+            EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id));
             Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
             Home.bindingHome.btnComeBack.setVisibility(View.GONE);
             Home.bindingHome.btnComeBack.setText(ordersArrayList.get(position).no_);
@@ -5874,17 +5875,17 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     //Neu gui review thi hien dialog
                     if (orderResult.orderDetails.size() > 0) {
                         //hien dialog
-                        showDialogReviewOrder(Integer.parseInt(orderResult.message), orderResult.orderDetails);
+                        showDialogReviewOrder(Double.parseDouble(orderResult.message), orderResult.orderDetails);
                     } else {
                         //Neu gui xac nhan
                         flagOutStore = false;
-                        Home.nowIdExtNo = Integer.parseInt(orderResult.message);
+                        Home.nowIdExtNo = Double.parseDouble(orderResult.message);
                         MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_order_success));
                         if (nowCustomer != null) {
                             LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
                         }
                         //luu don hang line vao local
-                        nowOrder.rowId = Home.nowIdExtNo;
+                        nowOrder.ref_id = Home.nowIdExtNo;
                         LocalDB.inst().addOrder(nowOrder, 0);
                         LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);//0 la don hang chua tinh km
                         LocalDB.inst().addOrderDetail(nowOrder.rowId, orderResult.orderDetails, 1);//1 la don hang da tinh km
@@ -5937,7 +5938,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         }
                         Home.nowTransactionLine.status = 0;
 
-                        Home.nowTransactionLine.id_ExtNo_ = Home.nowIdExtNo;
+                        Home.nowTransactionLine.id_ExtNoNew_ = Home.nowIdExtNo;
                         if (!MyMethod.isReportStore) {
                             Home.nowTransactionLine.location_ref_id = (int) LocalDB.inst().addTracking(new TrackingItem(Home.location, (byte) 2));
                         }
@@ -6445,7 +6446,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         }
     }
 
-    private void showDialogReviewOrder(int id_order, final ArrayList<OrderDetail> orderDetails) {
+    private void showDialogReviewOrder(final double ref_id, final ArrayList<OrderDetail> orderDetails) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = this.getLayoutInflater(getArguments());
@@ -6473,7 +6474,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     String amountMoney = MyMethod.getAmount(orderDetails);
                     String discount = MyMethod.getDiscount(orderDetails);
                     orderReviewAmount.setText(amountMoney + getString(R.string.money));
-                    orderReviewDiscount.setText(discount+ getString(R.string.money));
+                    orderReviewDiscount.setText(discount + getString(R.string.money));
                     orderReviewAmountSale.setText(amountMoneySale + getString(R.string.money));
                     adapter_order_review.setItems(orderDetails);
                 } else {
@@ -6497,7 +6498,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 .setPositiveButton(context.getString(R.string.accept), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
-                        EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 1,Home.nowIdExtNo));
+                        EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 1, ref_id));
                         dialog.dismiss();
                     }
                 })
