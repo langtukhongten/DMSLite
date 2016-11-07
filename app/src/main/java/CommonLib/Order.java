@@ -22,6 +22,6 @@ public class Order {
     public int document_type; //0: Bán hàng trực tiếp 1: BC Tồn kho cửa hiệu 2: Đề nghị nhập tồn 3: Bán Hàng trên tồn kho nhân viên 4: kho công ty
     public String imageUrl;
     public String employeeName;
-    public double ref_id;
+    public long ref_id;
     public ArrayList<OrderDetail> orderDetails;
 }

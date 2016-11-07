@@ -677,7 +677,7 @@ abstract class Packets {
                     order.document_type = readInt();
                     order.imageUrl = readString();
                     order.employeeName = readString();
-                    order.ref_id = readDouble();
+                    order.ref_id = readLong();
                     arrayOrders.add(order);
 
                 }
@@ -708,6 +708,7 @@ abstract class Packets {
                     orderDetail.itemType = readInt();
                     orderDetail.note = readString();
                     orderDetail.status = readInt();
+                    orderDetail.promotionNo_ = readString();
                     arrayOrderDetails.add(orderDetail);
                 }
                 inflater.end();
@@ -853,7 +854,7 @@ abstract class Packets {
                     tl.id_ExtNo_ = readInt();
                     tl.id_transaction_define = readInt();
                     tl.name_employee = readString();
-                    tl.id_ExtNoNew_ = readDouble();
+                    tl.id_ExtNoNew_ = readLong();
                     arrayTransactionLines.add(tl);
                 }
                 permission = readInt();
@@ -1198,7 +1199,7 @@ abstract class Packets {
                                 o.document_type = readInt();
                                 o.imageUrl = readString();
                                 o.employeeName = readString();
-                                o.ref_id = readDouble();
+                                o.ref_id = readLong();
                                 int lenDetail = readInt();
                                 o.orderDetails = new ArrayList<>();
                                 for (int j = 0; j < lenDetail; j++) {
@@ -1324,7 +1325,7 @@ abstract class Packets {
                     tl.id_ExtNo_ = readInt();
                     tl.id_transaction_define = readInt();
                     tl.name_employee = readString();
-                    tl.id_ExtNoNew_ = readDouble();
+                    tl.id_ExtNoNew_ = readLong();
                     arrayTransactionLines.add(tl);
                 }
                 inflater.end();
@@ -1916,7 +1917,7 @@ abstract class Packets {
         }
 
         public static class PacketSendOrder extends Packet {
-            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type, double ref_id) throws IOException {
+            public PacketSendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type, long ref_id) throws IOException {
                 super(PacketType.SendOrder);
                 write(order.id_customer);
                 write(order.status);
@@ -2004,9 +2005,10 @@ abstract class Packets {
         }
 
         public static class PacketLoadOrderDetails extends Packet {
-            public PacketLoadOrderDetails(double ref_id) throws IOException {
+            public PacketLoadOrderDetails(long ref_id, int type) throws IOException {
                 super(PacketType.LoadOrderDetails);
                 write(ref_id);
+                write(type);
             }
         }
 

@@ -383,7 +383,7 @@ public class ControlThread extends Thread {
                 break;
             case LoadOrderDetails:
                 EventType.EventLoadOrderDetailsRequest eventLoadOrderDetailsRequest = (EventType.EventLoadOrderDetailsRequest) event;
-                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id);
+                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id,eventLoadOrderDetailsRequest.type);
                 break;
             case LoadProductGroups:
                 NetworkTransaction.inst(context).loadProductGroups();

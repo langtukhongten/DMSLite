@@ -465,13 +465,14 @@ public abstract class EventType {
 
 
     public static class EventLoadOrderDetailsRequest extends EventBase {
-        public EventLoadOrderDetailsRequest(double ref_id) {
+        public EventLoadOrderDetailsRequest(long ref_id, int type) {
             super(Type.LoadOrderDetails);
             this.ref_id = ref_id;
+            this.type = type;
         }
 
-        public final double ref_id;
-
+        public final long ref_id;
+        public final int type;
     }
 
     public static class EventUpdateOrderRequest extends EventBase {
@@ -542,7 +543,7 @@ public abstract class EventType {
     }
 
     public static class EventSendOrderRequest extends EventBase {
-        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type,double ref_id) {
+        public EventSendOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type, long ref_id) {
             super(Type.SendOrder);
             this.order = order;
             this.orderDetails = orderDetails;
@@ -554,7 +555,7 @@ public abstract class EventType {
         public final Order order;
         public final ArrayList<OrderDetail> orderDetails;
         public final int type;
-        public final double ref_id;
+        public final long ref_id;
     }
 
     public static class EventSendTransactionRequest extends EventBase {

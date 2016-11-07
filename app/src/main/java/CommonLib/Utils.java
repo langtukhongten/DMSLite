@@ -405,7 +405,6 @@ public class Utils {
         } catch (Exception e) {
             return Float.toString(value);
         }
-
         return result;
     }
 
@@ -660,8 +659,10 @@ public class Utils {
         return sb.toString();
     }
 
-    public static double createRefID_() {
-        return Double.parseDouble(Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0) + ("" + Model.getServerTime()).substring(3));
+    public static long createRefID_() {
+        long tick = Model.getServerTime() - Model.getTime(2015);
+        long hash = (((long) Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) << 40 ) + tick;
+        return hash;
     }
 
 

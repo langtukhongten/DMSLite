@@ -154,6 +154,12 @@ public class Model {
         }
     }
 
+    public static long getTime(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+        return calendar.getTimeInMillis();
+    }
+
     private class ProcessLocation extends AsyncTask<Location, Void, Location> {
 
         @Override

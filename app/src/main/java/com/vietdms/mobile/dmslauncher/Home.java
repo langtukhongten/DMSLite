@@ -137,7 +137,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static int positionOrder;
     public static Marker markerNow;
     public static Polyline lineNow;
-    public static double nowIdExtNo;//Mã đơn hàng vừa gửi lên
+    public static long nowIdExtNo;//Mã đơn hàng vừa gửi lên
     public static boolean isUpdateCustomerInMap;// Cập nhật khách hàng trong (true) ? Bản đồ ghé thăm : Màn hình sửa khách hàng
     public static int nowCity; // Mã thành phố
     public static int nowCounty; // Mã tỉnh

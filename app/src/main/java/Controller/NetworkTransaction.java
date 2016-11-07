@@ -558,7 +558,7 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type,double ref_id) {
+    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type,long ref_id) {
         try {
             Packets.ToServer.PacketSendOrder packetSendOrder = new Packets.ToServer.PacketSendOrder(order, orderDetails, type,ref_id);
             byte[] result = sendPostRequest(defaultUrl, packetSendOrder.getData(), true);
@@ -816,9 +816,9 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean loadOrderDetail(double rowId) {
+    public synchronized boolean loadOrderDetail(long rowId,int type) {
         try {
-            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderDetails(rowId).getData(), true);
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderDetails(rowId,type).getData(), true);
             if (result != null) {
                 Log.i("loadOrderDetail", "success");
                 Packets.FromServer.PacketLoadOrderDetails packetLoadOrderDetails = new Packets.FromServer.PacketLoadOrderDetails(result);

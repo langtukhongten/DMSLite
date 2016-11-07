@@ -1604,8 +1604,16 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 if (isCheck == true) {//Neu dong hang co Km
                     Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.ref_id, 1);
+                    if (Home.orderDetailArrayList.size() == 0) {
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, getString(R.string.load_order_detail), 30);
+                        EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id, 1));
+                    }
                 } else {
                     Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.ref_id, 0);
+                    if (Home.orderDetailArrayList.size() == 0) {
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, getString(R.string.load_order_detail), 30);
+                        EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id, 0));
+                    }
                 }
                 //tinh lai tong tien
                 String amountMoneySale = MyMethod.getAmountSale(Home.orderDetailArrayList);
@@ -3102,7 +3110,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         nowOrder.document_type = 5;
                     }
                     //Dialog
-                    double ref_id = Utils.createRefID_();
+                    long ref_id = Utils.createRefID_();
                     LayoutLoadingManager.Show_OnLoading(Home.bindingRight.order.OrderLoadingView, context.getString(R.string.sending), 30);
                     EventPool.control().enQueue(new EventType.EventSendOrderRequest(nowOrder, Home.orderDetailArrayList, 0, ref_id));
                 } else
@@ -4695,6 +4703,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.bindingHome.btnComeBack.setText(nowProduct.name);
             showLayout(Layouts.ProductDetail, context);
         } else if (MyMethod.isVisible(Home.bindingRight.orderMain.linearOrderMain)) {
+            //chuyen switch khuyen mai sang tat
+            Home.bindingRight.orderDetail.switchOrderPromotion.setChecked(false);
             Home.positionOrder = position;
             nowOrder = ordersArrayList.get(position);
             if (nowOrder.status == 0 || nowOrder.status == 2) {
@@ -4725,7 +4735,20 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             }
             Home.orderDetailArrayList.clear();//Xóa dữ liệu cũ trước khi load
             Home.orderListProductAdapter.notifyDataSetChanged();
-            EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id));
+            //neu la chinh no thi load offline <=> load onlnine
+            if (nowOrder.id_employee == Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) {
+                //load off
+
+                Home.orderDetailArrayList = LocalDB.inst().loadOrderDetail(nowOrder.ref_id, 0);
+                if (Home.orderDetailArrayList.size() == 0) {//Neu co thi load
+                    EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id, 0));
+                } else {//khong thi load online
+                    LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderDetail.OrderDetailLoading);
+                    updateValueOrderDetail(Home.orderDetailArrayList, MyMethod.isOrderInTransactionLine);
+                }
+            } else {
+                EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(nowOrder.ref_id, 0));
+            }
             Home.bindingHome.txtTile.setVisibility(View.VISIBLE);
             Home.bindingHome.btnComeBack.setVisibility(View.GONE);
             Home.bindingHome.btnComeBack.setText(ordersArrayList.get(position).no_);
@@ -4862,16 +4885,15 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.txtOrderDetailAmountSale.setText(MyMethod.getAmountSale(orderDetailArrayList) + context.getString(R.string.money));
             Home.edOrderDetailNote.setText("");//Chưa hiện ghi chú đặt hàng do chưa load order
         } else {
-            Home.nowAmountSale = 0;
-            Home.nowAmount = 0;
-            for (OrderDetail od : orderDetailArrayList) {
-                Home.nowAmountSale = Home.nowAmountSale + od.unitprice * od.quantity;
-                Home.nowAmount = Home.nowAmount + od.discountAmount + od.unitprice * od.quantity;
-            }
+            //tinh lai tong tien
+            String amountMoneySale = MyMethod.getAmountSale(Home.orderDetailArrayList);
+            String amountMoney = MyMethod.getAmount(Home.orderDetailArrayList);
+            String discountMoney = MyMethod.getDiscount(Home.orderDetailArrayList);
+            Home.bindingRight.orderDetail.orderDetailAmount.setText(amountMoney + getString(R.string.money));
+            Home.bindingRight.orderDetail.orderDetailDiscount.setText(discountMoney + getString(R.string.money));
+            Home.bindingRight.orderDetail.orderDetailAmountSale.setText(amountMoneySale + getString(R.string.money));
             Home.txtOrderDetailNoName.setText(nowOrder.no_ + " - " + nowOrder.name);
-            Home.txtOrderDetailAmount.setText(Utils.formatFloat(nowOrder.amount) + context.getString(R.string.money));
             Home.txtOrderDetailTime.setText(Utils.long2DateFull(nowOrder.time));
-            Home.txtOrderDetailAmountSale.setText(Utils.formatFloat(nowOrder.amount) + context.getString(R.string.money));
             Home.edOrderDetailNote.setText(nowOrder.note);
         }
         if (nowOrder.document_type == 3) {
@@ -5491,6 +5513,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     Home.orderListProductAdapter.notifyDataSetChanged();
                     Home.orderDetailArrayList = orderDetailsResult.arrOrderDetails;
                     updateValueOrderDetail(Home.orderDetailArrayList, MyMethod.isOrderInTransactionLine);
+
                 } else {
                     MyMethod.showToast(Home.bindingRight, context, orderDetailsResult.message);
                 }
@@ -5875,18 +5898,18 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     //Neu gui review thi hien dialog
                     if (orderResult.orderDetails.size() > 0) {
                         //hien dialog
-                        showDialogReviewOrder(Double.parseDouble(orderResult.message), orderResult.orderDetails);
+                        showDialogReviewOrder(Long.parseLong(orderResult.message), orderResult.orderDetails);
                     } else {
                         //Neu gui xac nhan
                         flagOutStore = false;
-                        Home.nowIdExtNo = Double.parseDouble(orderResult.message);
+                        Home.nowIdExtNo = Long.parseLong(orderResult.message);
                         MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.send_order_success));
                         if (nowCustomer != null) {
                             LocalDB.inst().updateCustomer(nowCustomer.id, Model.getServerTime(), 1);//Cập nhật thời gian đặt hàng
                         }
                         //luu don hang line vao local
                         nowOrder.ref_id = Home.nowIdExtNo;
-                        LocalDB.inst().addOrder(nowOrder, 0);
+                        nowOrder.rowId = (int) LocalDB.inst().addOrder(nowOrder, 1);
                         LocalDB.inst().addOrderDetail(nowOrder.rowId, Home.orderDetailArrayList, 0);//0 la don hang chua tinh km
                         LocalDB.inst().addOrderDetail(nowOrder.rowId, orderResult.orderDetails, 1);//1 la don hang da tinh km
                         //Chuyển thành đã có đơn hàng
@@ -6446,7 +6469,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         }
     }
 
-    private void showDialogReviewOrder(final double ref_id, final ArrayList<OrderDetail> orderDetails) {
+    private void showDialogReviewOrder(final long ref_id, final ArrayList<OrderDetail> orderDetails) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = this.getLayoutInflater(getArguments());

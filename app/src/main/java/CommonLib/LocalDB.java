@@ -242,7 +242,7 @@ public class LocalDB {
 
             long rowId = db.insert(DbHelper.ORDER_NAME, null, cv);
             if (rowId >= 0) {
-                Log.w(TAG, "addOrder:  " + order.name);
+                Log.w(TAG, "addOrder:  " + order.ref_id);
             }
             return rowId;
         } catch (Exception e) {
@@ -786,7 +786,7 @@ public class LocalDB {
                     line.latitude = c.getDouble(c.getColumnIndex("Latitude"));
                     line.longitude = c.getDouble(c.getColumnIndex("Longitude"));
                     line.id_ExtNo_ = c.getInt(c.getColumnIndex("IDExtNo"));
-                    line.id_ExtNoNew_ = c.getDouble(c.getColumnIndex("IDExtNoNew"));
+                    line.id_ExtNoNew_ = c.getLong(c.getColumnIndex("IDExtNoNew"));
                     line.id_transaction_define = c.getInt(c.getColumnIndex("IDTransactionDefine"));
                     line.name_employee = c.getString(c.getColumnIndex("NameEmployee"));
                     result.add(line);
@@ -1282,7 +1282,7 @@ public class LocalDB {
                     order.document_type = cursor.getInt(cursor.getColumnIndex("DocumentType"));
                     order.imageUrl = cursor.getString(cursor.getColumnIndex("ImageUrl"));
                     order.employeeName = cursor.getString(cursor.getColumnIndex("EmployeeName"));
-                    order.ref_id = cursor.getDouble(cursor.getColumnIndex("Ref_ID"));
+                    order.ref_id = cursor.getLong(cursor.getColumnIndex("Ref_ID"));
                     order.orderDetails = loadOrderDetail(order.ref_id, 0);
                     result.add(order);
                 } while (cursor.moveToNext());
@@ -1584,7 +1584,7 @@ public class LocalDB {
                     order.document_type = cursor.getInt(cursor.getColumnIndex("DocumentType"));
                     order.imageUrl = cursor.getString(cursor.getColumnIndex("ImageUrl"));
                     order.employeeName = cursor.getString(cursor.getColumnIndex("EmployeeName"));
-                    order.ref_id = cursor.getDouble(cursor.getColumnIndex("Ref_ID"));
+                    order.ref_id = cursor.getLong(cursor.getColumnIndex("Ref_ID"));
                     result.add(order);
                 } while (cursor.moveToNext());
 
@@ -1596,12 +1596,19 @@ public class LocalDB {
         return result;
     }
 
-    public ArrayList<OrderDetail> loadOrderDetail(double refId, int type) {
+    public ArrayList<OrderDetail> loadOrderDetail(long refId, int type) {
         int rowid = 0;
         try {
             String queryId = "SELECT RowID FROM " + DbHelper.ORDER_NAME + " WHERE Ref_ID = " + refId;
             Cursor cId = db.rawQuery(queryId, null);
-            rowid = cId.getInt(cId.getColumnIndex("RowID"));
+            if (cId.moveToFirst()) {
+                do {
+                    rowid = cId.getInt(cId.getColumnIndex("RowID"));
+                } while (cId.moveToNext());
+            }
+            cId.close();
+
+            Log.w(TAG, "loadOrderDetail: rowId = " + rowid);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1917,7 +1924,7 @@ public class LocalDB {
                 + ",EmployeeName nvarchar(500)"
                 + ",SearchField nvarchar(500)"
                 + ",IsSend int"
-                + ",Ref_ID bigint"
+                + ",Ref_ID long"
                 + ");";
         public static final String SQL_CREATE_ORDER_DETAILS_EXIST = "CREATE TABLE IF NOT EXISTS " + ORDER_DETAIL_NAME + " ("
                 + "RowID integer primary key autoincrement"

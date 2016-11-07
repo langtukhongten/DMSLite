@@ -15,7 +15,7 @@ public class TransactionLine {
     public long create_date, modified_date;
     public double latitude, longitude;
     public int id_ExtNo_;
-    public double id_ExtNoNew_;
+    public long id_ExtNoNew_;
     public int id_transaction_define;
     public String name_employee;
     public String refNo_;
