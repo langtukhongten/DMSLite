@@ -2135,6 +2135,7 @@ abstract class Packets {
                 write(transactionLine.refNo_);
                 write(transactionLine.create_date);
                 write(transactionLine.modified_date);
+                write(transactionLine.id_ExtNoNew_);
             }
 
         }
