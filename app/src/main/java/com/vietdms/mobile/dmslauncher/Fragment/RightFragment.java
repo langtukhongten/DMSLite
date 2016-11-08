@@ -3118,15 +3118,18 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 break;
             case R.id.order_product_accept:
                 acceptOrder();
-                Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
-                Home.bindingHome.btnComeBack.performClick();
+                //Show don hang
+                Home.LayoutMyManager.ShowLayout(Layouts.Order);
+//                Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
+//                Home.bindingHome.btnComeBack.performClick();
                 //XU LI ACCEPT
                 break;
             case R.id.order_product_cancel:
                 //XU LI CANCEL
                 cancelOrder();
-                Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
-                Home.bindingHome.btnComeBack.performClick();
+                Home.LayoutMyManager.ShowLayout(Layouts.Order);
+//                Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
+//                Home.bindingHome.btnComeBack.performClick();
                 break;
             case R.id.inventory_employee_to:
                 MyMethod.Date = 6;
