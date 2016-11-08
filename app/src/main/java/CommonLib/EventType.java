@@ -476,14 +476,16 @@ public abstract class EventType {
     }
 
     public static class EventUpdateOrderRequest extends EventBase {
-        public EventUpdateOrderRequest(Order order, ArrayList<OrderDetail> orderDetails) {
+        public EventUpdateOrderRequest(Order order, ArrayList<OrderDetail> orderDetails, int type) {
             super(Type.UpdateOrder);
             this.order = order;
             this.orderDetails = orderDetails;
+            this.type = type;
         }
 
         public final Order order;
         public final ArrayList<OrderDetail> orderDetails;
+        public final int type;// 0: revie 1: gui len
     }
 
     public static class EventGetLocationsRequest extends EventBase {
@@ -1249,11 +1251,13 @@ public abstract class EventType {
     public static class EventUpdateOrderResult extends EventBase {
         public final boolean success;
         public final String message;
+        public final ArrayList<OrderDetail> orderDetails;
 
-        public EventUpdateOrderResult(boolean success, String message) {
+        public EventUpdateOrderResult(boolean success, String message, ArrayList<OrderDetail> orderDetails) {
             super(Type.UpdateOrder);
             this.success = success;
             this.message = message;
+            this.orderDetails = orderDetails;
         }
     }
 

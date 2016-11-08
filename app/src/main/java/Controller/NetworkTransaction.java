@@ -580,25 +580,25 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean updateOrder(Order order, ArrayList<OrderDetail> orderDetails) {
+    public synchronized boolean updateOrder(Order order, ArrayList<OrderDetail> orderDetails,int type) {
         try {
-            Packets.ToServer.PacketUpdateOrder packetUpdateOrder = new Packets.ToServer.PacketUpdateOrder(order, orderDetails);
+            Packets.ToServer.PacketUpdateOrder packetUpdateOrder = new Packets.ToServer.PacketUpdateOrder(order, orderDetails,type);
 
             byte[] result = sendPostRequest(defaultUrl, packetUpdateOrder.getData(), true);
             if (result != null) {
                 Log.i("updateOrder", "success");
-                Packets.FromServer.PacketResultWithMessage packetResultWithMessage = new Packets.FromServer.PacketResultWithMessage(result);
-                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(packetResultWithMessage.success, packetResultWithMessage.message));
+                Packets.FromServer.PacketUpdateOrder packetUpdateOrderResult = new Packets.FromServer.PacketUpdateOrder(result);
+                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(packetUpdateOrderResult.success, packetUpdateOrderResult.message, packetUpdateOrderResult.orderDetails));
                 return true;
             } else {
                 Log.w("updateOrder", "fail");
-                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(false, "Không thể kết nối đến máy chủ"));
+                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(false, "Không thể kết nối đến máy chủ",null));
                 return false;
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            EventPool.view().enQueue(new EventType.EventUpdateCustomerResult(false, "Lỗi không xác định", null));
+            EventPool.view().enQueue(new EventType.EventUpdateOrderResult(false, "Lỗi không xác định", null));
             SystemLog.inst().addLog(SystemLog.Type.Exception, ex.toString());
             return false;
         }

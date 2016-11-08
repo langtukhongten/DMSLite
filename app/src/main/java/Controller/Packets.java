@@ -427,6 +427,37 @@ abstract class Packets {
             public String message;
             public ArrayList<OrderDetail> orderDetails;
         }
+        public static class PacketUpdateOrder extends Packet {
+            public PacketUpdateOrder(byte[] data) throws Exception {
+                super(data);
+                success = readBool();
+                message = readString();
+                int len = readInt();
+                orderDetails = new ArrayList<>(len);
+                for (int i = 0; i < len; i++) {
+                    OrderDetail item = new OrderDetail();
+                    item.itemNo_ = readString();
+                    item.id_item = readInt();
+                    item.name = readString();
+                    item.quantity = readInt();
+                    item.unitprice = readFloat();
+                    item.status = readInt();
+                    item.discountPercent = readFloat();
+                    item.discountAmount = readFloat();
+                    item.itemType = readInt();
+                    item.note = readString();
+                    item.loadNo_ = readString();
+                    item.type = readInt();
+                    item.promotionNo_ = readString();
+                    orderDetails.add(item);
+                }
+                inflater.end();
+            }
+
+            public boolean success;
+            public String message;
+            public ArrayList<OrderDetail> orderDetails;
+        }
 
 
         public static class PacketAddCustomer extends Packet {
@@ -678,8 +709,8 @@ abstract class Packets {
                     order.imageUrl = readString();
                     order.employeeName = readString();
                     order.ref_id = readLong();
+                    order.id_employee = readInt();
                     arrayOrders.add(order);
-
                 }
                 inflater.end();
             }
@@ -2013,11 +2044,12 @@ abstract class Packets {
         }
 
         public static class PacketUpdateOrder extends Packet {
-            public PacketUpdateOrder(Order order, ArrayList<OrderDetail> orderDetails) throws IOException {
+            public PacketUpdateOrder(Order order, ArrayList<OrderDetail> orderDetails, int type) throws IOException {
                 super(PacketType.UpdateOrder);
                 write(order.rowId);
                 write(order.note);
                 write(order.amount);
+                write(order.ref_id);
                 write((orderDetails == null) ? 0 : orderDetails.size());
                 for (OrderDetail od : orderDetails) {
                     write(od.id_item);
@@ -2029,7 +2061,7 @@ abstract class Packets {
                     write(od.note);
                     write(od.status);
                 }
-
+                write(type);
             }
 
         }
