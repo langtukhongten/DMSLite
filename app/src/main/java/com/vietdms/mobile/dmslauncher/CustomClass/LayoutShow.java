@@ -40,6 +40,21 @@ public class LayoutShow {
         }
     }
 
+    public void HideDialog(RightFragment.Layouts Name) {
+        for(LayoutManagerObject layout : LayoutManager) {
+            if(layout.LName.equals(Name)) {
+                if (layout.LayoutView == null)
+                    continue;
+
+                layout.LayoutView.setVisibility(View.INVISIBLE);
+                break;
+            }
+        }
+
+    }
+
+
+
     public void ShowLayout(RightFragment.Layouts Name) {
         if(Name == RightFragment.Layouts.Setting){
             RightFragment.mWakeLock.acquire();

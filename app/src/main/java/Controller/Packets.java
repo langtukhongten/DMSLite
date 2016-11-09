@@ -710,6 +710,7 @@ abstract class Packets {
                     order.employeeName = readString();
                     order.ref_id = readLong();
                     order.id_employee = readInt();
+                    order.id_customer = readInt();
                     arrayOrders.add(order);
                 }
                 inflater.end();
@@ -2050,6 +2051,7 @@ abstract class Packets {
                 write(order.note);
                 write(order.amount);
                 write(order.ref_id);
+                write(order.id_customer);
                 write((orderDetails == null) ? 0 : orderDetails.size());
                 for (OrderDetail od : orderDetails) {
                     write(od.id_item);

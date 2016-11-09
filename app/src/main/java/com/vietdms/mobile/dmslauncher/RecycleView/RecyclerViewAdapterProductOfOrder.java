@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.vietdms.mobile.dmslauncher.Home;
 import com.vietdms.mobile.dmslauncher.MyMethod;
 import com.vietdms.mobile.dmslauncher.R;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import CommonLib.OrderDetail;
 import CommonLib.Product;
 import CommonLib.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,6 +70,21 @@ public class RecyclerViewAdapterProductOfOrder extends RecyclerView.Adapter<Recy
             contactViewHolder.productPrice.setText(Home.hashListPrice.get(c.no_) + context.getString(R.string.money));
         else
             contactViewHolder.productPrice.setText(Utils.formatFloat(c.price) + context.getString(R.string.money));
+        int quantity = getQuantityFromHash(c.no_);
+        if (quantity > 0) {
+            contactViewHolder.productQuantity.setText(quantity + "");
+        }
+    }
+
+    private int getQuantityFromHash(String no_) {
+        int result = 0;
+        for (Integer i : Home.hashOrderLine.keySet()) {
+            OrderDetail detail = Home.hashOrderLine.get(i);
+            if (detail.itemNo_.equals(no_)) {
+                result += detail.quantity;
+            }
+        }
+        return result;
     }
 
     private int getQuantity(ArrayList<EditText> arrView) {

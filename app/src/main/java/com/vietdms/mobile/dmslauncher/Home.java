@@ -43,7 +43,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -60,7 +59,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.ArrayUserAdapter;
 import com.vietdms.mobile.dmslauncher.CustomAdapter.CustomAdapterGripView;
@@ -104,7 +102,6 @@ import CommonLib.TimeLine;
 import CommonLib.TrackingItem;
 import CommonLib.TransactionLine;
 import CommonLib.UserInfo;
-import CommonLib.WakeLock;
 
 public class Home extends AppCompatActivity implements ViewPager.OnPageChangeListener, RecyclerItemClickListener.OnItemClickListener, View.OnClickListener {
 
@@ -198,6 +195,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
     public static HashMap<String, Integer> hashListQuantity = new HashMap<>();
     public static HashMap<String, ArrayList<EditText>> hashViewPromotion = new HashMap<>();
     public static HashMap<String, Float> hashListPrice = new HashMap<>();
+    public static HashMap<Integer, OrderDetail> hashOrderLine = new HashMap<>();
     public static ArrayList<OrderDetail> orderDetailArrayList = new ArrayList<>();
     public static OrderListProductAdapter orderListProductAdapter, orderListOrderDetailAdapter;
     private boolean flag;
