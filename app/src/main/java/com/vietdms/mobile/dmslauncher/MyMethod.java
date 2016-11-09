@@ -853,6 +853,18 @@ public class MyMethod {
             return "0";
         }
     }
+    public static float getAmountF(ArrayList<OrderDetail> arr) {
+        try {
+            float result = 0;
+            for (int i = 0; i < arr.size(); i++) {
+                result = result + (arr.get(i).quantity * arr.get(i).unitprice - arr.get(i).discountAmount) * ((100 - arr.get(i).discountPercent) / 100);
+            }
+            return result;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     public static String getDiscount(ArrayList<OrderDetail> arr) {
         try {

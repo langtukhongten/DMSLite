@@ -2974,7 +2974,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 //XU LI GUI DON HANG TRONG ORDER DETAIL
                 if (Home.orderDetailArrayList.size() > 0) {
                     nowOrder.note = Home.edOrderDetailNote.getText().toString();
-                    nowOrder.amount = Float.parseFloat(MyMethod.getAmount(Home.orderDetailArrayList));// loại bỏ E khi convert sang chuỗi (big decimal)
+                    nowOrder.amount = MyMethod.getAmountF(Home.orderDetailArrayList);// loại bỏ E khi convert sang chuỗi (big decimal)
                     EventPool.control().enQueue(new EventType.EventUpdateOrderRequest(nowOrder, Home.orderDetailArrayList, 0));
                 } else
                     MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
