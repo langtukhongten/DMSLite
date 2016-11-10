@@ -182,8 +182,9 @@ public class RecyclerViewAdapterTransactionLine extends RecyclerView.Adapter<Rec
                     if (t.id_transaction_define == 6)
                         RightFragment.updateInventoryDetailView(context);
                     else RightFragment.updateOrderDetailView(context);
+                    Home.bindingRight.orderDetail.switchOrderPromotion.setChecked(false);
                     LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
-                    EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(t.id_ExtNoNew_,0));
+                    EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(t.id_ExtNoNew_, 0));
                     MyMethod.isOrderInTransactionLine = true;
                     if (MyMethod.isVisible(Home.bindingRight.inStore.linearInStore)) {
                         MyMethod.isOpenTransactionLineFromStore = true;

@@ -730,7 +730,7 @@ public class MyMethod {
      * Vẽ map bằng các thông số đầu vào
      * truyền vào loadingView,context,map,arrayLocations,infoArrayList và spinner
      */
-    public static void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final MyLocation[] arrayLocations, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
+    public synchronized static void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final MyLocation[] arrayLocations, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -750,7 +750,7 @@ public class MyMethod {
      * Vẽ map bằng các thông số đầu vào
      * truyền vào loadingView, context, map, infoArrayList, spinner
      */
-    public static void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
+    public synchronized static void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -766,7 +766,7 @@ public class MyMethod {
 
     }
 
-    public static void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
+    public synchronized static void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -1672,7 +1672,7 @@ public class MyMethod {
         return false;
     }
 
-    public static void animateMarker(final Marker marker, final UserInfo user,
+    public synchronized static void animateMarker(final Marker marker, final UserInfo user,
                                      final boolean hideMarker, final GoogleMap map) {
         try {
             final LatLng toPosition = new LatLng(user.latitude, user.longitude);

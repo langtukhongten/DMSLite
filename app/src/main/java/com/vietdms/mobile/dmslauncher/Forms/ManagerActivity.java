@@ -458,7 +458,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-    private synchronized void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
+    private  void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -474,7 +474,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    private synchronized void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
+    private void drawMap(final LoadingView loadingView, final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
