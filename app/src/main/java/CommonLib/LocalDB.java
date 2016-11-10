@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.vietdms.mobile.dmslauncher.DeviceBluetooth;
 import com.vietdms.mobile.dmslauncher.MyMethod;
 
 import java.math.BigDecimal;
@@ -1769,6 +1770,21 @@ public class LocalDB {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void updateOrder(Order nowOrder, ArrayList<OrderDetail> orderDetailArrayList) {
+        //xoa cai cu
+        try {
+            String query = "DELETE FROM " + DbHelper.ORDER_DETAIL_NAME + " WHERE IDOrder = " + nowOrder.rowId;
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null) {
+                long id = addOrderDetail(nowOrder.rowId, orderDetailArrayList, 0);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
