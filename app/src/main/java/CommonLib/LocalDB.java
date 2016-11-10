@@ -98,6 +98,16 @@ public class LocalDB {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            try {
+                db.execSQL(DbHelper.SQL_CREATE_PROMOTION_HEADER_EXIST);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                db.execSQL(DbHelper.SQL_CREATE_PROMOTION_DETAIL_EXIST);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return true;
         } catch (Exception ex) {
             return false;
@@ -832,7 +842,7 @@ public class LocalDB {
             cv.put("KyHieu", header.kyHieu);
             cv.put("HeaderNo_", header.headerNo_);
             cv.put("HeaderName", header.headerName);
-            long rowId = db.insert(DbHelper.PROMOTION_HEADER_NAME, null, cv);
+            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_HEADER_NAME, "", cv,SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addPromotionHeader: " + header.headerName);
             }
@@ -872,7 +882,7 @@ public class LocalDB {
             cv.put("PromotionDescription", line.promotionDescription);
             cv.put("IsDiscountMore", line.isDiscountMore);
 
-            long rowId = db.insert(DbHelper.PROMOTION_DETAIL_NAME, null, cv);
+            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_DETAIL_NAME,"", cv,SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addPromotionDetail: " + line.promotionDescription);
             }
@@ -948,7 +958,7 @@ public class LocalDB {
             cv.put("Name_ProductGroup", product.name_ProductGroup);
             cv.put("Inventory", product.inventory);
             cv.put("SearchField", Utils.unAccent(product.name));
-            long rowId = db.insert(DbHelper.PRODUCT_NAME, null, cv);
+            long rowId = db.insertWithOnConflict(DbHelper.PRODUCT_NAME,"", cv,SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addProduct: " + product.name);
                 updateSync(Const.SyncKeys.Product);

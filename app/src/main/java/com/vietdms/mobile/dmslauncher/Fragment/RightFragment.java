@@ -6013,6 +6013,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                             Home.nowTransactionLine.latitude = Home.location.getLatitude();
                             Home.nowTransactionLine.longitude = Home.location.getLongitude();
                         }
+                        Home.nowTransactionLine.create_date = Model.getServerTime();
+                        Home.nowTransactionLine.modified_date = Model.getServerTime();
                         EventPool.control().enQueue(new EventType.EventSendTransactionRequest(Home.nowTransactionLine));
                     }
                 } else {
@@ -6365,8 +6367,14 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 for (Route route : arrSpRoute)
                                     arrSpRouteName.add(route.name + " (" + route.count + ")");
                                 Home.bindingRight.customer.txtCustomerCount.setText(arrSpRoute.get(0).count + " " + context.getString(R.string.customer));
-                                reFreshCustomer();//Tải lại khách hàng theo tuyến vừa lấy
-                                adapterSpCustomer.notifyDataSetChanged();
+
+                                int countCustomer = LocalDB.inst().countCustomer(Home.nowIdCustomer);
+                                if (countCustomer > 0) {
+                                    reFreshCustomer();//Tải lại khách hàng theo tuyến vừa lấy
+                                    adapterSpCustomer.notifyDataSetChanged();
+                                }else{
+                                    EventPool.control().enQueue(new EventType.EventSyncDataRequest(3, -1));
+                                }
                             }
                             //}
                             EventPool.control().enQueue(new EventType.EventSyncDataRequest(3, -1));
@@ -6432,11 +6440,31 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
 
                 } else {
-                    if (syncDataResult.type == 0) {//Nếu ko load được sp thì load khách hàng
-                        EventPool.control().enQueue(new EventType.EventSyncDataRequest(1, -1));
-                    } else {
-                        MyMethod.showToast(Home.bindingRight, context, syncDataResult.message);
+                    switch (syncDataResult.type) {
+                        case 0://load sp k dc thi load kh
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(1, -1));
+                            break;
+                        case 1:
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(2, -1));
+                            break;
+                        case 2:
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(3, -1));
+                            break;
+                        case 3:
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(4, -1));
+                            break;
+                        case 4:
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(5, -1));
+                            break;
+                        case 5:
+                            EventPool.control().enQueue(new EventType.EventSyncDataRequest(6, -1));
+                            break;
+                        case 6:
+                            MyMethod.showToast(Home.bindingRight, context, syncDataResult.message);
+                            MyMethod.isSyncDating = false;//dong bo thanh cong
+                            break;
                     }
+
                 }
                 LayoutLoadingManager.Show_OffLoading(Home.bindingRight.customer.CustomerLoadingView);
                 if (Home.bindingRight.setting.btnSyncData.getProgress() >= 100 && syncDataResult.type == 3) {
