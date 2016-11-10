@@ -698,7 +698,6 @@ abstract class Packets {
                 arrayOrders = new ArrayList<>(len);
                 for (int i = 0; i < len; i++) {
                     Order order = new Order();
-                    order.rowId = readInt();
                     order.no_ = readString();
                     order.name = readString();
                     order.note = readString();
@@ -1215,7 +1214,6 @@ abstract class Packets {
                         for (int i = 0; i < len; i++) {
                             Order o = new Order();
                             try {
-                                o.rowId = readInt();
                                 o.no_ = readString();
                                 o.name = readString();
                                 o.time = readLong();

@@ -1772,19 +1772,32 @@ public class LocalDB {
         }
     }
 
-    public synchronized void updateOrder(Order nowOrder, ArrayList<OrderDetail> orderDetailArrayList) {
+    public synchronized void updateOrder(long ref_id, ArrayList<OrderDetail> orderDetailArrayList) {
         //xoa cai cu
         try {
-            String query = "DELETE FROM " + DbHelper.ORDER_DETAIL_NAME + " WHERE IDOrder = " + nowOrder.rowId;
-            Cursor cursor = db.rawQuery(query, null);
-            if (cursor != null) {
-                long id = addOrderDetail(nowOrder.rowId, orderDetailArrayList, 0);
+            //lay id
+            int rowId = loadIdByRefId(ref_id);
+            int del = db.delete(DbHelper.ORDER_DETAIL_NAME, "IDOrder=?", new String[]{String.valueOf(rowId)});
+            if (del > 0) {
+                long id = addOrderDetail(rowId, orderDetailArrayList, 0);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private int loadIdByRefId(long ref_id) {
+        try {
+            String query = "SELECT RowID FROM " + DbHelper.ORDER_NAME + " WHERE Ref_ID = " + ref_id;
+            Cursor cursor = db.rawQuery(query, null);
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndex("RowID"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
