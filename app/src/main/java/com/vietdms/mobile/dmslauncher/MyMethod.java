@@ -853,7 +853,9 @@ public class MyMethod {
             return "0";
         }
     }
+
     public static float getAmountF(ArrayList<OrderDetail> arr) {
+        //return type float
         try {
             float result = 0;
             for (int i = 0; i < arr.size(); i++) {
@@ -865,6 +867,7 @@ public class MyMethod {
             return 0;
         }
     }
+
 
     public static String getDiscount(ArrayList<OrderDetail> arr) {
         try {
@@ -1673,7 +1676,7 @@ public class MyMethod {
     }
 
     public synchronized static void animateMarker(final Marker marker, final UserInfo user,
-                                     final boolean hideMarker, final GoogleMap map) {
+                                                  final boolean hideMarker, final GoogleMap map) {
         try {
             final LatLng toPosition = new LatLng(user.latitude, user.longitude);
             final Handler handler = new Handler();
