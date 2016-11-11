@@ -133,6 +133,8 @@ public class Utils {
             case 3:
                 return "Đã duyệt";
             case 4:
+                return "Đã từ chối";
+            case 9:
                 return "Đã hủy";
             default:
                 return "Chưa rõ";
@@ -661,7 +663,7 @@ public class Utils {
 
     public static long createRefID_() {
         long tick = Model.getServerTime() - Model.getTime(2015);
-        long hash = (((long) Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) << 40 ) + tick;
+        long hash = (((long) Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) << 40) + tick;
         return hash;
     }
 

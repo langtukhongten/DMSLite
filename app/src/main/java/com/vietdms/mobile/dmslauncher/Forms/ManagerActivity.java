@@ -271,7 +271,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, true));
                     } else
-                        MyMethod.showToast(binding,this, this.getString(R.string.see_again_date_limit));
+                        MyMethod.showToast(binding, this, this.getString(R.string.see_again_date_limit));
                 }
 
                 break;
@@ -283,7 +283,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                         binding.content.txtRangeDate.setText("Lộ trình từ " + binding.content.btnFromDate.getText() + " đến " + binding.content.btnToDate.getText());
                         EventPool.control().enQueue(new EventType.EventGetLocationsRequest(((UserInfo) binding.content.spStaff.getSelectedItem()).id_employee, from.getTime(), to.getTime() + 24 * 3600 * 1000 - 1, 0, false));
                     } else
-                        MyMethod.showToast(binding,this, this.getString(R.string.see_all_date_limit));
+                        MyMethod.showToast(binding, this, this.getString(R.string.see_all_date_limit));
                 }
                 break;
             case R.id.btn_zoom_in_map:
@@ -447,18 +447,18 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private boolean isDateOK() {
         if (from == null) {
-            MyMethod.showToast(binding,this, this.getString(R.string.please_select_from_date));
+            MyMethod.showToast(binding, this, this.getString(R.string.please_select_from_date));
             return false;
         }
         if (to == null) {
-            MyMethod.showToast(binding,this, this.getString(R.string.please_select_to_date));
+            MyMethod.showToast(binding, this, this.getString(R.string.please_select_to_date));
             return false;
         }
         return true;
     }
 
 
-    private  void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
+    private void drawMapNotLoading(final Context context, final SupportMapFragment map, final ArrayList<UserInfo> infoArrayList, final MaterialSpinner spinner, final boolean isMoveMap) {
         try {
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -543,6 +543,9 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.listTrackingDetail:
                 MyLocation location = (MyLocation) parent.getAdapter().getItem(position);
                 if (markerClick != null) markerClick.remove();
+                if (location == null || location.address.isEmpty()) {
+                    location.address = MyMethod.getAddress(location.latitude, location.longitude, this);
+                }
                 markerClick =
                         googleMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(location.latitude, location.longitude))
@@ -555,7 +558,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    private class Loading extends AsyncTask<PolylineOptions, Void, PolylineOptions> {
+    private class Loading extends AsyncTask<PolylineOptions, PolylineOptions, PolylineOptions> {
         LoadingView lv;
         GoogleMap googleMap;
         Context context;
@@ -587,7 +590,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     flag = false;
                     myLocations.add(location);
                     if (location.address == null || location.address.isEmpty()) {
-                        location.address = MyMethod.getAddress(location.latitude, location.longitude, context);
+                        // location.address = MyMethod.getAddress(location.latitude, location.longitude, context);
                     }
                     myAddress.add(location.address);
                     if (myLocations.size() == 1) {
@@ -646,7 +649,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
             if (flag) {
                 myMarker.add(new MarkerOptions()
                         .position(new LatLng(arrayLocations[0].latitude, arrayLocations[0].longitude))
-                        .title(MyMethod.getAddress(arrayLocations[0].latitude, arrayLocations[0].longitude, context))
+                        // .title(MyMethod.getAddress(arrayLocations[0].latitude, arrayLocations[0].longitude, context))
                         .snippet("Điểm cuối : " + Utils.minute2String((arrayLocations[0].milisecFreezed / 60000)))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.here_btn)));
                 myAccuracy.add(arrayLocations[0].accuracy);
@@ -654,8 +657,10 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
             lineOptions.color(Color.BLUE);
             lineOptions.addAll(points);
             lineOptions.width(3);
+            publishProgress(lineOptions);
             return lineOptions;
         }
+
 
         @Override
         protected void onPostExecute(PolylineOptions result) {
@@ -799,7 +804,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                 if (infoArrayList.get(i).locationDate > 0) {
                     String address = infoArrayList.get(i).address;
                     if (address == null || address.isEmpty()) {
-                        address = MyMethod.getAddress(infoArrayList.get(i).latitude, infoArrayList.get(i).longitude, context);
+                        //  address = MyMethod.getAddress(infoArrayList.get(i).latitude, infoArrayList.get(i).longitude, context);
                     }
 
                     myMarkers.add(new MarkerOptions()
@@ -937,7 +942,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                 }
                 arrStaff.clear();
                 if (eventGetUsersResult.arrayUsers == null || eventGetUsersResult.arrayUsers.length <= 0) {
-                    MyMethod.showToast(binding,this, this.getString(R.string.none_staff));
+                    MyMethod.showToast(binding, this, this.getString(R.string.none_staff));
                 } else {
                     Collections.addAll(arrStaff, eventGetUsersResult.arrayUsers);
                     if (arrStaff.size() == 1) {
@@ -961,7 +966,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     MyMethod.isRealTime = true;
                 } else {
                     MyMethod.isRealTime = false;
-                    MyMethod.showToast(binding,this, realTimeTrackingResult.message);
+                    MyMethod.showToast(binding, this, realTimeTrackingResult.message);
                 }
                 break;
             case GetLastLocation:
@@ -984,7 +989,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
 
                     }
                 } else {
-                    MyMethod.showToast(binding,this, getLastLocationResult.message);
+                    MyMethod.showToast(binding, this, getLastLocationResult.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
                 break;
@@ -1008,7 +1013,7 @@ public class ManagerActivity extends AppCompatActivity implements OnMapReadyCall
                     binding.content.linearListTracking.setVisibility(View.VISIBLE);
                 } else {
                     binding.content.linearListTracking.setVisibility(View.GONE);
-                    MyMethod.showToast(binding,this, arrLocations.message);
+                    MyMethod.showToast(binding, this, arrLocations.message);
                 }
                 LayoutLoadingManager.Show_OffLoading(binding.content.ManagerLoadingView);
 

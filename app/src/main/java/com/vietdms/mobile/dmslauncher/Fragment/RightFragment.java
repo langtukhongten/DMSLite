@@ -4047,45 +4047,54 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
     }
 
     private void inputValueUpdateOrderAccept(int position) {
-
-        int quantity = Integer.parseInt(editQuantity.getText().toString());
-        float price = Float.parseFloat(Utils.formatLocale(editPrice.getText().toString()));
-        if (quantity > 0 && price > 0) {
-            Home.orderDetailArrayList.get(position).quantity = quantity;
-            Home.orderDetailArrayList.get(position).unitprice = price;
+        try {
+            int quantity = Integer.parseInt(editQuantity.getText().toString());
+            float price = Float.parseFloat(Utils.formatLocale(editPrice.getText().toString()));
+            if (quantity > 0 && price > 0) {
+                Home.orderDetailArrayList.get(position).quantity = quantity;
+                Home.orderDetailArrayList.get(position).unitprice = price;
+            }
+            Home.nowAmountSale = 0;
+            Home.nowAmount = 0;
+            Home.nowDiscount = 0;
+            for (OrderDetail od : Home.orderDetailArrayList) {
+                Home.nowAmountSale = Home.nowAmountSale + od.unitprice * od.quantity;
+                Home.nowAmount = Home.nowAmount + od.discountAmount + od.unitprice * od.quantity;
+                Home.nowDiscount = Home.nowDiscount + od.discountAmount;
+            }
+            Home.txtOrderDetailAmount.setText(Utils.formatFloat(Home.nowAmount));
+            Home.txtOrderDetailAmountSale.setText(Utils.formatFloat(Home.nowAmountSale));
+            Home.txtOrderDetailDiscount.setText(Utils.formatFloat(Home.nowDiscount));
+            Home.orderListOrderDetailAdapter.setItems(Home.orderDetailArrayList);
+            Home.orderListOrderDetailAdapter.notifyDataSetChanged();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        Home.nowAmountSale = 0;
-        Home.nowAmount = 0;
-        Home.nowDiscount = 0;
-        for (OrderDetail od : Home.orderDetailArrayList) {
-            Home.nowAmountSale = Home.nowAmountSale + od.unitprice * od.quantity;
-            Home.nowAmount = Home.nowAmount + od.discountAmount + od.unitprice * od.quantity;
-            Home.nowDiscount = Home.nowDiscount + od.discountAmount;
-        }
-        Home.txtOrderDetailAmount.setText(Utils.formatFloat(Home.nowAmount));
-        Home.txtOrderDetailAmountSale.setText(Utils.formatFloat(Home.nowAmountSale));
-        Home.txtOrderDetailDiscount.setText(Utils.formatFloat(Home.nowDiscount));
-        Home.orderListOrderDetailAdapter.setItems(Home.orderDetailArrayList);
-        Home.orderListOrderDetailAdapter.notifyDataSetChanged();
         Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
         Home.bindingHome.btnComeBack.performClick();
     }
 
     private void editValueAccept(int position) {
-        Home.orderDetailArrayList.get(position).quantity = Integer.parseInt(editQuantity.getText().toString());
-        Home.orderDetailArrayList.get(position).unitprice = Float.parseFloat(Utils.formatLocale(editPrice.getText().toString()));
-        Home.nowAmount = 0;
-        Home.nowAmountSale = 0;
-        Home.nowDiscount = 0;
-        for (OrderDetail od : Home.orderDetailArrayList) {
-            Home.nowAmountSale = Home.nowAmountSale + od.unitprice * od.quantity;
-            Home.nowAmount = Home.nowAmount + od.discountAmount + od.unitprice * od.quantity;
-            Home.nowDiscount = Home.nowDiscount + od.discountAmount;
+        try {
+            Home.orderDetailArrayList.get(position).quantity = Integer.parseInt(editQuantity.getText().toString());
+            Home.orderDetailArrayList.get(position).unitprice = Float.parseFloat(Utils.formatLocale(editPrice.getText().toString()));
+
+            Home.nowAmount = 0;
+            Home.nowAmountSale = 0;
+            Home.nowDiscount = 0;
+            for (OrderDetail od : Home.orderDetailArrayList) {
+                Home.nowAmountSale = Home.nowAmountSale + od.unitprice * od.quantity;
+                Home.nowAmount = Home.nowAmount + od.discountAmount + od.unitprice * od.quantity;
+                Home.nowDiscount = Home.nowDiscount + od.discountAmount;
+            }
+            Home.txtOrderAmount.setText(Utils.formatFloat(Home.nowAmount) + context.getString(R.string.money));
+            Home.txtOrderAmountSale.setText(Utils.formatFloat(Home.nowAmountSale) + context.getString(R.string.money));
+            Home.txtOrderDiscount.setText(Utils.formatFloat(Home.nowDiscount) + context.getString(R.string.money));
+            Home.orderListProductAdapter.notifyDataSetChanged();
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        Home.txtOrderAmount.setText(Utils.formatFloat(Home.nowAmount) + context.getString(R.string.money));
-        Home.txtOrderAmountSale.setText(Utils.formatFloat(Home.nowAmountSale) + context.getString(R.string.money));
-        Home.txtOrderDiscount.setText(Utils.formatFloat(Home.nowDiscount) + context.getString(R.string.money));
-        Home.orderListProductAdapter.notifyDataSetChanged();
         Home.bindingHome.btnComeBack.setSoundEffectsEnabled(false);
         Home.bindingHome.btnComeBack.performClick();
     }
@@ -4752,7 +4761,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.bindingRight.orderDetail.switchOrderPromotion.setChecked(false);
             Home.positionOrder = position;
             nowOrder = ordersArrayList.get(position);
-            if (nowOrder.status == 0 || nowOrder.status == 2) {
+            if (nowOrder.status == 0 || nowOrder.status == 2 || nowOrder.status == 4) {
+                //sua dn hang
                 MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailSaveSend);
                 MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailAddProduct);
                 Home.lstOrderDetail.setOnItemLongClickListener(this);
@@ -5531,7 +5541,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 //                    ordersArrayList.clear();
 //                    Home.hashMapOrderDetails.clear();
                     lastRowIdOrder = orderMainsResult.arrOrders.get(orderMainsResult.arrOrders.size() - 1).rowId;
-                    ordersArrayList.addAll(orderMainsResult.arrOrders);
+                    for (Order order : orderMainsResult.arrOrders) {
+                        if (order.status != 9)
+                            ordersArrayList.add(order);
+                    }
 
                 } else {
                     MyMethod.showToast(Home.bindingRight, context, orderMainsResult.message);
@@ -6372,7 +6385,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                                 if (countCustomer > 0) {
                                     reFreshCustomer();//Tải lại khách hàng theo tuyến vừa lấy
                                     adapterSpCustomer.notifyDataSetChanged();
-                                }else{
+                                } else {
                                     EventPool.control().enQueue(new EventType.EventSyncDataRequest(3, -1));
                                 }
                             }

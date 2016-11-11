@@ -1,6 +1,7 @@
 package com.vietdms.mobile.dmslauncher.RecycleView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +59,11 @@ public class RecyclerViewAdapterOrder extends RecyclerView.Adapter<RecyclerViewA
         } else if (o.status == 4) {
             contactViewHolder.orderStatus.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(context, R.drawable.order_cancel_btn), null);
         }
+        if(o.status==4){
+            contactViewHolder.orderMainLinear.setBackgroundColor(Color.parseColor("#ff7070"));
+        }else{
+            contactViewHolder.orderMainLinear.setBackgroundColor(Color.TRANSPARENT);
+        }
         contactViewHolder.orderStatus.setText(Utils.statusOrder(o.status));
 
         Glide.with(context).load(MyMethod.getUrlCustomerImage(o.imageUrl)).error(R.drawable.noavatar_btn).override(150, 150).into(contactViewHolder.orderSerialNo);
@@ -74,9 +81,11 @@ public class RecyclerViewAdapterOrder extends RecyclerView.Adapter<RecyclerViewA
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
         protected TextView orderNo, orderTime, orderAmount, orderStatus, orderName, orderEmployee;
         protected CircleImageView orderSerialNo;
+        protected LinearLayout orderMainLinear;
 
         public ContactViewHolder(View v) {
             super(v);
+            orderMainLinear = (LinearLayout) v.findViewById(R.id.order_main_linnear);
             orderNo = (TextView) v.findViewById(R.id.order_main_no);
             orderName = (TextView) v.findViewById(R.id.order_main_name);
             orderTime = (TextView) v.findViewById(R.id.order_main_time);

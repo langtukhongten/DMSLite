@@ -789,8 +789,8 @@ public class MyMethod {
             case "Giao dịch":
                 return Model.inst().getConfigValue(Const.ConfigKeys.TransactionWorking, 0);
             case "Đơn hàng":
-                //return LocalDB.inst().countOrderUnSent();
-                return 0;
+                return Model.inst().getConfigValue(Const.ConfigKeys.OrderReject,0);
+
             default:
                 return 0;
         }

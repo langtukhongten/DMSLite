@@ -153,7 +153,8 @@ public abstract class Const {
         MessageBody,
         EmployeeID,
         TransactionWorking,
-        isActive
+        isActive,
+        OrderReject
     }
 
     public enum LocationVisitedType {
