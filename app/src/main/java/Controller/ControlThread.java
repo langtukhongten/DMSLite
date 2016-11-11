@@ -363,7 +363,7 @@ public class ControlThread extends Thread {
                 break;
             case UpdateOrder:
                 EventType.EventUpdateOrderRequest eventUpdateOrderRequest = (EventType.EventUpdateOrderRequest) event;
-                NetworkTransaction.inst(context).updateOrder(eventUpdateOrderRequest.order, eventUpdateOrderRequest.orderDetails,eventUpdateOrderRequest.type);
+                NetworkTransaction.inst(context).updateOrder(eventUpdateOrderRequest.order, eventUpdateOrderRequest.orderDetails, eventUpdateOrderRequest.type);
                 break;
             case LoadProducts:
                 EventType.EventLoadProductsRequest eventLoadProductsRequest = (EventType.EventLoadProductsRequest) event;
@@ -383,7 +383,7 @@ public class ControlThread extends Thread {
                 break;
             case LoadOrderDetails:
                 EventType.EventLoadOrderDetailsRequest eventLoadOrderDetailsRequest = (EventType.EventLoadOrderDetailsRequest) event;
-                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id,eventLoadOrderDetailsRequest.type);
+                NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id, eventLoadOrderDetailsRequest.type);
                 break;
             case LoadProductGroups:
                 NetworkTransaction.inst(context).loadProductGroups();

@@ -515,4 +515,8 @@
     <string name="discount_percent">%CK: </string>
     <string name="discount_amount">CK tiền: </string>
     <string name="accept_order">Xác nhận đơn hàng</string>
+    <string name="look">Xem</string>
+    <string name="notice_order_reject">Đơn hàng bị từ chối</string>
+    <string name="reason">Lý do :</string>
+    <string name="reject_user">Người duyệt đơn :</string>
 </resources>

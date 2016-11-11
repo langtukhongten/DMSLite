@@ -788,8 +788,8 @@ public class MyMethod {
         switch (s) {
             case "Giao dịch":
                 return Model.inst().getConfigValue(Const.ConfigKeys.TransactionWorking, 0);
-            case "Đơn hàng":
-                return Model.inst().getConfigValue(Const.ConfigKeys.OrderReject,0);
+//            case "Đơn hàng":
+//                return Model.inst().getConfigValue(Const.ConfigKeys.OrderReject,0);
 
             default:
                 return 0;

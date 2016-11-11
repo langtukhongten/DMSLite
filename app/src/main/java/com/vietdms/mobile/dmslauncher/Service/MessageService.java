@@ -82,6 +82,7 @@ public class MessageService extends Service {
     private static final int TransactionWorking = 5;
     private static final int NetWork2G = 7;
     private static final int MESSAGE = 6;
+    private static final int OrderReject = 8;
 
     private WindowManager windowManager;
     private WindowManager.LayoutParams params;
@@ -104,7 +105,7 @@ public class MessageService extends Service {
     private static final String TIME_OLD_TRANSACTION = "Transaction";
     private static final String TIME_OLD_MESSAGE = "Message";
     private Button btnRead, btnClose;
-    private boolean flagUpdate, flagGPS, flag3G, flagTransaction, flag2G;
+    private boolean flagUpdate, flagGPS, flag3G, flagTransaction, flagOrderReject, flag2G;
     private String sendby;//người gửi
     private String content;//nội dung
     private ProgressBar downloadProgressBar;
@@ -114,6 +115,7 @@ public class MessageService extends Service {
     public static final int NOTIFICATION_ID = 0;
     private int id_transaction_manager;
     private SharedPreferences prefs = null;
+    private long ref_id;//ref_id don hang huy
 
     @Nullable
     @Override
@@ -316,6 +318,20 @@ public class MessageService extends Service {
                         startActivity(dialogIntent);
 
                     }
+                } else if (flagOrderReject) {
+                    windowManager.removeView(main);
+                    if (currentApp().contains(HOME_PACKAGE)) {
+                        if (Home.bindingHome != null) Home.bindingHome.viewpager.setCurrentItem(2);
+                        Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.OrderDetail);
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
+                        EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(ref_id, 0));
+                    } else {
+                        Intent dialogIntent = new Intent(context, Home.class);
+                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        dialogIntent.putExtra("Command", OrderReject + "ß" + ref_id);
+                        startActivity(dialogIntent);
+
+                    }
                 } else if (flag2G) {
                     windowManager.removeView(main);
 
@@ -450,6 +466,9 @@ public class MessageService extends Service {
                         {
                             showMessage();
                         }
+                    } else if (sender.contains("£")) {
+                        Log.w(TAG, "onStartCommand: Đơn hàng bị từ chối");
+                        showMessage();
                     }
                 }
             }
@@ -484,6 +503,7 @@ public class MessageService extends Service {
                         flag3G = false;
                         flag2G = false;
                         flagTransaction = false;
+                        flagOrderReject = false;
                         btnRead.setText("Cài đặt");
                         btnClose.setText("Để sau");
                         info.setText(formatTime(time) + " - " + "Từ VietDMS API : " + apiUpdate);
@@ -503,6 +523,7 @@ public class MessageService extends Service {
                     flag3G = false;
                     flag2G = false;
                     flagTransaction = false;
+                    flagOrderReject = false;
                     btnRead.setText("Đọc");
                     btnClose.setText("Đóng");
                     info.setText(formatTime(time) + " - " + sendby);
@@ -526,6 +547,7 @@ public class MessageService extends Service {
                 flag3G = false;
                 flag2G = false;
                 flagTransaction = true;
+                flagOrderReject = false;
                 btnRead.setText("Xem GD");
                 btnClose.setText("Để sau");
                 info.setText(sendby + " gửi cho bạn một thông báo trong giao dịch ");
@@ -534,7 +556,8 @@ public class MessageService extends Service {
                 info.setText(formatTime(time) + " - Tin nhắn từ " + sendby);
                 message.setText(content);
                 sendNotification(content, TRANSACTION);
-            } else if (sender.contains("►")) {//tin nhắn lệnh
+            } else if (sender.contains("►")) {
+                //tin nhắn lệnh
                 String command = sender.split("►")[1];
                 switch (command) {
                     case "GPS":
@@ -544,6 +567,7 @@ public class MessageService extends Service {
                         flag3G = false;
                         flag2G = false;
                         flagTransaction = false;
+                        flagOrderReject = false;
                         btnRead.setText("Bật GPS");
                         btnClose.setText("Để sau");
                         info.setText("GPS của bạn đang tắt!");
@@ -558,6 +582,7 @@ public class MessageService extends Service {
                         flagUpdate = false;
                         flagGPS = false;
                         flagTransaction = false;
+                        flagOrderReject = false;
                         flag3G = true;
                         flag2G = false;
                         btnRead.setText("Bật 3G");
@@ -575,6 +600,7 @@ public class MessageService extends Service {
                         flagGPS = false;
                         flag3G = false;
                         flagTransaction = true;
+                        flagOrderReject = false;
                         flag2G = false;
                         btnRead.setText("Xem GD");
                         btnClose.setText("Để sau");
@@ -591,6 +617,7 @@ public class MessageService extends Service {
                         flagGPS = false;
                         flag3G = false;
                         flagTransaction = false;
+                        flagOrderReject = false;
                         flag2G = true;
                         btnRead.setText(getString(R.string.ok));
                         btnClose.setText("");
@@ -603,6 +630,21 @@ public class MessageService extends Service {
                         break;
 
                 }
+            } else if (sender.contains("£")) {
+                //Tin nhan don hang tu choi
+                flagShow = true;
+                flagUpdate = false;
+                flag2G = false;
+                flag3G = false;
+                flagGPS = false;
+                flagTransaction = false;
+                flagOrderReject = true;
+                btnRead.setText(getString(R.string.look));
+                btnClose.setText(getString(R.string.close));
+                info.setText(getString(R.string.notice_order_reject));
+                message.setText(getString(R.string.reason) + " " + sender.split("£")[1] + "\n" + getString(R.string.reject_user) + " " + sender.split("£")[0] + " lúc " + Utils.long2HourMinuteDate(Long.parseLong(sender.split("£")[3])));
+                ref_id = Long.parseLong(sender.split("£")[2]);
+                sendNotification(getString(R.string.notice_order_reject), OrderReject);
             } else {
                 info.setText(getString(R.string.no_info));
                 message.setText(getString(R.string.no_content));

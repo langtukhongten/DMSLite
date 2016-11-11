@@ -250,10 +250,16 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
         Log.w(TAG, "getDataFromIntent: " + receiver);
         if (receiver != null) {
             int command = 0, lastId = 0;
+            long ref_id = 0;
             if (!receiver.isEmpty()) {
                 if (receiver.contains("ß")) {
                     command = Integer.parseInt(receiver.split("ß")[0]);
-                    lastId = Integer.parseInt(receiver.split("ß")[1]);
+                    if (command != 8) {
+                        //neu k phai don hang huy
+                        lastId = Integer.parseInt(receiver.split("ß")[1]);
+                    } else {
+                        ref_id = Long.parseLong(receiver.split("ß")[1]);
+                    }
                 }
             }
             switch (command) {
@@ -315,6 +321,19 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
 //                            EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true));
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
                             Home.bindingRight.transaction.transactionLoad.performClick();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case 8:
+                    Log.w(TAG, "getDataFromIntent: Load Don hang huy");
+                    if (Home.bindingHome != null) {
+                        try {
+                            Home.bindingHome.viewpager.setCurrentItem(1);
+                            Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.OrderDetail);
+                            LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
+                            EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(ref_id, 0));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
