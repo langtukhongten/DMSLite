@@ -1370,6 +1370,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             if (Home.nowIdCustomer == -1) {
                 Home.nowIdCustomer = Home.arrStaff.get(0).id_employee;
             }
+
             int countCustomer = LocalDB.inst().countCustomer(Home.nowIdCustomer);
             if (countCustomer > 0) {
                 //load offlinef

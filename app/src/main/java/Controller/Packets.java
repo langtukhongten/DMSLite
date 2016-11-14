@@ -565,6 +565,9 @@ abstract class Packets {
                     customer.longitude = readDouble();
                     customer.latitude = readDouble();
                     customer.distance = readInt();
+                    customer.amount_last_month = readFloat();
+                    customer.last_order_day = readLong();
+                    customer.last_visited = readLong();
                     arrayCustomers.add(customer);
                 }
                 inflater.end();

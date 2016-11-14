@@ -460,21 +460,14 @@ public class LocalDB {
                 return -1;
             } else {
                 try {
-                    if (Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID) == "") {
+                    if (id == Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0) || id == -1) {
+                        //neu la thiet bi nay
                         Cursor c = db.rawQuery("SELECT Count(RowID) FROM " + DbHelper.CUSTOMER_NAME, null);
                         c.moveToFirst();
                         int count = c.getInt(0);
                         c.close();
                         return count == 0 ? -1 : count;
-                    } else {
-                        if (id == Integer.parseInt(Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID)) || id == -1) {
-                            Cursor c = db.rawQuery("SELECT Count(RowID) FROM " + DbHelper.CUSTOMER_NAME, null);
-                            c.moveToFirst();
-                            int count = c.getInt(0);
-                            c.close();
-                            return count == 0 ? -1 : count;
-                        } else return 0;
-                    }
+                    } else return 0;//neu la nhan vien khac thi tra ve  0
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
@@ -842,7 +835,7 @@ public class LocalDB {
             cv.put("KyHieu", header.kyHieu);
             cv.put("HeaderNo_", header.headerNo_);
             cv.put("HeaderName", header.headerName);
-            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_HEADER_NAME, "", cv,SQLiteDatabase.CONFLICT_REPLACE);
+            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_HEADER_NAME, "", cv, SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addPromotionHeader: " + header.headerName);
             }
@@ -882,7 +875,7 @@ public class LocalDB {
             cv.put("PromotionDescription", line.promotionDescription);
             cv.put("IsDiscountMore", line.isDiscountMore);
 
-            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_DETAIL_NAME,"", cv,SQLiteDatabase.CONFLICT_REPLACE);
+            long rowId = db.insertWithOnConflict(DbHelper.PROMOTION_DETAIL_NAME, "", cv, SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addPromotionDetail: " + line.promotionDescription);
             }
@@ -958,7 +951,7 @@ public class LocalDB {
             cv.put("Name_ProductGroup", product.name_ProductGroup);
             cv.put("Inventory", product.inventory);
             cv.put("SearchField", Utils.unAccent(product.name));
-            long rowId = db.insertWithOnConflict(DbHelper.PRODUCT_NAME,"", cv,SQLiteDatabase.CONFLICT_REPLACE);
+            long rowId = db.insertWithOnConflict(DbHelper.PRODUCT_NAME, "", cv, SQLiteDatabase.CONFLICT_REPLACE);
             if (rowId >= 0) {
                 Log.w(TAG, "addProduct: " + product.name);
                 updateSync(Const.SyncKeys.Product);
