@@ -4757,14 +4757,22 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             Home.bindingHome.btnComeBack.setText(nowProduct.name);
             showLayout(Layouts.ProductDetail, context);
         } else if (MyMethod.isVisible(Home.bindingRight.orderMain.linearOrderMain)) {
+            //kiem tra neu la don hang cua no thi cho sua
+
             //chuyen switch khuyen mai sang tat
             Home.bindingRight.orderDetail.switchOrderPromotion.setChecked(false);
             Home.positionOrder = position;
             nowOrder = ordersArrayList.get(position);
+
             if (nowOrder.status == 0 || nowOrder.status == 2 || nowOrder.status == 4) {
                 //sua dn hang
-                MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailSaveSend);
-                MyMethod.setVisible(Home.bindingRight.orderDetail.orderDetailAddProduct);
+                if (nowOrder.id_employee == Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) {
+                    Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.VISIBLE);
+                    Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.VISIBLE);
+                } else {
+                    Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.GONE);
+                    Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.GONE);
+                }
                 Home.lstOrderDetail.setOnItemLongClickListener(this);
             } else {
                 MyMethod.setGone(Home.bindingRight.orderDetail.orderDetailSaveSend);

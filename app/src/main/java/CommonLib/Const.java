@@ -61,7 +61,7 @@ public abstract class Const {
     public static final String LinkItemImage = "http://v3.dinhvidienthoai.com//ItemImages/";
     public static final String LinkSurveyImage = "http://v3.dinhvidienthoai.com//SurveyImages/";
 
-
+//
 //    public static final String HttpEndpoint = "http://192.168.1.200:1012//HttpService.aspx";
 //    public static final String LinkReportImage = "http://192.168.1.200:1012/ReportImages/";
 //    public static final String LinkCustomerImage = "http://192.168.1.200:1012//CustomerImages/";
