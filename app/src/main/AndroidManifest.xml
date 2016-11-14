@@ -169,7 +169,7 @@
 
         <!-- [START gcm_listener] -->
         <service
-            android:name=".GCM.MyGcmListenerService"
+            android:name=".FCM.MyFcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -178,7 +178,7 @@
         <!-- [END gcm_listener] -->
         <!-- [START instanceId_listener] -->
         <service
-            android:name=".GCM.MyInstanceIDListenerService"
+            android:name=".FCM.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -186,7 +186,7 @@
         </service>
         <!-- [END instanceId_listener] -->
         <service
-            android:name=".GCM.RegistrationIntentService"
+            android:name=".FCM.RegistrationIntentService"
             android:exported="false" />
 
         <receiver

@@ -70,7 +70,7 @@ import com.vietdms.mobile.dmslauncher.Fragment.CenterFragment;
 import com.vietdms.mobile.dmslauncher.Fragment.LeftFragment;
 import com.vietdms.mobile.dmslauncher.Fragment.RightFragment;
 import com.vietdms.mobile.dmslauncher.Fragment.ViewPagerAdapter;
-import com.vietdms.mobile.dmslauncher.GCM.RegistrationIntentService;
+import com.vietdms.mobile.dmslauncher.FCM.RegistrationIntentService;
 import com.vietdms.mobile.dmslauncher.Receiver.BatteryReceiver;
 import com.vietdms.mobile.dmslauncher.Receiver.DMSDeviceAdminReceiver;
 import com.vietdms.mobile.dmslauncher.Receiver.ScreenReceiver;
