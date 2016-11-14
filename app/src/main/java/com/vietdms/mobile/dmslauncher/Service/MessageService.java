@@ -662,7 +662,15 @@ public class MessageService extends Service {
 
     private void sendNotification(String content, int type) {
         Intent intent = new Intent(context, Home.class);
-        intent.putExtra("Command", type + "ß" + lastId);
+        if (type != 8) {
+            //Neu khong phai don hang huy
+            intent.putExtra("Command", type + "ß" + lastId);
+        } else {
+            //Neu la don hang huy
+            intent.putExtra("Command", type + "ß" + ref_id);
+
+        }
+
         if (type == 4) MyMethod.tempLink = sender;
         PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
