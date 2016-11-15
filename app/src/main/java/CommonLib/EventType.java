@@ -72,7 +72,9 @@ public abstract class EventType {
         AcceptWork,
         RejectWork,
         LoadAllCustomers,
-        SendTransactionMessage
+        SendTransactionMessage,
+        LoadOrderReject,
+        CancelOrder
     }
 
     public static class EventBase {
@@ -463,6 +465,23 @@ public abstract class EventType {
         public final String filter;
     }
 
+    public static class EventLoadOrderRejectRequest extends EventBase {
+        public EventLoadOrderRejectRequest(long ref_id) {
+            super(Type.LoadOrderReject);
+            this.ref_id = ref_id;
+        }
+
+        public final long ref_id;
+    }
+
+    public static class EventCancelOrderRequest extends EventBase {
+        public EventCancelOrderRequest(long ref_id) {
+            super(Type.CancelOrder);
+            this.ref_id = ref_id;
+        }
+
+        public final long ref_id;
+    }
 
     public static class EventLoadOrderDetailsRequest extends EventBase {
         public EventLoadOrderDetailsRequest(long ref_id, int type) {
@@ -1127,6 +1146,31 @@ public abstract class EventType {
             this.success = success;
             this.message = message;
             this.arrOrderDetails = arrOrderDetails;
+        }
+    }
+
+    public static class EventLoadOrderRejectResult extends EventBase {
+        public final boolean success;
+        public final String message;
+        public final ArrayList<OrderDetail> arrOrderDetails;
+        public final Order order;
+
+        public EventLoadOrderRejectResult(boolean success, String message, ArrayList<OrderDetail> arrOrderDetails, Order order) {
+            super(Type.LoadOrderReject);
+            this.success = success;
+            this.message = message;
+            this.arrOrderDetails = arrOrderDetails;
+            this.order = order;
+        }
+    }
+    public static class EventCancelOrderResult extends EventBase {
+        public final boolean success;
+        public final String message;
+
+        public EventCancelOrderResult(boolean success, String message) {
+            super(Type.CancelOrder);
+            this.success = success;
+            this.message = message;
         }
     }
 

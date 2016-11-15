@@ -427,6 +427,7 @@ abstract class Packets {
             public String message;
             public ArrayList<OrderDetail> orderDetails;
         }
+
         public static class PacketUpdateOrder extends Packet {
             public PacketUpdateOrder(byte[] data) throws Exception {
                 super(data);
@@ -720,6 +721,58 @@ abstract class Packets {
 
             public final String message;
             public final ArrayList<Order> arrayOrders;
+        }
+
+        public static class PacketCancelOrder extends Packet {
+            public PacketCancelOrder(byte[] data) throws Exception{
+                super(data);
+                success = readBool();
+                message = readString();
+            }
+            public final String message;
+            public final boolean success;
+        }
+
+        public static class PacketLoadOrderReject extends Packet {
+            public PacketLoadOrderReject(byte[] data) throws Exception {
+                super(data);
+                message = readString();
+                order.no_ = readString();
+                order.name = readString();
+                order.note = readString();
+                order.time = readLong();
+                order.amount = readFloat();
+                order.status = readInt();
+                order.document_type = readInt();
+                order.imageUrl = readString();
+                order.employeeName = readString();
+                order.ref_id = readLong();
+                order.id_employee = readInt();
+                order.id_customer = readInt();
+                int len = readInt();
+                arrayOrderDetails = new ArrayList<>(len);
+                for (int i = 0; i < len; i++) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.no_ = order.no_;
+                    orderDetail.id_item = readInt();
+                    orderDetail.itemNo_ = readString();
+                    orderDetail.name = readString();
+                    orderDetail.quantity = readInt();
+                    orderDetail.unitprice = readFloat();
+                    orderDetail.discountPercent = readFloat();
+                    orderDetail.discountAmount = readFloat();
+                    orderDetail.itemType = readInt();
+                    orderDetail.note = readString();
+                    orderDetail.status = readInt();
+                    orderDetail.promotionNo_ = readString();
+                    arrayOrderDetails.add(orderDetail);
+                }
+                inflater.end();
+            }
+
+            public final String message;
+            public final ArrayList<OrderDetail> arrayOrderDetails;
+            public final Order order = new Order();
         }
 
         public static class PacketLoadOrderDetails extends Packet {
@@ -1598,7 +1651,9 @@ abstract class Packets {
             AcceptWork(52),
             RejectWork(53),
             LoadAllCustomer(54),
-            SendTransactionMessage(55);
+            SendTransactionMessage(55),
+            LoadOrderReject(56),
+            CancelOrder(57);
             private final int id;
 
             PacketType(int id) {
@@ -2042,6 +2097,20 @@ abstract class Packets {
                 super(PacketType.LoadOrderDetails);
                 write(ref_id);
                 write(type);
+            }
+        }
+
+        public static class PacketLoadOrderReject extends Packet {
+            public PacketLoadOrderReject(long ref_id) throws IOException {
+                super(PacketType.LoadOrderReject);
+                write(ref_id);
+            }
+        }
+
+        public static class PacketCancelOrder extends Packet {
+            public PacketCancelOrder(long ref_id) throws IOException {
+                super(PacketType.CancelOrder);
+                write(ref_id);
             }
         }
 

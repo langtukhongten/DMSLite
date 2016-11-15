@@ -558,9 +558,9 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type,long ref_id) {
+    public synchronized boolean sendOrder(Order order, ArrayList<OrderDetail> orderDetails, int type, long ref_id) {
         try {
-            Packets.ToServer.PacketSendOrder packetSendOrder = new Packets.ToServer.PacketSendOrder(order, orderDetails, type,ref_id);
+            Packets.ToServer.PacketSendOrder packetSendOrder = new Packets.ToServer.PacketSendOrder(order, orderDetails, type, ref_id);
             byte[] result = sendPostRequest(defaultUrl, packetSendOrder.getData(), true);
             if (result != null) {
                 Log.i("sendOrder", "success");
@@ -580,9 +580,9 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean updateOrder(Order order, ArrayList<OrderDetail> orderDetails,int type) {
+    public synchronized boolean updateOrder(Order order, ArrayList<OrderDetail> orderDetails, int type) {
         try {
-            Packets.ToServer.PacketUpdateOrder packetUpdateOrder = new Packets.ToServer.PacketUpdateOrder(order, orderDetails,type);
+            Packets.ToServer.PacketUpdateOrder packetUpdateOrder = new Packets.ToServer.PacketUpdateOrder(order, orderDetails, type);
 
             byte[] result = sendPostRequest(defaultUrl, packetUpdateOrder.getData(), true);
             if (result != null) {
@@ -592,7 +592,7 @@ public class NetworkTransaction {
                 return true;
             } else {
                 Log.w("updateOrder", "fail");
-                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(false, "Không thể kết nối đến máy chủ",null));
+                EventPool.view().enQueue(new EventType.EventUpdateOrderResult(false, "Không thể kết nối đến máy chủ", null));
                 return false;
             }
 
@@ -816,9 +816,61 @@ public class NetworkTransaction {
         }
     }
 
-    public synchronized boolean loadOrderDetail(long rowId,int type) {
+    public synchronized boolean cancelOrder(long rowId) {
         try {
-            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderDetails(rowId,type).getData(), true);
+
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketCancelOrder(rowId).getData(), true);
+            if (result != null) {
+                Log.i("cancelOrder", "success");
+                Packets.FromServer.PacketCancelOrder packetCancelOrder = new Packets.FromServer.PacketCancelOrder(result);
+                EventPool.view().enQueue(new EventType.EventCancelOrderResult(packetCancelOrder.success, packetCancelOrder.message));
+                return true;
+            } else {
+                Log.w("cancelOrder", "fail");
+                EventPool.view().enQueue(new EventType.EventCancelOrderResult(false, "Không thể kết nối đến máy chủ"));
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventCancelOrderResult(false, "Lỗi không xác định"));
+            SystemLog.inst().addLog(SystemLog.Type.Exception, e.toString());
+            return false;
+        }
+    }
+
+    public synchronized boolean loadOrderReject(long rowId) {
+        try {
+
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderReject(rowId).getData(), true);
+            if (result != null) {
+                Log.i("loadOrderReject", "success");
+                Packets.FromServer.PacketLoadOrderReject packetLoadOrderReject = new Packets.FromServer.PacketLoadOrderReject(result);
+                if (packetLoadOrderReject.arrayOrderDetails.size() != 0) {
+                    EventPool.view().enQueue(new EventType.EventLoadOrderRejectResult(true, packetLoadOrderReject.message, packetLoadOrderReject.arrayOrderDetails, packetLoadOrderReject.order));
+
+                } else {
+                    EventPool.view().enQueue(new EventType.EventLoadOrderRejectResult(false, "Không có dữ liệu", null, null));
+
+                }
+                return true;
+            } else {
+                Log.w("loadOrderReject", "fail");
+                EventPool.view().enQueue(new EventType.EventLoadOrderRejectResult(false, "Không thể kết nối đến máy chủ", null, null));
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            EventPool.view().enQueue(new EventType.EventLoadOrderRejectResult(false, "Lỗi không xác định", null, null));
+            SystemLog.inst().addLog(SystemLog.Type.Exception, e.toString());
+            return false;
+        }
+    }
+
+    public synchronized boolean loadOrderDetail(long rowId, int type) {
+        try {
+            byte[] result = sendPostRequest(defaultUrl, new Packets.ToServer.PacketLoadOrderDetails(rowId, type).getData(), true);
             if (result != null) {
                 Log.i("loadOrderDetail", "success");
                 Packets.FromServer.PacketLoadOrderDetails packetLoadOrderDetails = new Packets.FromServer.PacketLoadOrderDetails(result);

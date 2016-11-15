@@ -240,6 +240,24 @@
                             android:layout_below="@id/linear_note"
                             android:orientation="horizontal">
 
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <Button
+                                    android:id="@+id/order_detail_cancel"
+                                    style="@style/Widget.AppCompat.Button.Small"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="35dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/custom_button_order"
+                                    android:text="@string/cancel"
+                                    android:textSize="@dimen/textFontSize3"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
                             <CheckBox
                                 android:id="@+id/order_customer_pre_sale"
                                 android:layout_width="0dp"

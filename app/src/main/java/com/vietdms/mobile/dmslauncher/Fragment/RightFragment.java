@@ -647,8 +647,9 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 //  btnToDateTransaction = (Button)
 //                v.findViewById(R.id.transaction_to);
         //ORDER DETAIl
-        v.findViewById(R.id.order_detail_add_product).setOnClickListener(this);
-        v.findViewById(R.id.order_detail_save_send).setOnClickListener(this);
+        Home.bindingRight.orderDetail.orderDetailAddProduct.setOnClickListener(this);
+        Home.bindingRight.orderDetail.orderDetailSaveSend.setOnClickListener(this);
+        Home.bindingRight.orderDetail.orderDetailCancel.setOnClickListener(this);
         Home.bindingRight.customerUpdate.dialogCustomerPhoto.setOnClickListener(this);
         Home.bindingRight.customerDetail.dialogCustomerPhotoDetail.setOnClickListener(this);
         Home.bindingRight.productDetail.dialogProductPhotoDetail.setOnClickListener(this);
@@ -2970,6 +2971,30 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 }
                 //XU LI THEM HANG TRONG ORDER DETAIL
                 break;
+            case R.id.order_detail_cancel:
+                //Huy bo don hnag
+                android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(context.getString(R.string.confirm_order_cancel));
+                alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        //Huy bo dong hang
+                        LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, getString(R.string.cancel), 30);
+                        EventPool.control().enQueue(new EventType.EventCancelOrderRequest(nowOrder.ref_id));
+                        dialog.dismiss();
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                break;
             case R.id.order_detail_save_send:
                 //XU LI GUI DON HANG TRONG ORDER DETAIL
                 if (Home.orderDetailArrayList.size() > 0) {
@@ -3052,6 +3077,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 break;
             case R.id.order_customer_add_product:
                 //XU LI THEM HANG
+                Home.filterProduct = "";
                 Home.hashListQuantity.clear();
                 Home.hashListPrice.clear();
                 Home.hashViewPromotion.clear();
@@ -4770,6 +4796,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 if (nowOrder.id_employee == Model.inst().getConfigValue(Const.ConfigKeys.EmployeeID, 0)) {
                     Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.VISIBLE);
                     Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.VISIBLE);
+                    Home.bindingRight.orderDetail.orderDetailCancel.setVisibility(View.VISIBLE);
                 } else {
                     Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.GONE);
                     Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.GONE);
@@ -5585,6 +5612,33 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 }
                 LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderDetail.OrderDetailLoading);
                 break;
+            case LoadOrderReject:
+                EventType.EventLoadOrderRejectResult eventLoadOrderRejectResult = (EventType.EventLoadOrderRejectResult) event;
+                if (eventLoadOrderRejectResult != null && eventLoadOrderRejectResult.success) {
+                    nowOrder = eventLoadOrderRejectResult.order;
+                    Home.orderDetailArrayList.clear();
+                    Home.orderListOrderDetailAdapter.notifyDataSetChanged();
+                    Home.orderDetailArrayList = eventLoadOrderRejectResult.arrOrderDetails;
+                    updateOrderReject(nowOrder, Home.orderDetailArrayList);
+
+
+                } else {
+                    MyMethod.showToast(Home.bindingRight, context, eventLoadOrderRejectResult.message);
+                }
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderDetail.OrderDetailLoading);
+                break;
+            case CancelOrder:
+                EventType.EventCancelOrderResult eventCancelOrderResult = (EventType.EventCancelOrderResult) event;
+                if (eventCancelOrderResult.success) {
+                    MyMethod.showToast(Home.bindingRight, context, eventCancelOrderResult.message);
+                    Home.LayoutMyManager.ShowLayout(Layouts.OrderList);
+                    reFreshOrder();
+                } else {
+                    MyMethod.showToast(Home.bindingRight, context, eventCancelOrderResult.message);
+                }
+                LayoutLoadingManager.Show_OffLoading(Home.bindingRight.orderDetail.OrderDetailLoading);
+                break;
+
             case LoadProductGroups:
                 EventType.EventLoadProductGroupsResult productGroupsResult = (EventType.EventLoadProductGroupsResult) event;
                 if (productGroupsResult != null && productGroupsResult.success) {
@@ -6568,6 +6622,21 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Log.w(TAG, "unhandled " + event.type);
                 break;
         }
+    }
+
+    private void updateOrderReject(Order nowOrder, ArrayList<OrderDetail> orderDetailArrayList) {
+        //Cap nhat view khi bat dong hang tu choi
+        Home.orderListOrderDetailAdapter.setItems(orderDetailArrayList);
+        Home.orderListOrderDetailAdapter.notifyDataSetChanged();
+        Home.bindingRight.orderDetail.orderDetailNoName.setText(nowOrder.no_ + " - " + nowOrder.name);
+        Home.bindingRight.orderDetail.orderDetailTime.setText(Utils.long2Date(nowOrder.time));
+        Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.VISIBLE);
+        Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.VISIBLE);
+        Home.bindingRight.orderDetail.switchOrderPromotion.setChecked(false);
+        Home.bindingRight.orderDetail.orderDetailAmount.setText(MyMethod.getAmount(orderDetailArrayList));
+        Home.bindingRight.orderDetail.orderDetailAmountSale.setText(MyMethod.getAmountSale(orderDetailArrayList));
+        Home.bindingRight.orderDetail.orderDetailDiscount.setText(MyMethod.getDiscount(orderDetailArrayList));
+
     }
 
     private void showDialogReviewOrder(final long ref_id, final ArrayList<OrderDetail> orderDetails, final int type) {

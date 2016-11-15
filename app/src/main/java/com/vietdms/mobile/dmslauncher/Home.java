@@ -320,6 +320,7 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
 //                            LayoutLoadingManager.Show_OnLoading(Home.loadingTransaction, context.getString(R.string.load_transaction), 30);
 //                            EventPool.control().enQueue(new EventType.EventLoadTransactionsRequest(lastId, Model.getServerTime(), -1, "", true));
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
+                            Home.bindingRight.transaction.spStaffTransaction.setSelection(0);
                             Home.bindingRight.transaction.transactionLoad.performClick();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -332,8 +333,11 @@ public class Home extends AppCompatActivity implements ViewPager.OnPageChangeLis
                         try {
                             Home.bindingHome.viewpager.setCurrentItem(1);
                             Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.OrderDetail);
+                            Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.VISIBLE);
+                            Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.VISIBLE);
+                            Home.bindingRight.orderDetail.orderDetailCancel.setVisibility(View.VISIBLE);
                             LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
-                            EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(ref_id, 0));
+                            EventPool.control().enQueue(new EventType.EventLoadOrderRejectRequest(ref_id));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

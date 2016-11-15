@@ -385,6 +385,14 @@ public class ControlThread extends Thread {
                 EventType.EventLoadOrderDetailsRequest eventLoadOrderDetailsRequest = (EventType.EventLoadOrderDetailsRequest) event;
                 NetworkTransaction.inst(context).loadOrderDetail(eventLoadOrderDetailsRequest.ref_id, eventLoadOrderDetailsRequest.type);
                 break;
+            case LoadOrderReject:
+                EventType.EventLoadOrderRejectRequest eventLoadOrderRejectRequest = (EventType.EventLoadOrderRejectRequest) event;
+                NetworkTransaction.inst(context).loadOrderReject(eventLoadOrderRejectRequest.ref_id);
+                break;
+            case CancelOrder:
+                EventType.EventCancelOrderRequest eventCancelOrderRequest = (EventType.EventCancelOrderRequest) event;
+                NetworkTransaction.inst(context).cancelOrder(eventCancelOrderRequest.ref_id);
+                break;
             case LoadProductGroups:
                 NetworkTransaction.inst(context).loadProductGroups();
                 break;

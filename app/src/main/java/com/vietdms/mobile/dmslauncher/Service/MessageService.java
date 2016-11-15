@@ -307,6 +307,7 @@ public class MessageService extends Service {
                         Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.Transaction);
                         if (Home.bindingRight != null) {
                             Home.bindingRight.transaction.sptransactionStatus.setSelection(2);
+                            Home.bindingRight.transaction.spStaffTransaction.setSelection(0);
                         }
                         LayoutLoadingManager.Show_OnLoading(Home.bindingRight.transaction.TransactionLoadingView, context.getString(R.string.load_transaction), 30);
                         MyMethod.isLoadTransactionInMessage = true;
@@ -324,7 +325,7 @@ public class MessageService extends Service {
                         if (Home.bindingHome != null) Home.bindingHome.viewpager.setCurrentItem(2);
                         Home.LayoutMyManager.ShowLayout(RightFragment.Layouts.OrderDetail);
                         LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, context.getString(R.string.load_order_detail), 30);
-                        EventPool.control().enQueue(new EventType.EventLoadOrderDetailsRequest(ref_id, 0));
+                        EventPool.control().enQueue(new EventType.EventLoadOrderRejectRequest(ref_id));
                     } else {
                         Intent dialogIntent = new Intent(context, Home.class);
                         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
