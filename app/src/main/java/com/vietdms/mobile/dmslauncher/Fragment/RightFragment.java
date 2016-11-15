@@ -2956,7 +2956,6 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 Home.hashListPrice.clear();
                 updateListQuantityPrice();//Cập nhật list sp đang có
                 showLayout(Layouts.ProductOfOrder, context);
-
                 MyMethod.isProductOfOrder = true;
                 MyMethod.isOrderEditing = true;
                 int countProduct = LocalDB.inst().countProduct();
@@ -2978,7 +2977,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int arg1) {
-                        //Huy bo dong hang
+                        //Huy bo don hang
                         LayoutLoadingManager.Show_OnLoading(Home.bindingRight.orderDetail.OrderDetailLoading, getString(R.string.cancel), 30);
                         EventPool.control().enQueue(new EventType.EventCancelOrderRequest(nowOrder.ref_id));
                         dialog.dismiss();
@@ -4800,6 +4799,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 } else {
                     Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.GONE);
                     Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.GONE);
+                    Home.bindingRight.orderDetail.orderDetailCancel.setVisibility(View.GONE);
                 }
                 Home.lstOrderDetail.setOnItemLongClickListener(this);
             } else {
@@ -4897,8 +4897,11 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         arrPromotion = LocalDB.inst().getPromotion(id_item, price, 0);
         arrViewPromotion = new ArrayList<>();
         Home.bindingRight.inputValue.listPromotion.removeAllViews();
+        String tempNo_ = "";
+
         for (int i = 0; i < arrPromotion.size(); i++) {
-            arrViewPromotion.add(addPromotionView(arrPromotion.get(i), getQuantityPromoion(arrPromotion.get(i), Home.hashViewPromotion.get(no_))));
+            arrViewPromotion.add(addPromotionView(arrPromotion.get(i), getQuantityPromoion(arrPromotion.get(i), Home.hashViewPromotion.get(no_)), tempNo_));
+            tempNo_ = arrPromotion.get(i).no_;
         }
 
     }
@@ -4918,7 +4921,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     }
 
-    private synchronized EditText addPromotionView(Promotion promotion, int quantity) {
+    private synchronized EditText addPromotionView(Promotion promotion, int quantity, String tempNo_) {
         LinearLayout.LayoutParams name_promotionParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         name_promotionParams.weight = 3;
         //Name promotion textview
@@ -4928,24 +4931,21 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         name_promotion.setPadding(10, 2, 5, 2);
         name_promotion.setTypeface(null, Typeface.BOLD);
         name_promotion.setText(promotion.name);
-
-        //Quantity promotion edittext
         EditText quantity_promotion = new EditText(context);
         quantity_promotion.setTag(promotion);
-
         quantity_promotion.setInputType(InputType.TYPE_CLASS_NUMBER);
         LinearLayout.LayoutParams promotionParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         promotionParams.weight = 1;
         quantity_promotion.setLayoutParams(promotionParams);
         quantity_promotion.setGravity(Gravity.CENTER);
         quantity_promotion.setText(quantity > 0 ? quantity + "" : "");
-
-        //linear of textview and edittext
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(new RecyclerView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.addView(name_promotion);
-        linearLayout.addView(quantity_promotion);
+        if (!promotion.no_.equals(tempNo_)) {
+            linearLayout.addView(name_promotion);
+            linearLayout.addView(quantity_promotion);
+        }
 
         //Description promotion textview
         TextView description_promotion = new TextView(context);
@@ -6757,6 +6757,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.bindingRight.inStore.storePhone.setText(nowCustomer.phoneNumber);
     }
 
+    //Xu ly ban do
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (googleMap != null) {

@@ -100,7 +100,6 @@ public class MyMethod {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static Drawable cacheBackground = null;
-    public static ArrayList<String> cacheApps = null;
     public static boolean CheckInCustomer;// Ghi nhận trong (true) ? khách hàng : màn hình chính;
     public static boolean isTransactionMapView;// hiện map xem vị trí (true) ? giao dịch : khách hàng;
     public static boolean isOrderInTransactionLine;// hiện chi tiết đơn hàng trong (true) ? giao dịch : màn hình đơn hàng;
@@ -138,7 +137,6 @@ public class MyMethod {
     public static boolean isFinishInTransactionDetail;//Ghi nhận trong chi tiết giao dịch
     public static int IDFromMessageService; // Id tin nhắn nhận từ MessageService
     public static boolean isHasOrder; // Có đơn hàng
-
     public static boolean isLocationUpdate = false;// Cờ set request GPS của tiên
     public static boolean isNoteInStore;//Ghi nhận trong cửa hàng
     public static int rootCustomer;// Phiếu khảo sát từ khách hàng nào
