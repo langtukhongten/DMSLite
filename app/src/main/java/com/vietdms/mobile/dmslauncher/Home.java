@@ -105,6 +105,7 @@ import CommonLib.UserInfo;
 
 public class Home extends AppCompatActivity implements ViewPager.OnPageChangeListener, RecyclerItemClickListener.OnItemClickListener, View.OnClickListener {
 
+    public static boolean editbtnOrderClick = false;
     protected PowerManager.WakeLock mWakeLock;
     private static final String TAG = "Home";
     private static final String LOCKAPP_REQUEST = "Accessibility";

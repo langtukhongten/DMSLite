@@ -2,16 +2,19 @@ package com.vietdms.mobile.dmslauncher.CustomAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.google.android.gms.vision.text.Text;
 import com.vietdms.mobile.dmslauncher.R;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
 
 import CommonLib.OrderDetail;
@@ -48,7 +51,7 @@ public class OrderListProductAdapter extends BaseAdapter {
         View vi = convertView;
         if (convertView == null)
             vi = inflater.inflate(R.layout.list_order_product, null);
-
+        LinearLayout lyItem = (LinearLayout)vi.findViewById(R.id.layoutItemOrderDetail);
         TextView name = (TextView) vi.findViewById(R.id.row_product_name); // title
         TextView no = (TextView) vi.findViewById(R.id.row_product_no); // artist name
         TextView stt = (TextView) vi.findViewById(R.id.row_product_txtSTT); // artist name
@@ -67,9 +70,36 @@ public class OrderListProductAdapter extends BaseAdapter {
         promotion.setText(po.promotionNo_+"  ");
         no.setText(po.itemNo_);
         quantity.setText(po.quantity + "");
-        price.setText(Utils.formatFloat(po.unitprice));
-        percent.setText("CK: "+ Utils.formatFloat(po.discountPercent)+"%");
-        dis_amount.setText("Tiền CK: "+ Utils.formatFloat(po.discountAmount));
+        if(po.itemType==1)
+        {
+            lyItem.setBackgroundColor(Color.CYAN);
+            price.setTextColor(Color.BLUE);
+            price.setText(R.string.freeItem);
+        }
+        else
+        {
+            lyItem.setBackgroundColor(Color.WHITE);
+            price.setTextColor(Color.BLACK);
+            price.setText(Utils.formatFloat(po.unitprice));
+        }
+        if(po.discountPercent > 0)
+        {
+            percent.setTextColor(Color.RED);
+            percent.setText("CK: " + Utils.formatFloat(po.discountPercent) + "%");
+        }
+        else {
+            percent.setTextColor(Color.BLACK);
+            percent.setText("-");
+        }
+        if(po.discountAmount>0)
+        {
+            dis_amount.setTextColor(Color.RED);
+            dis_amount.setText("Tiền CK: " + Utils.formatFloat(po.discountAmount));
+        }
+        else {
+            dis_amount.setTextColor(Color.BLACK);
+            dis_amount.setText("-");
+        }
         amount.setText(Utils.formatFloat(getAmount(po)));
         int istt = position + 1;
         stt.setText(istt + ".");

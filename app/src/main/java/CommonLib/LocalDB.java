@@ -585,7 +585,7 @@ public class LocalDB {
     public synchronized ArrayList<Promotion> getPromotion(int id_item, float price, int quantity) {
         ArrayList<Promotion> result = new ArrayList<>();
         try {
-            String query = "SELECT H.*,D.* FROM " + DbHelper.PROMOTION_HEADER_NAME + " as H JOIN " + DbHelper.PROMOTION_DETAIL_NAME + " as D ON H.No_ = D.PromotionNo_ WHERE H.Ref_Item = " + id_item;
+            String query = "SELECT H.RowID,H.HeaderName,H.No_,D.PromotionDescription FROM " + DbHelper.PROMOTION_HEADER_NAME + " as H JOIN " + DbHelper.PROMOTION_DETAIL_NAME + " as D ON H.No_ = D.PromotionNo_ WHERE H.Ref_Item = " + id_item;
             Cursor c = db.rawQuery(query, null);
             if (c.moveToFirst()) {
                 do {
@@ -610,7 +610,7 @@ public class LocalDB {
         ArrayList<Product> result = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + DbHelper.PRODUCT_NAME
-                    + " WHERE RowID < " + lastId + "AND SearchField LIKE '%" + Utils.rtrim(filter) + "%' order by RowID desc";
+                    + " WHERE RowID < " + lastId + "AND SearchField LIKE '%" + Utils.rtrim(filter) + "%' order by Name asc limit 100";
             Cursor c = db.rawQuery(query, null);
             if (c.moveToFirst()) {
                 do {
@@ -640,7 +640,7 @@ public class LocalDB {
         ArrayList<Product> result = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + DbHelper.PRODUCT_NAME
-                    + " WHERE SearchField LIKE '%" + Utils.rtrim(filter) + "%' order by RowID desc";
+                    + " WHERE SearchField LIKE '%" + Utils.rtrim(filter) + "%' order by Name asc limit 100";
             Cursor c = db.rawQuery(query, null);
             if (c.moveToFirst()) {
                 do {
@@ -1623,7 +1623,7 @@ public class LocalDB {
             if (c.moveToFirst()) {
                 do {
                     OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.no_ = c.getString(c.getColumnIndex("No_"));
+                    orderDetail.no_ = c.getString(c.getColumnIndex("ItemNo_"));
                     orderDetail.id_item = c.getInt(c.getColumnIndex("IDItem"));
                     orderDetail.itemNo_ = c.getString(c.getColumnIndex("ItemNo_"));
                     orderDetail.name = c.getString(c.getColumnIndex("Name"));

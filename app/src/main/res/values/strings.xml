@@ -519,4 +519,5 @@
     <string name="notice_order_reject">Đơn hàng bị từ chối</string>
     <string name="reason">Lý do :</string>
     <string name="reject_user">Người duyệt đơn :</string>
+    <string name="freeItem">Hàng tặng</string>
 </resources>

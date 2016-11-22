@@ -11,6 +11,8 @@ import com.vietdms.mobile.dmslauncher.MyMethod;
 
 import java.util.ArrayList;
 
+import CommonLib.OrderDetail;
+
 /**
  * Created by Cuongph on 27/05/2016.
  */
@@ -56,6 +58,17 @@ public class LayoutShow {
 
 
     public void ShowLayout(RightFragment.Layouts Name) {
+        if(Name == RightFragment.Layouts.OrderDetail)
+        {
+            Home.edOrderDetailNote.setText("");
+            Home.edOrderNote.setText("");
+            Home.orderListOrderDetailAdapter.setItems(new ArrayList<OrderDetail>(0));
+            Home.txtOrderDetailNoName.setText("");
+            Home.txtOrderDetailTime.setText("");
+            Home.txtOrderDetailAmount.setText("");
+            Home.txtOrderDetailAmountSale.setText("");
+            Home.txtOrderDetailDiscount.setText("");
+        }
         if(Name == RightFragment.Layouts.Setting){
             RightFragment.mWakeLock.acquire();
             Log.w( "ShowLayout: ", "Acquire WakeLock");

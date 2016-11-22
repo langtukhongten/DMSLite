@@ -771,6 +771,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                         try {
                             //if (newText.substring(newText.length() - 1).contains(" ")) {
                             refreshProductNotLoading();
+                            //refreshProductOfOrder();
                             //}
                         } catch (Exception e) {
                         }
@@ -820,12 +821,30 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
+            Handler mHandler = new Handler();
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (adapterProductOfOrder != null)
-                    adapterProductOfOrder.getFilter().filter(newText);
-                return false;
+                Home.filterProduct = newText;
+
+                mHandler.removeCallbacksAndMessages(null);
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Put your call to the server here (with mQueryString)
+                        try {
+                            //if (newText.substring(newText.length() - 1).contains(" ")) {
+                            //refreshProductNotLoading();
+                            refreshProductOfOrder();
+                            //}
+                        } catch (Exception e) {
+                        }
+                    }
+                }, 1000);
+                return true;
+//                if (adapterProductOfOrder != null)
+//                    adapterProductOfOrder.getFilter().filter(newText);
+//                return false;
             }
         });
         Home.bindingRight.orderMain.svOrderMain.setOnClickListener(new View.OnClickListener() {
@@ -1692,6 +1711,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         if (countProduct > 0) {
             //load offline
             productArrayList = LocalDB.inst().loadProduct(Home.filterProduct);
+            arrTempProduct = productArrayList;
             adapterProduct.setItems(productArrayList);
             adapterProduct.notifyDataSetChanged();
         } else if (countProduct == 0) {
@@ -1716,6 +1736,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         if (countProduct > 0) {
             //load offline
             productArrayList = LocalDB.inst().loadProduct(Home.filterProduct);
+            arrTempProduct = productArrayList;
             adapterProduct.setItems(productArrayList);
             adapterProduct.notifyDataSetChanged();
         } else if (countProduct == 0) {
@@ -1747,6 +1768,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         if (countProduct > 0) {
             //load offline
             productArrayList = LocalDB.inst().loadProduct(Home.filterProduct);
+            arrTempProduct = productArrayList;
             adapterProductOfOrder.setItems(productArrayList);
             adapterProductOfOrder.notifyDataSetChanged();
         } else if (countProduct == 0) {
@@ -2962,6 +2984,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 if (countProduct > 0) {
                     //load offline
                     productArrayList = LocalDB.inst().loadProduct(Home.filterProduct);
+                    arrTempProduct = productArrayList;
                     adapterProductOfOrder.setItems(productArrayList);
                     adapterProductOfOrder.notifyDataSetChanged();
                 } else if (countProduct == 0) {
@@ -3000,6 +3023,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     nowOrder.note = Home.edOrderDetailNote.getText().toString();
                     nowOrder.amount = MyMethod.getAmountF(Home.orderDetailArrayList);// loại bỏ E khi convert sang chuỗi (big decimal)
                     EventPool.control().enQueue(new EventType.EventUpdateOrderRequest(nowOrder, Home.orderDetailArrayList, 0));
+
                 } else
                     MyMethod.showToast(Home.bindingRight, context, context.getString(R.string.please_order));
                 break;
@@ -3090,6 +3114,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 if (countP > 0) {
                     //load offline
                     productArrayList = LocalDB.inst().loadProduct(Home.filterProduct);
+                    arrTempProduct = productArrayList;
                     adapterProductOfOrder.setItems(productArrayList);
                     adapterProductOfOrder.notifyDataSetChanged();
                 } else if (countP == 0) {
@@ -3947,6 +3972,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.edit:
+                                Home.editbtnOrderClick = true;
                                 editValue(POPUP.Order, position);
                                 break;
                             case R.id.delete:
@@ -3969,6 +3995,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.edit:
+                                Home.editbtnOrderClick = true;
                                 editValue(POPUP.OrderDetail, position);
                                 break;
                             case R.id.delete:
@@ -4228,6 +4255,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
                 int quantity = Home.hashListQuantity.get(p.no_);
 
                 detail.id_item = p.id;
+                detail.no_ = p.no_;
                 detail.quantity = quantity;
                 detail.discountPercent = 0;
                 detail.discountAmount = 0;
@@ -4472,6 +4500,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
     private void editValue(final POPUP popup, final int position) {
         positionEditOrder = position;
+
         MyMethod.isEdit_Product = true;
         switch (popup) {
             case Order:
@@ -4483,10 +4512,10 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             default:
                 break;
         }
-        updateInputValueProduct(Home.orderDetailArrayList.get(position).id_item, Home.orderDetailArrayList.get(position).no_, Home.orderDetailArrayList.get(position).name, Home.orderDetailArrayList.get(position).unitprice);
+        updateInputValueProduct(Home.orderDetailArrayList.get(position).id_item, Home.orderDetailArrayList.get(position).itemNo_, Home.orderDetailArrayList.get(position).name, Home.orderDetailArrayList.get(position).unitprice);
         Home.LayoutMyManager.ShowDialog(Layouts.InputValue);
         MyMethod.requestFocus(editQuantity);
-
+        Home.editbtnOrderClick = true;
     }
 
     //Xác nhận xóa sản phẩm ra khỏi đơn hàng
@@ -4778,10 +4807,12 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             }
         } else if (MyMethod.isVisible(Home.bindingRight.product.linearProduct)) {
             Home.positionProduct = position;
-            nowProduct = arrTempProduct.get(position);
-            updateValueProduct();
-            Home.bindingHome.btnComeBack.setText(nowProduct.name);
-            showLayout(Layouts.ProductDetail, context);
+            if(arrTempProduct.size()>=position) {
+                nowProduct = arrTempProduct.get(position);
+                updateValueProduct();
+                Home.bindingHome.btnComeBack.setText(nowProduct.name);
+                showLayout(Layouts.ProductDetail, context);
+            }
         } else if (MyMethod.isVisible(Home.bindingRight.orderMain.linearOrderMain)) {
             //kiem tra neu la don hang cua no thi cho sua
 
@@ -4847,6 +4878,7 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
 
         } else if (MyMethod.isVisible(Home.bindingRight.orderProduct.linearProductOfOrder) && !MyMethod.isVisible(Home.bindingRight.inputValue.linearInputValue)) {
             nowNo_ = productArrayList.get(position).no_;
+            Home.editbtnOrderClick = false;
             MyMethod.isInputInOrder = !MyMethod.isOrderEditing;
             updateInputValueProduct(productArrayList.get(position).id, productArrayList.get(position).no_, productArrayList.get(position).name, productArrayList.get(position).price);
             MyMethod.isEdit_Product = false;
@@ -4894,16 +4926,18 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
             editPrice.setText(Utils.formatLocale(Home.hashListPrice.get(nowNo_)));
         else editPrice.setText(Utils.formatLocale(price));
         //Load promotion
-        arrPromotion = LocalDB.inst().getPromotion(id_item, price, 0);
-        arrViewPromotion = new ArrayList<>();
         Home.bindingRight.inputValue.listPromotion.removeAllViews();
-        String tempNo_ = "";
+        if(!Home.editbtnOrderClick) {
+            Home.editbtnOrderClick = false;
+            arrPromotion = LocalDB.inst().getPromotion(id_item, price, 0);
+            arrViewPromotion = new ArrayList<>();
+            String tempNo_ = "";
 
-        for (int i = 0; i < arrPromotion.size(); i++) {
-            arrViewPromotion.add(addPromotionView(arrPromotion.get(i), getQuantityPromoion(arrPromotion.get(i), Home.hashViewPromotion.get(no_)), tempNo_));
-            tempNo_ = arrPromotion.get(i).no_;
+            for (int i = 0; i < arrPromotion.size(); i++) {
+                arrViewPromotion.add(addPromotionView(arrPromotion.get(i), getQuantityPromoion(arrPromotion.get(i), Home.hashViewPromotion.get(no_)), tempNo_));
+                tempNo_ = arrPromotion.get(i).no_;
+            }
         }
-
     }
 
     private int getQuantityPromoion(Promotion promotion, ArrayList<EditText> editTexts) {
@@ -4928,36 +4962,48 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         TextView name_promotion = new TextView(context);
         name_promotion.setLayoutParams(name_promotionParams);
         name_promotion.setGravity(Gravity.LEFT);
-        name_promotion.setPadding(10, 2, 5, 2);
+        name_promotion.setPadding(2, 2, 2, 2);
         name_promotion.setTypeface(null, Typeface.BOLD);
-        name_promotion.setText(promotion.name);
+        name_promotion.setTextColor(Color.BLUE);
+        name_promotion.setText(promotion.name + "-"+promotion.no_);
         EditText quantity_promotion = new EditText(context);
         quantity_promotion.setTag(promotion);
+        quantity_promotion.setGravity(Gravity.RIGHT);
+        quantity_promotion.setPadding(0,5,5,10);
+        quantity_promotion.setHint(R.string.quantity);
+        quantity_promotion.setMinHeight(90);
         quantity_promotion.setInputType(InputType.TYPE_CLASS_NUMBER);
         LinearLayout.LayoutParams promotionParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         promotionParams.weight = 1;
         quantity_promotion.setLayoutParams(promotionParams);
-        quantity_promotion.setGravity(Gravity.CENTER);
         quantity_promotion.setText(quantity > 0 ? quantity + "" : "");
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(new RecyclerView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        boolean isContinous = true;
         if (!promotion.no_.equals(tempNo_)) {
             linearLayout.addView(name_promotion);
             linearLayout.addView(quantity_promotion);
+            isContinous = false;
         }
 
         //Description promotion textview
         TextView description_promotion = new TextView(context);
         description_promotion.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        description_promotion.setPadding(10, 2, 5, 2);
+        description_promotion.setPadding(2, 0, 0, 2);
         description_promotion.setText(promotion.description);
-
-        //View line blue
         View line = new View(context);
         line.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
         line.setBackgroundColor(Color.BLUE);
-
+        if (isContinous)//View line blue
+        {
+            line.setBackgroundColor(Color.WHITE);
+            line.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+        }
+        else {
+            line.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            line.setBackgroundColor(Color.BLUE);
+        }
         //Add all to list promotion
         Home.bindingRight.inputValue.listPromotion.addView(line);
         Home.bindingRight.inputValue.listPromotion.addView(linearLayout);
@@ -6629,6 +6675,8 @@ public class RightFragment extends Fragment implements OnMapReadyCallback, View.
         Home.orderListOrderDetailAdapter.setItems(orderDetailArrayList);
         Home.orderListOrderDetailAdapter.notifyDataSetChanged();
         Home.bindingRight.orderDetail.orderDetailNoName.setText(nowOrder.no_ + " - " + nowOrder.name);
+        Home.edOrderDetailNote.setText(nowOrder.note);
+        Home.edOrderNote.setText(nowOrder.note);
         Home.bindingRight.orderDetail.orderDetailTime.setText(Utils.long2Date(nowOrder.time));
         Home.bindingRight.orderDetail.orderDetailSaveSend.setVisibility(View.VISIBLE);
         Home.bindingRight.orderDetail.orderDetailAddProduct.setVisibility(View.VISIBLE);

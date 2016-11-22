@@ -3,6 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/layoutItemOrderDetail"
+    android:background="@color/blue_light"
     android:padding="5dip">
 
     <!--  ListRow Left sied Thumbnail image -->
@@ -36,6 +38,7 @@
                     android:layout_below="@+id/row_product_txtSTT"
                     android:text="Rihanna Love the way lie"
                     android:textSize="@dimen/textFontSize3"
+                    android:textColor="@color/bpblack"
                     android:textStyle="bold"
                     android:typeface="sans" />
                     </LinearLayout>
@@ -53,6 +56,7 @@
                         android:layout_alignTop="@id/row_product_name"
                         android:layout_marginRight="5dip"
                         android:gravity="right"
+                        android:textColor="@color/bpblack"
                         android:text="5:45"
                         android:textSize="@dimen/textFontSize3"
                         android:textStyle="bold" />
@@ -98,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/promotion"
-                android:textColor="@color/bpRed"
+                android:textColor="@color/bpDarker_blue"
                 android:textSize="@dimen/textFontSize"
                 android:gravity="center"
                 android:layout_gravity="center"
@@ -173,6 +177,7 @@
                 android:text="100.000"
                 android:textSize="@dimen/textFontSize3"
                 android:gravity="right"
+                android:textColor="@color/bpblack"
                 android:layout_gravity="right"
                 android:textStyle="bold"
                 android:layout_height="match_parent" />

@@ -58,8 +58,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="2dp"
+                        android:gravity="left|center"
                         android:text="@string/product_name"
                         android:textStyle="bold" />
 
@@ -69,8 +68,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:enabled="false"
-                        android:gravity="center|left"
+                        android:enabled="true"
+                        android:gravity="center|right"
                         android:hint="@string/product_price"
                         android:inputType="number"
                         android:padding="2dp"
@@ -82,7 +81,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center|left"
+                        android:gravity="center|right"
                         android:hint="@string/quantity"
                         android:inputType="number"
                         android:padding="2dp"
@@ -94,14 +93,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/blue_light" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:paddingLeft="10dp"
-                    android:text="@string/promotion"
-                    android:textColor="@color/colorBlueDark" />
 
                 <ScrollView
 
